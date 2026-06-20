@@ -182,8 +182,9 @@ export const generateVideo = createServerFn({ method: "POST" })
       .single();
     if (ve || !video) throw new Error(ve?.message ?? "video insert failed");
 
-    const patch = async (fields: Record<string, unknown>) =>
-      supabase.from("videos").update(fields).eq("id", video.id);
+    const patch = async (fields: Parameters<typeof supabase.from<"videos">>[0] extends never ? never : Record<string, unknown>) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      supabase.from("videos").update(fields as any).eq("id", video.id);
 
     try {
       const script = await generateScript(product);
