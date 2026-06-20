@@ -155,8 +155,10 @@ export const generateVideo = createServerFn({ method: "POST" })
       .single();
     if (ve || !video) throw new Error(ve?.message ?? "video insert failed");
 
-    const setStatus = async (status: string, patch: Record<string, unknown> = {}) =>
+    type VideoStatus = "pending" | "scripting" | "generating_voice" | "generating_images" | "rendering" | "ready" | "failed";
+    const setStatus = async (status: VideoStatus, patch: Record<string, unknown> = {}) =>
       supabase.from("videos").update({ status, ...patch }).eq("id", video.id);
+
 
     try {
       const script = await generateScript(product);
