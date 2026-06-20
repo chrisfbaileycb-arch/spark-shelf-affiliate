@@ -1,29 +1,118 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Sparkles, Link2, Video, BadgeDollarSign } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "ReelRipper — AI affiliate videos in one click" },
+      { name: "description", content: "Paste any product URL and get a 15-second AI influencer video with voiceover, captions, and a tracked affiliate link — ready to post on TikTok, Reels, and Shorts." },
+      { property: "og:title", content: "ReelRipper — AI affiliate videos in one click" },
+      { property: "og:description", content: "Paste a product URL, get an AI influencer video. Hands-off affiliate marketing." },
     ],
   }),
-  component: Index,
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Landing() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background bg-grain">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+        <div className="flex items-center gap-2">
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-pop">
+            <Sparkles className="h-5 w-5" />
+          </div>
+          <span className="font-display text-xl font-semibold tracking-tight">ReelRipper</span>
+        </div>
+        <nav className="flex items-center gap-2">
+          <Link to="/auth" className="rounded-full px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground">Sign in</Link>
+          <Link to="/auth" className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90">Get started</Link>
+        </nav>
+      </header>
+
+      <section className="mx-auto max-w-6xl px-6 pt-12 pb-20">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Hands-off affiliate marketing
+            </div>
+            <h1 className="mt-6 text-balance font-display text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">
+              Turn any product link into a <span className="text-primary">scroll-stopping</span> 15-second video.
+            </h1>
+            <p className="mt-6 max-w-xl text-balance text-lg text-muted-foreground">
+              Paste a product URL. ReelRipper writes the hook, generates an AI female-influencer voiceover, mocks up the visuals, and hands you a TikTok-ready MP4 plus a tracked affiliate link. You post. You earn.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/auth" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-95">
+                Start ripping <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a href="#how" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold hover:bg-surface">
+                How it works
+              </a>
+            </div>
+            <p className="mt-4 text-xs text-muted-foreground">No video editing. No on-camera time. No product shipping.</p>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-brand opacity-30 blur-3xl" />
+            <div className="mx-auto aspect-[9/16] w-full max-w-sm overflow-hidden rounded-[2rem] border border-border bg-secondary text-secondary-foreground shadow-pop">
+              <div className="flex h-full flex-col justify-between p-6">
+                <div className="flex items-center justify-between text-xs uppercase tracking-wider opacity-80">
+                  <span>● live preview</span>
+                  <span>0:15</span>
+                </div>
+                <div>
+                  <p className="font-display text-3xl leading-tight">"Okay this is literally the only one I'll ever recommend…"</p>
+                  <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
+                    LINK IN BIO ↗
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  <div className="h-8 w-8 rounded-full bg-primary" />
+                  <div>
+                    <p className="font-semibold">@your_creator</p>
+                    <p className="opacity-70">#ad #affiliate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" className="border-y border-border bg-surface">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <h2 className="font-display text-4xl">Four steps. Done in under a minute.</h2>
+          <div className="mt-12 grid gap-6 md:grid-cols-4">
+            {[
+              { i: Link2, t: "Paste the URL", d: "Amazon, TikTok Shop, AliExpress — any product page." },
+              { i: Sparkles, t: "AI ingests it", d: "Title, photos, price, hooks, hashtags — all scraped & scripted." },
+              { i: Video, t: "Generate the video", d: "AI female voiceover + influencer visuals + animated captions." },
+              { i: BadgeDollarSign, t: "Drop your link", d: "We build your tracked affiliate URL. You collect commissions." },
+            ].map((s, i) => (
+              <div key={i} className="rounded-2xl border border-border bg-card p-6 shadow-pop">
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <s.i className="h-5 w-5" />
+                </div>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Step {i + 1}</p>
+                <p className="mt-1 font-display text-2xl">{s.t}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
+        <h2 className="font-display text-4xl">Ready to print affiliate commissions?</h2>
+        <p className="mt-3 text-muted-foreground">Free to try. Bring your own affiliate IDs from any network.</p>
+        <Link to="/auth" className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95">
+          Create your first video <ArrowRight className="h-4 w-4" />
+        </Link>
+      </section>
+
+      <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
+        ReelRipper — built with Lovable Cloud.
+      </footer>
     </div>
   );
 }
