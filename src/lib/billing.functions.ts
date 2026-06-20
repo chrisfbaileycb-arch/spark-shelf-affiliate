@@ -139,10 +139,15 @@ export const syncSubscriptionFromStripe = createServerFn({ method: "POST" })
       const tier = priceLookup === "starter_monthly" ? "starter" : priceLookup === "pro_monthly" ? "pro" : "starter";
       const periodEnd = item?.current_period_end ? new Date(item.current_period_end * 1000).toISOString() : null;
 
+      const status: "active" | "canceled" | "past_due" | "trialing" =
+        sub.status === "active" || sub.status === "trialing" || sub.status === "past_due" || sub.status === "canceled"
+          ? sub.status
+          : "past_due";
+
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
       await supabaseAdmin.from("subscriptions").update({
         tier,
-        status: sub.status,
+        status,
         stripe_customer_id: typeof sub.customer === "string" ? sub.customer : sub.customer.id,
         stripe_subscription_id: sub.id,
         current_period_end: periodEnd,
