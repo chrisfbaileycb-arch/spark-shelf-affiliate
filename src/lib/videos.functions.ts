@@ -4,18 +4,22 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const GenerateInput = z.object({
   product_id: z.string().uuid(),
-  voice_id: z.string().default("cgSgspJ2msm6clMCkdW9"), // Jessica
-  influencer_style: z.string().optional(),
+  avatar_id: z.string().optional(),
+  voice_id: z.string().optional(),
 });
 
 const AI_GATEWAY = "https://ai.gateway.lovable.dev/v1";
+const HEYGEN_API = "https://api.heygen.com";
+// Sensible defaults — overridable per-request from the UI.
+const DEFAULT_AVATAR = "Daisy-inskirt-20220818";
+const DEFAULT_VOICE = "2d5b0e6cf36f460aa7fc47e3eee4ba54";
+const MIN_CREDITS = 30; // ~30s of video; below this we flag low_credit
 
 interface ScriptOut {
   hook: string;
-  script: string; // 15s of spoken copy, ~35-45 words
+  script: string;
   caption: string;
   hashtags: string[];
-  scene_prompts: string[]; // 3 image prompts for B-roll cuts
 }
 
 async function aiJson(body: Record<string, unknown>): Promise<string> {
@@ -47,7 +51,7 @@ async function generateScript(product: {
       {
         role: "system",
         content:
-          "You write punchy 15-second TikTok scripts for a 25-year-old female lifestyle influencer doing affiliate marketing. Tone: warm, excited, conversational, zero corporate. ALWAYS open with a strong scroll-stopping hook. End with a clear 'link in bio' CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[], scene_prompts[]}. script must be 35-45 spoken words (≈15s at normal pace). hashtags: 8 lowercase, no #. scene_prompts: 3 detailed visual prompts for cinematic vertical product photography / lifestyle shots (no people in 2-3, product hero in 1).",
+          "You write punchy 15-second TikTok scripts spoken by a 25-year-old female lifestyle influencer doing affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear 'link in bio' CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). hashtags: 8 lowercase, no #.",
       },
       {
         role: "user",
@@ -63,73 +67,72 @@ async function generateScript(product: {
       script: String(parsed.script ?? ""),
       caption: String(parsed.caption ?? ""),
       hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags.map(String).slice(0, 12) : [],
-      scene_prompts: Array.isArray(parsed.scene_prompts) ? parsed.scene_prompts.map(String).slice(0, 4) : [],
     };
   } catch {
     throw new Error("AI returned malformed script JSON");
   }
 }
 
-async function generateVoiceMp3(text: string, voiceId: string): Promise<Uint8Array> {
-  const key = process.env.ELEVENLABS_API_KEY;
-  if (!key) throw new Error("ElevenLabs not connected");
-  const res = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`,
-    {
-      method: "POST",
-      headers: { "xi-api-key": key, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text,
-        model_id: "eleven_turbo_v2_5",
-        voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.4, use_speaker_boost: true, speed: 1.05 },
-      }),
+async function heygen<T = unknown>(path: string, init?: RequestInit): Promise<T> {
+  const key = process.env.HEYGEN_API_KEY;
+  if (!key) throw new Error("HEYGEN_API_KEY not configured");
+  const res = await fetch(`${HEYGEN_API}${path}`, {
+    ...init,
+    headers: {
+      "X-Api-Key": key,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(init?.headers ?? {}),
     },
-  );
-  if (!res.ok) throw new Error(`ElevenLabs failed (${res.status}): ${await res.text().catch(() => "")}`);
-  return new Uint8Array(await res.arrayBuffer());
-}
-
-interface AiImage { mimeType: string; bytes: Uint8Array }
-
-async function generateInfluencerImage(prompt: string): Promise<AiImage> {
-  const key = process.env.LOVABLE_API_KEY!;
-  const res = await fetch(`${AI_GATEWAY}/chat/completions`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "google/gemini-2.5-flash-image",
-      messages: [{ role: "user", content: prompt }],
-      modalities: ["image", "text"],
-    }),
   });
-  if (!res.ok) {
-    if (res.status === 402) throw new Error("Lovable AI credits exhausted.");
-    throw new Error(`Image gen failed (${res.status})`);
+  const text = await res.text();
+  if (!res.ok) throw new Error(`HeyGen ${path} ${res.status}: ${text.slice(0, 300)}`);
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    throw new Error(`HeyGen returned non-JSON from ${path}`);
   }
-  const json = (await res.json()) as {
-    choices?: Array<{ message?: { images?: Array<{ image_url?: { url?: string } }> } }>;
-  };
-  const dataUrl = json.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-  if (!dataUrl || !dataUrl.startsWith("data:")) throw new Error("AI did not return an image");
-  const [meta, b64] = dataUrl.split(",");
-  const mimeType = meta.replace("data:", "").replace(";base64", "") || "image/png";
-  const bin = atob(b64);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return { mimeType, bytes };
 }
 
-async function uploadToStorage(
-  supabase: ReturnType<typeof import("@supabase/supabase-js").createClient>,
-  bucket: string,
-  path: string,
-  bytes: Uint8Array,
-  contentType: string,
-) {
-  const { error } = await supabase.storage.from(bucket).upload(path, bytes, { contentType, upsert: true });
-  if (error) throw new Error(`Upload failed: ${error.message}`);
-  const { data } = await supabase.storage.from(bucket).createSignedUrl(path, 60 * 60 * 24 * 7);
-  return data?.signedUrl ?? null;
+interface HeyGenQuota {
+  error: unknown;
+  data?: { remaining_quota?: number };
+}
+
+export const checkHeygenBalance = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async () => {
+    const json = await heygen<HeyGenQuota>("/v2/user/remaining_quota");
+    const remaining = json.data?.remaining_quota ?? 0;
+    return { remaining, low: remaining < MIN_CREDITS, threshold: MIN_CREDITS };
+  });
+
+interface HeyGenGenerateResp { error: unknown; data?: { video_id?: string } }
+interface HeyGenStatusResp {
+  code: number;
+  data?: {
+    status: "pending" | "processing" | "completed" | "failed" | "waiting";
+    video_url?: string;
+    thumbnail_url?: string;
+    error?: { detail?: string; message?: string } | null;
+    duration?: number;
+    credit_used?: number;
+  };
+}
+
+async function pollHeygen(videoId: string, signal?: AbortSignal): Promise<NonNullable<HeyGenStatusResp["data"]>> {
+  const start = Date.now();
+  const timeout = 5 * 60 * 1000; // 5 min
+  while (Date.now() - start < timeout) {
+    if (signal?.aborted) throw new Error("Aborted");
+    const r = await heygen<HeyGenStatusResp>(`/v1/video_status.get?video_id=${encodeURIComponent(videoId)}`);
+    const d = r.data;
+    if (!d) throw new Error("HeyGen status missing data");
+    if (d.status === "completed") return d;
+    if (d.status === "failed") throw new Error(d.error?.message || d.error?.detail || "HeyGen reported failure");
+    await new Promise((res) => setTimeout(res, 6000));
+  }
+  throw new Error("HeyGen render timed out after 5 minutes");
 }
 
 export const generateVideo = createServerFn({ method: "POST" })
@@ -141,13 +144,37 @@ export const generateVideo = createServerFn({ method: "POST" })
     const { data: product, error: pe } = await supabase.from("products").select("*").eq("id", data.product_id).maybeSingle();
     if (pe || !product) throw new Error("Product not found");
 
-    // Insert video row up front (status=scripting)
+    const avatarId = data.avatar_id || DEFAULT_AVATAR;
+    const voiceId = data.voice_id || DEFAULT_VOICE;
+
+    // Balance check before doing any work
+    const quota = await heygen<HeyGenQuota>("/v2/user/remaining_quota");
+    const remaining = quota.data?.remaining_quota ?? 0;
+    if (remaining < MIN_CREDITS) {
+      const { data: lc } = await supabase
+        .from("videos")
+        .insert({
+          user_id: userId,
+          product_id: product.id,
+          voice_id: voiceId,
+          heygen_avatar_id: avatarId,
+          status: "low_credit",
+          duration_seconds: 15,
+          error: `HeyGen balance ${remaining} credits is below threshold ${MIN_CREDITS}. Top up and retry.`,
+        })
+        .select()
+        .single();
+      throw new Error(`Low HeyGen credit: ${remaining} remaining (need ≥ ${MIN_CREDITS}). Video record: ${lc?.id ?? "n/a"}`);
+    }
+
     const { data: video, error: ve } = await supabase
       .from("videos")
       .insert({
         user_id: userId,
         product_id: product.id,
-        voice_id: data.voice_id,
+        voice_id: voiceId,
+        heygen_avatar_id: avatarId,
+        provider: "heygen",
         status: "scripting",
         duration_seconds: 15,
       })
@@ -155,85 +182,56 @@ export const generateVideo = createServerFn({ method: "POST" })
       .single();
     if (ve || !video) throw new Error(ve?.message ?? "video insert failed");
 
-    type VideoStatus = "pending" | "scripting" | "generating_voice" | "generating_images" | "rendering" | "ready" | "failed";
-    const setStatus = async (status: VideoStatus, patch: Record<string, unknown> = {}) =>
-      supabase.from("videos").update({ status, ...patch }).eq("id", video.id);
-
+    const patch = async (fields: Record<string, unknown>) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (supabase.from("videos") as any).update(fields).eq("id", video.id);
 
     try {
       const script = await generateScript(product);
-      await setStatus("generating_voice", {
+      const spoken = `${script.hook} ${script.script}`.trim();
+      await patch({
+        status: "rendering",
         hook: script.hook,
         script: script.script,
         caption: script.caption,
         hashtags: script.hashtags,
       });
 
-      // Voice
-      const fullVoice = `${script.hook} ${script.script}`.trim();
-      const mp3 = await generateVoiceMp3(fullVoice, data.voice_id);
-      const audioPath = `${userId}/${video.id}/voice.mp3`;
-      const audioUrl = await uploadToStorage(supabase as never, "videos", audioPath, mp3, "audio/mpeg");
+      const gen = await heygen<HeyGenGenerateResp>("/v2/video/generate", {
+        method: "POST",
+        body: JSON.stringify({
+          video_inputs: [
+            {
+              character: { type: "avatar", avatar_id: avatarId, avatar_style: "normal" },
+              voice: { type: "text", input_text: spoken, voice_id: voiceId, speed: 1.05 },
+              background: { type: "color", value: "#FAF7F2" },
+            },
+          ],
+          dimension: { width: 720, height: 1280 },
+          caption: true,
+        }),
+      });
+      const heygenVideoId = gen.data?.video_id;
+      if (!heygenVideoId) throw new Error("HeyGen did not return a video_id");
 
-      // Influencer + scene images
-      await setStatus("generating_images");
-      const stylePrefix =
-        data.influencer_style ||
-        "Photorealistic 9:16 vertical photo of a 25-year-old female lifestyle influencer with warm friendly energy, soft natural daylight, casual chic outfit, soft makeup, shallow depth of field, magazine-quality, no text, no logos.";
+      await patch({ heygen_video_id: heygenVideoId });
 
-      const heroPrompt = `${stylePrefix} She is enthusiastically showing/holding/using the product: "${product.title}". Engaging eye contact with the camera. Bright, fresh color palette.`;
-      const scenePrompts = (script.scene_prompts.length ? script.scene_prompts : [
-        `Cinematic vertical 9:16 product photography of "${product.title}", soft daylight, lifestyle setting, no text.`,
-        `Close-up macro shot highlighting a key detail of "${product.title}", crisp focus, no text.`,
-      ]).slice(0, 3);
+      const completed = await pollHeygen(heygenVideoId);
+      if (!completed.video_url) throw new Error("HeyGen completed without a video_url");
 
-      const imagePrompts = [heroPrompt, ...scenePrompts];
-      const generated = await Promise.all(imagePrompts.map(async (p, i) => {
-        try {
-          const img = await generateInfluencerImage(p);
-          const ext = img.mimeType.includes("png") ? "png" : "jpg";
-          const path = `${userId}/${video.id}/scene-${i}.${ext}`;
-          const url = await uploadToStorage(supabase as never, "videos", path, img.bytes, img.mimeType);
-          return { index: i, url, prompt: p };
-        } catch (e) {
-          console.warn("image gen failed", i, e);
-          return null;
-        }
-      }));
-      const sceneUrls = generated.filter((x): x is { index: number; url: string | null; prompt: string } => !!x && !!x.url);
-
-      // Use first scene as thumbnail
-      const thumb = sceneUrls[0]?.url ?? null;
-
-      await supabase.from("videos").update({
+      await patch({
         status: "ready",
-        thumbnail_url: thumb,
-        video_url: audioUrl, // audio file URL — UI plays it with the animated frames
+        video_url: completed.video_url,
+        thumbnail_url: completed.thumbnail_url ?? null,
+        generation_cost: completed.credit_used ?? null,
+        duration_seconds: Math.round(completed.duration ?? 15),
         error: null,
-      }).eq("id", video.id);
+      });
 
-      // Stash scene URLs in raw via products? Simplest: add to video row via metadata column? We don't have one.
-      // Store scenes by writing a manifest.json to storage.
-      const manifest = {
-        audio_url: audioUrl,
-        scenes: sceneUrls.map((s) => ({ url: s.url, prompt: s.prompt })),
-        hook: script.hook,
-        script: script.script,
-        caption: script.caption,
-        hashtags: script.hashtags,
-      };
-      await uploadToStorage(
-        supabase as never,
-        "videos",
-        `${userId}/${video.id}/manifest.json`,
-        new TextEncoder().encode(JSON.stringify(manifest, null, 2)),
-        "application/json",
-      );
-
-      return { video_id: video.id };
+      return { video_id: video.id, heygen_video_id: heygenVideoId };
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      await supabase.from("videos").update({ status: "failed", error: message }).eq("id", video.id);
+      await patch({ status: "failed", error: message });
       throw err;
     }
   });
@@ -243,7 +241,7 @@ export const listVideos = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("videos")
-      .select("id, hook, status, thumbnail_url, created_at, product_id, products(title, source_domain)")
+      .select("id, hook, status, thumbnail_url, created_at, product_id, generation_cost, products(title, source_domain)")
       .order("created_at", { ascending: false })
       .limit(60);
     if (error) throw new Error(error.message);
@@ -254,7 +252,7 @@ export const getVideoBundle = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+    const { supabase } = context;
     const { data: video, error } = await supabase
       .from("videos")
       .select("*, products(*)")
@@ -262,55 +260,14 @@ export const getVideoBundle = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!video) throw new Error("Video not found");
-
-    // Load scene manifest from storage and refresh signed URLs for everything we need.
-    const manifestPath = `${userId}/${video.id}/manifest.json`;
-    const { data: manifestBlob } = await supabase.storage.from("videos").download(manifestPath);
-    let manifest: { audio_url?: string; scenes?: Array<{ url: string; prompt: string }> } = {};
-    if (manifestBlob) {
-      try {
-        manifest = JSON.parse(await manifestBlob.text());
-      } catch {
-        /* ignore */
-      }
-    }
-
-    // Re-sign URLs (signed URLs expire) by listing files in the folder.
-    const folder = `${userId}/${video.id}`;
-    const { data: files } = await supabase.storage.from("videos").list(folder);
-    const signed: Record<string, string> = {};
-    if (files) {
-      for (const f of files) {
-        if (f.name === "manifest.json") continue;
-        const { data: s } = await supabase.storage.from("videos").createSignedUrl(`${folder}/${f.name}`, 60 * 60 * 24);
-        if (s?.signedUrl) signed[f.name] = s.signedUrl;
-      }
-    }
-
-    const sceneNames = Object.keys(signed).filter((n) => n.startsWith("scene-")).sort();
-    const scenes = sceneNames.map((n, i) => ({
-      url: signed[n],
-      prompt: manifest.scenes?.[i]?.prompt ?? "",
-    }));
-
-    return {
-      video,
-      audio_url: signed["voice.mp3"] ?? null,
-      scenes,
-    };
+    return { video };
   });
 
 export const deleteVideo = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    const folder = `${userId}/${data.id}`;
-    const { data: files } = await supabase.storage.from("videos").list(folder);
-    if (files?.length) {
-      await supabase.storage.from("videos").remove(files.map((f) => `${folder}/${f.name}`));
-    }
-    const { error } = await supabase.from("videos").delete().eq("id", data.id);
+    const { error } = await context.supabase.from("videos").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

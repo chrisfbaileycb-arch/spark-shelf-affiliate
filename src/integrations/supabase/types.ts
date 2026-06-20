@@ -236,10 +236,14 @@ export type Database = {
           created_at: string
           duration_seconds: number | null
           error: string | null
+          generation_cost: number | null
           hashtags: string[]
+          heygen_avatar_id: string | null
+          heygen_video_id: string | null
           hook: string | null
           id: string
           product_id: string
+          provider: string | null
           script: string | null
           status: Database["public"]["Enums"]["video_status"]
           thumbnail_url: string | null
@@ -254,10 +258,14 @@ export type Database = {
           created_at?: string
           duration_seconds?: number | null
           error?: string | null
+          generation_cost?: number | null
           hashtags?: string[]
+          heygen_avatar_id?: string | null
+          heygen_video_id?: string | null
           hook?: string | null
           id?: string
           product_id: string
+          provider?: string | null
           script?: string | null
           status?: Database["public"]["Enums"]["video_status"]
           thumbnail_url?: string | null
@@ -272,10 +280,14 @@ export type Database = {
           created_at?: string
           duration_seconds?: number | null
           error?: string | null
+          generation_cost?: number | null
           hashtags?: string[]
+          heygen_avatar_id?: string | null
+          heygen_video_id?: string | null
           hook?: string | null
           id?: string
           product_id?: string
+          provider?: string | null
           script?: string | null
           status?: Database["public"]["Enums"]["video_status"]
           thumbnail_url?: string | null
@@ -324,6 +336,7 @@ export type Database = {
         | "rendering"
         | "ready"
         | "failed"
+        | "low_credit"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -460,6 +473,7 @@ export const Constants = {
         "rendering",
         "ready",
         "failed",
+        "low_credit",
       ],
     },
   },
