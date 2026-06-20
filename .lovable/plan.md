@@ -1,60 +1,73 @@
+# Build Plan: Persona Generator + SaaS Monetization
 
-# AI Affiliate Video Generator
+## 1. Persona generator (core feature)
 
-## What it does
+**New table `personas`**: `id, user_id, name, bio, gender, age_range, vibe, niche, voice_tone, heygen_avatar_id, elevenlabs_voice_id, is_default, created_at`. RLS scoped to `auth.uid()`.
 
-1. You paste a product URL (Amazon, TikTok Shop, AliExpress, any store) or pick from a trending feed.
-2. The app scrapes title, price, images, description.
-3. AI writes a 15s hook-driven script in influencer style.
-4. AI generates a 25yo female "influencer" avatar image + product B-roll frames.
-5. ElevenLabs generates the voiceover (female voice, e.g. "Jessica").
-6. Server renders a vertical 1080x1920 MP4 (15s) with: influencer footage, product cuts, animated captions, music bed.
-7. Affiliate Link Manager — you store your affiliate IDs per program (Amazon Associates, TikTok Shop, Impact, ShareASale, AliExpress, etc.); app builds the tagged link and a QR code, tracks clicks.
-8. Export: download MP4 + caption + hashtags + affiliate link, ready to upload to TikTok / Reels / Shorts.
+**New page `/personas`**: list cards + "Create persona" button. Each card shows name, avatar thumb, vibe/niche badges, "Set default" / "Edit" / "Delete".
 
-## Stack
+**Persona creator wizard** (single page, 6 fields):
+- Gender (F / M / Non-binary)
+- Age range (18-24, 25-32, 33-42, 43-55)
+- Vibe (Energetic Gen-Z, Polished Pro, Chill Friend, Bold Authority, Warm Mentor)
+- Niche (Beauty, Fitness, Tech, Finance, Lifestyle, Food, Fashion, Parenting)
+- Voice tone (Bubbly, Calm, Confident, Sultry, Authoritative)
+- Name (autosuggest from AI or type)
 
-- **Lovable Cloud** (DB + storage + auth) — for products, generated videos, affiliate programs, link clicks.
-- **Lovable AI** (`google/gemini-3-flash-preview`) — script, hashtags, affiliate-program suggestions from product URL/domain.
-- **Lovable AI image gen** (`google/gemini-3.1-flash-image-preview`) — generate the AI influencer avatar frames + B-roll cutaways using product images.
-- **Firecrawl connector** — scrape any product URL.
-- **ElevenLabs connector** — voiceover (`eleven_turbo_v2_5`, voice: Jessica `cgSgspJ2msm6clMCkdW9` by default, user can switch).
-- **Server-side ffmpeg** (already in sandbox at runtime) — stitch frames + voice + captions into final MP4. Stored in Cloud Storage; user gets a signed download URL.
+**Server fn `generatePersona`**: Lovable AI (`google/gemini-3-flash-preview`) takes traits → returns `{name, bio, catchphrases[], speech_quirks}`. Code maps traits → best HeyGen avatar + ElevenLabs voice from a curated lookup table. Saves to `personas`.
 
-## Pages
+**On signup**: auto-create one starter persona ("Maya — 25F lifestyle, energetic") so users can generate immediately without setup. They can edit/delete/replace later.
 
-- `/` — Landing (what it does + sign in)
-- `/dashboard` — Stats: videos generated, clicks, top products
-- `/products/new` — Paste URL → scrape preview → "Generate Video" CTA
-- `/products` — Library of ingested products
-- `/videos/$id` — Video player, captions, hashtags, copy affiliate link, download MP4, regenerate
-- `/affiliate-programs` — CRUD your affiliate IDs (program name, network, tracking ID, link template)
-- `/trending` — Curated trending TikTok Shop / Amazon Movers & Shakers feed (scraped via Firecrawl, cached daily)
+## 2. Video generator integration
 
-## What you'll need to set up
+- `/videos/new` flow: persona selector dropdown ("Generate as → [Maya ✨ | Jake 💪 | + New persona]"), defaults to user's `is_default` persona.
+- Script generator system prompt injects `persona.bio + catchphrases + speech_quirks` → scripts sound like *that* persona.
+- `videos.persona_id` FK added; `voice_id` and `heygen_avatar_id` pulled from the selected persona at render time.
 
-- **Affiliate accounts**: I cannot auto-enroll you. You apply to Amazon Associates, TikTok Shop Creator, Impact, ShareASale, etc. yourself. The app suggests likely programs per product domain and stores your IDs.
-- **Connectors I'll prompt you to link**: ElevenLabs, Firecrawl.
-- **Posting**: MVP outputs an MP4 you upload manually. Auto-posting to TikTok requires their Content Posting API + app review; I can add a TikTok connector flow in a follow-up.
+## 3. SaaS billing (Stripe via Lovable payments)
 
-## Honest caveats
+**Two tiers:**
+- **Starter — $29.95/mo** → 15 videos/mo
+- **Pro — $59.95/mo** → 30 videos/mo
 
-- "Replicate a specific influencer's video" = not built. The app makes a *new* AI-influencer-style video for the same product. Copying a real person's likeness/voice is IP/ToS risk; I won't do that.
-- The AI influencer is a generated avatar (consistent across your videos via a seed image you pick), not a deepfake of a real person.
-- AI-generated video of a talking person is still rough at 15s; the MVP uses a polished slideshow of avatar shots + product B-roll + dynamic captions + voiceover (the dominant "faceless creator" TikTok style). I can upgrade to true talking-head later via a paid video-gen API (HeyGen / Replicate Wan) if you want.
+**Free trial:** 3 videos on signup, no card required. Paywall on the 4th.
 
-## Build order this session
+**New tables:**
+- `subscriptions` (user_id, stripe_customer_id, stripe_subscription_id, tier, status, current_period_end)
+- `usage_counters` (user_id, period_start, videos_used) — reset monthly
 
-1. Enable Lovable Cloud → DB schema (products, videos, affiliate_programs, clicks, profiles, user_roles).
-2. Link Firecrawl + ElevenLabs connectors.
-3. Design system + shell (dashboard, nav, auth).
-4. Product ingest flow (URL → Firecrawl → preview → save).
-5. Affiliate Link Manager + click-tracking redirect route.
-6. Script + voiceover + image generation pipeline.
-7. Server-side MP4 renderer (ffmpeg) → Cloud Storage.
-8. Video detail page (player + download + copy caption/hashtags/link).
-9. Trending feed (Amazon Movers & Shakers + TikTok Shop scrape, cached).
+**Quota enforcement:** `generateVideo` server fn checks `videos_used < tier_limit` before HeyGen call; increments on success. If exceeded → throw "Upgrade required" with link to `/billing`.
 
-Total: this is too large for one turn. I'll ship items 1–6 this turn (the working core loop end-to-end, but with a simpler "image-sequence + voiceover" video render in step 6). Items 7–9 polish/render upgrade + trending feed in the next turn.
+**New pages:**
+- `/pricing` (public) — 2 tier cards + "Start free" CTA
+- `/billing` (authenticated) — current plan, usage bar (X / 15 this month), "Upgrade" / "Manage" buttons → Stripe Checkout & Customer Portal
 
-Approve and I'll start.
+**Stripe webhooks** at `/api/public/webhooks/stripe`: handle `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted` → sync `subscriptions` table.
+
+## 4. Commercial API key swap (later, by you)
+
+Today the app uses your personal HeyGen + ElevenLabs keys. When you're ready to sell:
+1. Create separate commercial HeyGen + ElevenLabs accounts
+2. Update `HEYGEN_API_KEY` and `ELEVENLABS_API_KEY` secrets in project settings
+3. No code change needed — same env var names
+
+## Build order (this turn)
+
+1. `personas` table + RLS + auto-create-on-signup trigger update
+2. Persona generator server fn (Lovable AI)
+3. `/personas` page (list + create + edit + delete)
+4. Wire persona selector into video generator + script prompt
+5. `subscriptions` + `usage_counters` tables
+6. Enable Lovable Stripe payments → create 2 products
+7. `/pricing` + `/billing` pages
+8. Quota check in `generateVideo` + 3-video trial logic
+9. Stripe webhook for subscription sync
+
+## Technical notes
+
+- HeyGen avatar lookup: hardcoded map of ~12 avatars (3 per gender × 4 age ranges) selected from HeyGen's public avatar library
+- ElevenLabs voice lookup: hardcoded map of 5 tones × 2 genders = 10 voices
+- Lovable Stripe payments handles Stripe account claiming later — no setup needed now
+- Free trial = `subscriptions.tier = 'trial'`, limit 3 lifetime videos (not monthly)
+
+Approve and I'll build it all in one pass.
