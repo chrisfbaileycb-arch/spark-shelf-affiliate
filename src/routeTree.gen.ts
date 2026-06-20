@@ -13,13 +13,18 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RCodeRouteImport } from './routes/r.$code'
+import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as AuthenticatedPricingRouteImport } from './routes/_authenticated.pricing'
+import { Route as AuthenticatedPersonasRouteImport } from './routes/_authenticated.personas'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated.billing'
 import { Route as AuthenticatedAffiliateProgramsRouteImport } from './routes/_authenticated.affiliate-programs'
 import { Route as AuthenticatedVideosIndexRouteImport } from './routes/_authenticated.videos.index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated.products.index'
 import { Route as AuthenticatedVideosIdRouteImport } from './routes/_authenticated.videos.$id'
 import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated.products.new'
 import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated.products.$id'
+import { Route as ApiPublicWebhooksStripeRouteImport } from './routes/api/public/webhooks.stripe'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -40,9 +45,29 @@ const RCodeRoute = RCodeRouteImport.update({
   path: '/r/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
+  id: '/checkout/return',
+  path: '/checkout/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedPricingRoute = AuthenticatedPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPersonasRoute = AuthenticatedPersonasRouteImport.update({
+  id: '/personas',
+  path: '/personas',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedAffiliateProgramsRoute =
@@ -79,30 +104,45 @@ const AuthenticatedProductsIdRoute = AuthenticatedProductsIdRouteImport.update({
   path: '/products/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const ApiPublicWebhooksStripeRoute = ApiPublicWebhooksStripeRouteImport.update({
+  id: '/api/public/webhooks/stripe',
+  path: '/api/public/webhooks/stripe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/personas': typeof AuthenticatedPersonasRoute
+  '/pricing': typeof AuthenticatedPricingRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/r/$code': typeof RCodeRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/videos/': typeof AuthenticatedVideosIndexRoute
+  '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/personas': typeof AuthenticatedPersonasRoute
+  '/pricing': typeof AuthenticatedPricingRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/r/$code': typeof RCodeRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/videos': typeof AuthenticatedVideosIndexRoute
+  '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -110,13 +150,18 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
+  '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/personas': typeof AuthenticatedPersonasRoute
+  '/_authenticated/pricing': typeof AuthenticatedPricingRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
   '/_authenticated/videos/$id': typeof AuthenticatedVideosIdRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/videos/': typeof AuthenticatedVideosIndexRoute
+  '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -124,45 +169,62 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/affiliate-programs'
+    | '/billing'
     | '/dashboard'
+    | '/personas'
+    | '/pricing'
+    | '/checkout/return'
     | '/r/$code'
     | '/products/$id'
     | '/products/new'
     | '/videos/$id'
     | '/products/'
     | '/videos/'
+    | '/api/public/webhooks/stripe'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/affiliate-programs'
+    | '/billing'
     | '/dashboard'
+    | '/personas'
+    | '/pricing'
+    | '/checkout/return'
     | '/r/$code'
     | '/products/$id'
     | '/products/new'
     | '/videos/$id'
     | '/products'
     | '/videos'
+    | '/api/public/webhooks/stripe'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/affiliate-programs'
+    | '/_authenticated/billing'
     | '/_authenticated/dashboard'
+    | '/_authenticated/personas'
+    | '/_authenticated/pricing'
+    | '/checkout/return'
     | '/r/$code'
     | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
     | '/_authenticated/videos/$id'
     | '/_authenticated/products/'
     | '/_authenticated/videos/'
+    | '/api/public/webhooks/stripe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CheckoutReturnRoute: typeof CheckoutReturnRoute
   RCodeRoute: typeof RCodeRoute
+  ApiPublicWebhooksStripeRoute: typeof ApiPublicWebhooksStripeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -195,11 +257,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/return': {
+      id: '/checkout/return'
+      path: '/checkout/return'
+      fullPath: '/checkout/return'
+      preLoaderRoute: typeof CheckoutReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/pricing': {
+      id: '/_authenticated/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof AuthenticatedPricingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/personas': {
+      id: '/_authenticated/personas'
+      path: '/personas'
+      fullPath: '/personas'
+      preLoaderRoute: typeof AuthenticatedPersonasRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/billing': {
+      id: '/_authenticated/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AuthenticatedBillingRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/affiliate-programs': {
@@ -244,12 +334,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/public/webhooks/stripe': {
+      id: '/api/public/webhooks/stripe'
+      path: '/api/public/webhooks/stripe'
+      fullPath: '/api/public/webhooks/stripe'
+      preLoaderRoute: typeof ApiPublicWebhooksStripeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAffiliateProgramsRoute: typeof AuthenticatedAffiliateProgramsRoute
+  AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPersonasRoute: typeof AuthenticatedPersonasRoute
+  AuthenticatedPricingRoute: typeof AuthenticatedPricingRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
   AuthenticatedVideosIdRoute: typeof AuthenticatedVideosIdRoute
@@ -259,7 +359,10 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAffiliateProgramsRoute: AuthenticatedAffiliateProgramsRoute,
+  AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPersonasRoute: AuthenticatedPersonasRoute,
+  AuthenticatedPricingRoute: AuthenticatedPricingRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
   AuthenticatedVideosIdRoute: AuthenticatedVideosIdRoute,
@@ -275,7 +378,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthRoute: AuthRoute,
+  CheckoutReturnRoute: CheckoutReturnRoute,
   RCodeRoute: RCodeRoute,
+  ApiPublicWebhooksStripeRoute: ApiPublicWebhooksStripeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

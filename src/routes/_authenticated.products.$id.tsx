@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getProduct, deleteProduct } from "@/lib/products.functions";
 import { generateVideo } from "@/lib/videos.functions";
+import { listPersonas } from "@/lib/personas.functions";
 import { listPrograms, createShortLink, listLinksForProduct } from "@/lib/affiliate.functions";
 import { suggestNetworkForDomain } from "@/lib/affiliate-networks";
 import { Card } from "@/components/ui/card";
@@ -11,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Sparkles, ExternalLink, Trash2, Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/products/$id")({
   component: ProductDetail,
@@ -27,15 +28,25 @@ function ProductDetail() {
   const ll = useServerFn(listLinksForProduct);
   const csl = useServerFn(createShortLink);
   const gen = useServerFn(generateVideo);
+  const lpers = useServerFn(listPersonas);
 
   const product = useQuery({ queryKey: ["product", id], queryFn: () => getP({ data: { id } }) });
   const programs = useQuery({ queryKey: ["programs"], queryFn: () => lp() });
   const links = useQuery({ queryKey: ["links", id], queryFn: () => ll({ data: { product_id: id } }) });
+  const personas = useQuery({ queryKey: ["personas"], queryFn: () => lpers() });
 
   const [programId, setProgramId] = useState<string>("none");
+  const [personaId, setPersonaId] = useState<string>("");
+
+  useEffect(() => {
+    if (!personaId && personas.data?.length) {
+      const def = personas.data.find((p) => p.is_default) ?? personas.data[0];
+      setPersonaId(def.id);
+    }
+  }, [personas.data, personaId]);
 
   const generateMut = useMutation({
-    mutationFn: () => gen({ data: { product_id: id, voice_id: "cgSgspJ2msm6clMCkdW9" } }),
+    mutationFn: () => gen({ data: { product_id: id, persona_id: personaId || undefined } }),
     onSuccess: (res) => {
       toast.success("Video generated!");
       navigate({ to: "/videos/$id", params: { id: res.video_id } });
@@ -111,11 +122,25 @@ function ProductDetail() {
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider opacity-80">Ready to rip?</p>
               <p className="mt-1 font-display text-2xl">Generate the 15s video</p>
-              <p className="mt-1 text-sm opacity-80">AI script + female voiceover + influencer visuals.</p>
+              <p className="mt-1 text-sm opacity-80">AI script + influencer voiceover.</p>
             </div>
+
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider opacity-80">Persona</label>
+              <Select value={personaId} onValueChange={setPersonaId}>
+                <SelectTrigger className="bg-background text-foreground"><SelectValue placeholder="Pick a persona" /></SelectTrigger>
+                <SelectContent>
+                  {personas.data?.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>{p.name} — {p.vibe}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Link to="/personas" className="mt-1 block text-xs opacity-80 hover:opacity-100">Manage personas →</Link>
+            </div>
+
             <Button
               onClick={() => generateMut.mutate()}
-              disabled={generateMut.isPending}
+              disabled={generateMut.isPending || !personaId}
               size="lg"
               className="w-full bg-background text-foreground hover:bg-background/90"
             >

@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, Link, useNavigate, useRouterState } from "@tan
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Package, Video, BadgeDollarSign, LogOut, Sparkles } from "lucide-react";
+import { LayoutDashboard, Package, Video, BadgeDollarSign, LogOut, Sparkles, Users, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -12,8 +12,10 @@ export const Route = createFileRoute("/_authenticated")({
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/products", label: "Products", icon: Package },
+  { to: "/personas", label: "Personas", icon: Users },
   { to: "/videos", label: "Videos", icon: Video },
   { to: "/affiliate-programs", label: "Affiliate IDs", icon: BadgeDollarSign },
+  { to: "/billing", label: "Billing", icon: CreditCard },
 ] as const;
 
 function AuthLayout() {
