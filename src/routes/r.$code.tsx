@@ -16,12 +16,13 @@ export const Route = createFileRoute("/r/$code")({
           .maybeSingle();
         if (!link) return new Response("Link not found", { status: 404 });
 
-        // Fire-and-forget click insert
-        sb.from("link_clicks").insert({
+        // Fire-and-forget click insert (don't block redirect)
+        void sb.from("link_clicks").insert({
           affiliate_link_id: link.id,
           referer: request.headers.get("referer"),
           user_agent: request.headers.get("user-agent"),
-        }).then(() => sb.rpc("increment_link_clicks", { _id: link.id }).then?.(() => {})).catch(() => {});
+        });
+
 
         return new Response(null, {
           status: 302,

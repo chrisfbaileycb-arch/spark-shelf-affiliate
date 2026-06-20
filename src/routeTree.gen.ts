@@ -12,9 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedAffiliateProgramsRouteImport } from './routes/_authenticated.affiliate-programs'
+import { Route as AuthenticatedVideosIndexRouteImport } from './routes/_authenticated.videos.index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated.products.index'
+import { Route as AuthenticatedVideosIdRouteImport } from './routes/_authenticated.videos.$id'
 import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated.products.new'
+import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated.products.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -30,66 +35,134 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RCodeRoute = RCodeRouteImport.update({
+  id: '/r/$code',
+  path: '/r/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAffiliateProgramsRoute =
+  AuthenticatedAffiliateProgramsRouteImport.update({
+    id: '/affiliate-programs',
+    path: '/affiliate-programs',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedVideosIndexRoute =
+  AuthenticatedVideosIndexRouteImport.update({
+    id: '/videos/',
+    path: '/videos/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedProductsIndexRoute =
   AuthenticatedProductsIndexRouteImport.update({
     id: '/products/',
     path: '/products/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedVideosIdRoute = AuthenticatedVideosIdRouteImport.update({
+  id: '/videos/$id',
+  path: '/videos/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedProductsNewRoute =
   AuthenticatedProductsNewRouteImport.update({
     id: '/products/new',
     path: '/products/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedProductsIdRoute = AuthenticatedProductsIdRouteImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/r/$code': typeof RCodeRoute
+  '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
+  '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
+  '/videos/': typeof AuthenticatedVideosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/r/$code': typeof RCodeRoute
+  '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
+  '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/products': typeof AuthenticatedProductsIndexRoute
+  '/videos': typeof AuthenticatedVideosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/r/$code': typeof RCodeRoute
+  '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
+  '/_authenticated/videos/$id': typeof AuthenticatedVideosIdRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
+  '/_authenticated/videos/': typeof AuthenticatedVideosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/products/new' | '/products/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/affiliate-programs'
+    | '/dashboard'
+    | '/r/$code'
+    | '/products/$id'
+    | '/products/new'
+    | '/videos/$id'
+    | '/products/'
+    | '/videos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/products/new' | '/products'
+  to:
+    | '/'
+    | '/auth'
+    | '/affiliate-programs'
+    | '/dashboard'
+    | '/r/$code'
+    | '/products/$id'
+    | '/products/new'
+    | '/videos/$id'
+    | '/products'
+    | '/videos'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/affiliate-programs'
     | '/_authenticated/dashboard'
+    | '/r/$code'
+    | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
+    | '/_authenticated/videos/$id'
     | '/_authenticated/products/'
+    | '/_authenticated/videos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AuthRoute: typeof AuthRoute
+  RCodeRoute: typeof RCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,11 +188,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/r/$code': {
+      id: '/r/$code'
+      path: '/r/$code'
+      fullPath: '/r/$code'
+      preLoaderRoute: typeof RCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/affiliate-programs': {
+      id: '/_authenticated/affiliate-programs'
+      path: '/affiliate-programs'
+      fullPath: '/affiliate-programs'
+      preLoaderRoute: typeof AuthenticatedAffiliateProgramsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/videos/': {
+      id: '/_authenticated/videos/'
+      path: '/videos'
+      fullPath: '/videos/'
+      preLoaderRoute: typeof AuthenticatedVideosIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/products/': {
@@ -129,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/videos/$id': {
+      id: '/_authenticated/videos/$id'
+      path: '/videos/$id'
+      fullPath: '/videos/$id'
+      preLoaderRoute: typeof AuthenticatedVideosIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/products/new': {
       id: '/_authenticated/products/new'
       path: '/products/new'
@@ -136,19 +237,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/products/$id': {
+      id: '/_authenticated/products/$id'
+      path: '/products/$id'
+      fullPath: '/products/$id'
+      preLoaderRoute: typeof AuthenticatedProductsIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAffiliateProgramsRoute: typeof AuthenticatedAffiliateProgramsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
+  AuthenticatedVideosIdRoute: typeof AuthenticatedVideosIdRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
+  AuthenticatedVideosIndexRoute: typeof AuthenticatedVideosIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAffiliateProgramsRoute: AuthenticatedAffiliateProgramsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
+  AuthenticatedVideosIdRoute: AuthenticatedVideosIdRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
+  AuthenticatedVideosIndexRoute: AuthenticatedVideosIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -159,6 +275,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthRoute: AuthRoute,
+  RCodeRoute: RCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

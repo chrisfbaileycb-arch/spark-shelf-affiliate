@@ -5,7 +5,7 @@ import { listVideos } from "@/lib/videos.functions";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-export const Route = createFileRoute("/_authenticated/videos")({
+export const Route = createFileRoute("/_authenticated/videos/")({
   component: VideosList,
 });
 
