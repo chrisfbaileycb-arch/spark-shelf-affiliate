@@ -14,16 +14,316 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      affiliate_links: {
+        Row: {
+          affiliate_program_id: string | null
+          clicks: number
+          created_at: string
+          destination_url: string
+          id: string
+          product_id: string | null
+          short_code: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_program_id?: string | null
+          clicks?: number
+          created_at?: string
+          destination_url: string
+          id?: string
+          product_id?: string | null
+          short_code: string
+          user_id: string
+        }
+        Update: {
+          affiliate_program_id?: string | null
+          clicks?: number
+          created_at?: string
+          destination_url?: string
+          id?: string
+          product_id?: string | null
+          short_code?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_links_affiliate_program_id_fkey"
+            columns: ["affiliate_program_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_links_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_programs: {
+        Row: {
+          created_at: string
+          id: string
+          link_template: string
+          name: string
+          network: string
+          notes: string | null
+          tracking_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link_template: string
+          name: string
+          network: string
+          notes?: string | null
+          tracking_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link_template?: string
+          name?: string
+          network?: string
+          notes?: string | null
+          tracking_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      link_clicks: {
+        Row: {
+          affiliate_link_id: string
+          country: string | null
+          created_at: string
+          id: number
+          referer: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          affiliate_link_id: string
+          country?: string | null
+          created_at?: string
+          id?: number
+          referer?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          affiliate_link_id?: string
+          country?: string | null
+          created_at?: string
+          id?: number
+          referer?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "link_clicks_affiliate_link_id_fkey"
+            columns: ["affiliate_link_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          created_at: string
+          currency: string | null
+          description: string | null
+          id: string
+          images: Json
+          price: string | null
+          raw: Json | null
+          source_domain: string | null
+          source_url: string
+          suggested_network: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          images?: Json
+          price?: string | null
+          raw?: Json | null
+          source_domain?: string | null
+          source_url: string
+          suggested_network?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          images?: Json
+          price?: string | null
+          raw?: Json | null
+          source_domain?: string | null
+          source_url?: string
+          suggested_network?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          default_voice_id: string
+          display_name: string | null
+          id: string
+          influencer_style: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          default_voice_id?: string
+          display_name?: string | null
+          id: string
+          influencer_style?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          default_voice_id?: string
+          display_name?: string | null
+          id?: string
+          influencer_style?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      videos: {
+        Row: {
+          affiliate_program_id: string | null
+          caption: string | null
+          created_at: string
+          duration_seconds: number | null
+          error: string | null
+          hashtags: string[]
+          hook: string | null
+          id: string
+          product_id: string
+          script: string | null
+          status: Database["public"]["Enums"]["video_status"]
+          thumbnail_url: string | null
+          updated_at: string
+          user_id: string
+          video_url: string | null
+          voice_id: string | null
+        }
+        Insert: {
+          affiliate_program_id?: string | null
+          caption?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          error?: string | null
+          hashtags?: string[]
+          hook?: string | null
+          id?: string
+          product_id: string
+          script?: string | null
+          status?: Database["public"]["Enums"]["video_status"]
+          thumbnail_url?: string | null
+          updated_at?: string
+          user_id: string
+          video_url?: string | null
+          voice_id?: string | null
+        }
+        Update: {
+          affiliate_program_id?: string | null
+          caption?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          error?: string | null
+          hashtags?: string[]
+          hook?: string | null
+          id?: string
+          product_id?: string
+          script?: string | null
+          status?: Database["public"]["Enums"]["video_status"]
+          thumbnail_url?: string | null
+          updated_at?: string
+          user_id?: string
+          video_url?: string | null
+          voice_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_affiliate_program_id_fkey"
+            columns: ["affiliate_program_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "videos_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      video_status:
+        | "pending"
+        | "scripting"
+        | "generating_voice"
+        | "generating_images"
+        | "rendering"
+        | "ready"
+        | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +450,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      video_status: [
+        "pending",
+        "scripting",
+        "generating_voice",
+        "generating_images",
+        "rendering",
+        "ready",
+        "failed",
+      ],
+    },
   },
 } as const
