@@ -133,6 +133,63 @@ export type Database = {
           },
         ]
       }
+      personas: {
+        Row: {
+          age_range: string
+          bio: string
+          catchphrases: Json
+          created_at: string
+          elevenlabs_voice_id: string
+          gender: string
+          heygen_avatar_id: string
+          id: string
+          is_default: boolean
+          name: string
+          niche: string
+          speech_quirks: string
+          updated_at: string
+          user_id: string
+          vibe: string
+          voice_tone: string
+        }
+        Insert: {
+          age_range?: string
+          bio?: string
+          catchphrases?: Json
+          created_at?: string
+          elevenlabs_voice_id?: string
+          gender?: string
+          heygen_avatar_id?: string
+          id?: string
+          is_default?: boolean
+          name: string
+          niche?: string
+          speech_quirks?: string
+          updated_at?: string
+          user_id: string
+          vibe?: string
+          voice_tone?: string
+        }
+        Update: {
+          age_range?: string
+          bio?: string
+          catchphrases?: Json
+          created_at?: string
+          elevenlabs_voice_id?: string
+          gender?: string
+          heygen_avatar_id?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          niche?: string
+          speech_quirks?: string
+          updated_at?: string
+          user_id?: string
+          vibe?: string
+          voice_tone?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           created_at: string
@@ -208,6 +265,63 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          created_at: string
+          current_period_end: string | null
+          status: Database["public"]["Enums"]["sub_status"]
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          tier: Database["public"]["Enums"]["sub_tier"]
+          trial_videos_used: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_period_end?: string | null
+          status?: Database["public"]["Enums"]["sub_status"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: Database["public"]["Enums"]["sub_tier"]
+          trial_videos_used?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_period_end?: string | null
+          status?: Database["public"]["Enums"]["sub_status"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: Database["public"]["Enums"]["sub_tier"]
+          trial_videos_used?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      usage_counters: {
+        Row: {
+          period_start: string
+          updated_at: string
+          user_id: string
+          videos_used: number
+        }
+        Insert: {
+          period_start: string
+          updated_at?: string
+          user_id: string
+          videos_used?: number
+        }
+        Update: {
+          period_start?: string
+          updated_at?: string
+          user_id?: string
+          videos_used?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -242,6 +356,7 @@ export type Database = {
           heygen_video_id: string | null
           hook: string | null
           id: string
+          persona_id: string | null
           product_id: string
           provider: string | null
           script: string | null
@@ -264,6 +379,7 @@ export type Database = {
           heygen_video_id?: string | null
           hook?: string | null
           id?: string
+          persona_id?: string | null
           product_id: string
           provider?: string | null
           script?: string | null
@@ -286,6 +402,7 @@ export type Database = {
           heygen_video_id?: string | null
           hook?: string | null
           id?: string
+          persona_id?: string | null
           product_id?: string
           provider?: string | null
           script?: string | null
@@ -305,6 +422,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "videos_persona_id_fkey"
+            columns: ["persona_id"]
+            isOneToOne: false
+            referencedRelation: "personas"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "videos_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
@@ -318,6 +442,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_video_quota: { Args: { _user_id: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -328,6 +453,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      sub_status: "active" | "past_due" | "canceled" | "trialing"
+      sub_tier: "trial" | "starter" | "pro"
       video_status:
         | "pending"
         | "scripting"
@@ -465,6 +592,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      sub_status: ["active", "past_due", "canceled", "trialing"],
+      sub_tier: ["trial", "starter", "pro"],
       video_status: [
         "pending",
         "scripting",
