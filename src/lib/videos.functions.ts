@@ -4,8 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const GenerateInput = z.object({
   product_id: z.string().uuid(),
-  avatar_id: z.string().optional(),
-  voice_id: z.string().optional(),
+  persona_id: z.string().uuid().optional(),
 });
 
 const AI_GATEWAY = "https://ai.gateway.lovable.dev/v1";
@@ -39,19 +38,20 @@ async function aiJson(body: Record<string, unknown>): Promise<string> {
   return json.choices?.[0]?.message?.content ?? "";
 }
 
-async function generateScript(product: {
-  title: string;
-  description: string | null;
-  price: string | null;
-  currency: string | null;
-}): Promise<ScriptOut> {
+async function generateScript(
+  product: { title: string; description: string | null; price: string | null; currency: string | null },
+  persona: { name: string; bio: string | null; vibe: string | null; voice_tone: string | null; catchphrases: unknown; speech_quirks: string | null } | null,
+): Promise<ScriptOut> {
+  const personaBlock = persona
+    ? `You ARE ${persona.name}. Vibe: ${persona.vibe ?? "energetic"}. Voice tone: ${persona.voice_tone ?? "warm"}. Bio: ${persona.bio ?? ""}. Speech quirks: ${persona.speech_quirks ?? ""}. Naturally weave in 1 of these catchphrases if it fits: ${Array.isArray(persona.catchphrases) ? (persona.catchphrases as string[]).join(" | ") : ""}.`
+    : "You are a 25-year-old female lifestyle influencer.";
   const content = await aiJson({
     model: "google/gemini-3-flash-preview",
     messages: [
       {
         role: "system",
         content:
-          "You write punchy 15-second TikTok scripts spoken by a 25-year-old female lifestyle influencer doing affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear 'link in bio' CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). hashtags: 8 lowercase, no #.",
+          `${personaBlock} You write punchy 15-second TikTok scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). hashtags: 8 lowercase, no #.`,
       },
       {
         role: "user",
@@ -144,10 +144,34 @@ export const generateVideo = createServerFn({ method: "POST" })
     const { data: product, error: pe } = await supabase.from("products").select("*").eq("id", data.product_id).maybeSingle();
     if (pe || !product) throw new Error("Product not found");
 
-    const avatarId = data.avatar_id || DEFAULT_AVATAR;
-    const voiceId = data.voice_id || DEFAULT_VOICE;
+    // Resolve persona: explicit pick, else user's default, else null (fallback baked into script prompt).
+    let persona: { id: string; name: string; bio: string | null; vibe: string | null; voice_tone: string | null; catchphrases: unknown; speech_quirks: string | null; heygen_avatar_id: string | null; elevenlabs_voice_id: string | null } | null = null;
+    if (data.persona_id) {
+      const { data: p } = await supabase.from("personas").select("id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id").eq("id", data.persona_id).maybeSingle();
+      persona = p;
+    }
+    if (!persona) {
+      const { data: p } = await supabase.from("personas").select("id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id").eq("is_default", true).maybeSingle();
+      persona = p;
+    }
 
-    // Balance check before doing any work
+    const avatarId = persona?.heygen_avatar_id || DEFAULT_AVATAR;
+    const voiceId = persona?.elevenlabs_voice_id || DEFAULT_VOICE;
+
+    // Quota check & decrement BEFORE doing any expensive work.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: quotaResult, error: qErr } = await supabaseAdmin.rpc("consume_video_quota", { _user_id: userId });
+    if (qErr) throw new Error(qErr.message);
+    const qr = quotaResult as { ok: boolean; reason?: string; tier?: string; used?: number; limit?: number } | null;
+    if (!qr?.ok) {
+      const reason = qr?.reason ?? "unknown";
+      if (reason === "trial_exhausted") throw new Error("Your 3 free trial videos are used. Upgrade to keep generating.");
+      if (reason === "quota_exceeded") throw new Error(`Monthly limit reached (${qr?.used}/${qr?.limit}). Upgrade or wait until next billing period.`);
+      if (reason === "subscription_inactive") throw new Error("Your subscription is inactive. Update billing to continue.");
+      throw new Error(`Cannot generate: ${reason}`);
+    }
+
+    // HeyGen balance check
     const quota = await heygen<HeyGenQuota>("/v2/user/remaining_quota");
     const remaining = quota.data?.remaining_quota ?? 0;
     if (remaining < MIN_CREDITS) {
@@ -156,6 +180,7 @@ export const generateVideo = createServerFn({ method: "POST" })
         .insert({
           user_id: userId,
           product_id: product.id,
+          persona_id: persona?.id ?? null,
           voice_id: voiceId,
           heygen_avatar_id: avatarId,
           status: "low_credit",
@@ -172,6 +197,7 @@ export const generateVideo = createServerFn({ method: "POST" })
       .insert({
         user_id: userId,
         product_id: product.id,
+        persona_id: persona?.id ?? null,
         voice_id: voiceId,
         heygen_avatar_id: avatarId,
         provider: "heygen",
@@ -187,7 +213,7 @@ export const generateVideo = createServerFn({ method: "POST" })
       (supabase.from("videos") as any).update(fields).eq("id", video.id);
 
     try {
-      const script = await generateScript(product);
+      const script = await generateScript(product, persona);
       const spoken = `${script.hook} ${script.script}`.trim();
       await patch({
         status: "rendering",
