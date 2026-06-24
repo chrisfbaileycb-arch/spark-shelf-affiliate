@@ -134,7 +134,21 @@ export const Route = createFileRoute("/api/public/webhooks/stripe")({
                 current_period_end: periodEnd,
                 updated_at: new Date().toISOString(),
               }).eq("user_id", userId);
+
+              // First-time paid signup → credit the referrer (if any) with 2 months free.
+              if (
+                event.type === "customer.subscription.created" &&
+                (status === "active" || status === "trialing")
+              ) {
+                await applyReferralCreditIfEligible({
+                  stripe,
+                  supabaseAdmin,
+                  referredUserId: userId,
+                  tier,
+                });
+              }
             }
+
           } else if (event.type === "customer.subscription.deleted") {
             const sub = event.data.object as Stripe.Subscription;
             const userId = sub.metadata?.userId;
