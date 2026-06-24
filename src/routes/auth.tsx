@@ -24,8 +24,22 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [refCode, setRefCode] = useState<string | null>(null);
 
   useEffect(() => {
+    // Capture ?ref=CODE on first paint, persist for the signup
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    const fromUrl = url.searchParams.get("ref");
+    if (fromUrl) {
+      const clean = fromUrl.trim().toUpperCase().slice(0, 16);
+      localStorage.setItem("rr_ref_code", clean);
+      setRefCode(clean);
+      setMode("signup");
+    } else {
+      const stored = localStorage.getItem("rr_ref_code");
+      if (stored) setRefCode(stored);
+    }
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate({ to: "/dashboard" });
     });
@@ -39,9 +53,13 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+          options: {
+            emailRedirectTo: `${window.location.origin}/dashboard`,
+            data: refCode ? { referred_by_code: refCode } : undefined,
+          },
         });
         if (error) throw error;
+        if (refCode) localStorage.removeItem("rr_ref_code");
         toast.success("Account created. You're signed in.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -54,6 +72,7 @@ function AuthPage() {
       setBusy(false);
     }
   }
+
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
@@ -73,6 +92,12 @@ function AuthPage() {
         <Card className="w-full max-w-sm p-8 shadow-pop">
           <h1 className="font-display text-3xl">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{mode === "signin" ? "Sign in to keep ripping." : "Free. No card required."}</p>
+          {refCode && mode === "signup" && (
+            <p className="mt-2 rounded-md bg-primary/10 px-3 py-2 text-xs text-primary">
+              🎁 You were referred — code <strong>{refCode}</strong> applied. Your friend gets 2 months free once you upgrade.
+            </p>
+          )}
+
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>

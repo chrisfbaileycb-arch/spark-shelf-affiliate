@@ -8,6 +8,75 @@ function tierFromLookupKey(key: string | null | undefined): "starter" | "pro" | 
   return null;
 }
 
+// 2 months of credit at the subscriber's monthly rate (cents).
+function referralCreditCents(tier: "starter" | "pro"): number {
+  // Mirror payments--batch_create_product amounts: starter $29.95, pro $59.95.
+  const monthly = tier === "pro" ? 5995 : 2995;
+  return monthly * 2;
+}
+
+async function applyReferralCreditIfEligible(args: {
+  stripe: ReturnType<typeof import("@/lib/stripe.server").createStripeClient>;
+  supabaseAdmin: import("@supabase/supabase-js").SupabaseClient;
+  referredUserId: string;
+  tier: "starter" | "pro";
+}) {
+  const { stripe, supabaseAdmin, referredUserId, tier } = args;
+  // Who referred this user?
+  const { data: profile } = await supabaseAdmin
+    .from("profiles")
+    .select("referred_by")
+    .eq("id", referredUserId)
+    .maybeSingle();
+  const referrerId = profile?.referred_by;
+  if (!referrerId) return;
+
+  // Already credited for this referred user?
+  const { data: existing } = await supabaseAdmin
+    .from("referral_conversions")
+    .select("id")
+    .eq("referred_user_id", referredUserId)
+    .maybeSingle();
+  if (existing) return;
+
+  // Find referrer's Stripe customer (must already exist for the balance credit to attach).
+  const { data: refSub } = await supabaseAdmin
+    .from("subscriptions")
+    .select("stripe_customer_id")
+    .eq("user_id", referrerId)
+    .maybeSingle();
+
+  const amount = referralCreditCents(tier);
+  let creditedAt: string | null = null;
+  let balanceTxnId: string | null = null;
+  let appliedCents = 0;
+
+  if (refSub?.stripe_customer_id) {
+    try {
+      const txn = await stripe.customers.createBalanceTransaction(refSub.stripe_customer_id, {
+        amount: -amount, // negative = credit applied to next invoice
+        currency: "usd",
+        description: `ReelRipper referral credit — 2 months ${tier}`,
+      });
+      balanceTxnId = txn.id;
+      appliedCents = amount;
+      creditedAt = new Date().toISOString();
+    } catch (err) {
+      console.error("[referral] balance txn failed", err);
+    }
+  }
+
+  await supabaseAdmin.from("referral_conversions").insert({
+    referrer_id: referrerId,
+    referred_user_id: referredUserId,
+    credited_cents: appliedCents,
+    currency: "usd",
+    stripe_balance_txn_id: balanceTxnId,
+    credited_at: creditedAt,
+  });
+}
+
+
 export const Route = createFileRoute("/api/public/webhooks/stripe")({
   server: {
     handlers: {
@@ -65,7 +134,21 @@ export const Route = createFileRoute("/api/public/webhooks/stripe")({
                 current_period_end: periodEnd,
                 updated_at: new Date().toISOString(),
               }).eq("user_id", userId);
+
+              // First-time paid signup → credit the referrer (if any) with 2 months free.
+              if (
+                event.type === "customer.subscription.created" &&
+                (status === "active" || status === "trialing")
+              ) {
+                await applyReferralCreditIfEligible({
+                  stripe,
+                  supabaseAdmin,
+                  referredUserId: userId,
+                  tier,
+                });
+              }
             }
+
           } else if (event.type === "customer.subscription.deleted") {
             const sub = event.data.object as Stripe.Subscription;
             const userId = sub.metadata?.userId;
