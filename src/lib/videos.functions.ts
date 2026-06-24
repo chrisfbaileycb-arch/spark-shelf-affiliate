@@ -51,7 +51,7 @@ async function generateScript(
       {
         role: "system",
         content:
-          `${personaBlock} You write punchy 15-second TikTok scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). hashtags: 8 lowercase, no #.`,
+          `${personaBlock} You write punchy 15-second TikTok scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). caption: 1-2 sentences then a blank line then exactly the 2 hashtags prefixed with #. hashtags: EXACTLY 2 entries — the two highest-intent, most discoverable tags for this product/niche (one broad niche tag + one specific product/trend tag). lowercase, no #, no spaces.`,
       },
       {
         role: "user",
@@ -62,11 +62,23 @@ async function generateScript(
   });
   try {
     const parsed = JSON.parse(content);
+    const rawTags = Array.isArray(parsed.hashtags) ? parsed.hashtags.map(String) : [];
+    const hashtags = rawTags
+      .map((t: string) => t.replace(/^#/, "").replace(/\s+/g, "").toLowerCase())
+      .filter(Boolean)
+      .slice(0, 2);
+    let caption = String(parsed.caption ?? "");
+    // Ensure caption ends with the 2 hashtags
+    if (hashtags.length) {
+      const tagLine = hashtags.map((h: string) => `#${h}`).join(" ");
+      const stripped = caption.replace(/(\s*#[\w]+)+\s*$/g, "").trimEnd();
+      caption = `${stripped}\n\n${tagLine}`;
+    }
     return {
       hook: String(parsed.hook ?? ""),
       script: String(parsed.script ?? ""),
-      caption: String(parsed.caption ?? ""),
-      hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags.map(String).slice(0, 12) : [],
+      caption,
+      hashtags,
     };
   } catch {
     throw new Error("AI returned malformed script JSON");
