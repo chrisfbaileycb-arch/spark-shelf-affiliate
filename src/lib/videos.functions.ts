@@ -64,7 +64,7 @@ async function generateScript(
     const parsed = JSON.parse(content);
     const rawTags = Array.isArray(parsed.hashtags) ? parsed.hashtags.map(String) : [];
     const hashtags = rawTags
-      .map((t) => t.replace(/^#/, "").replace(/\s+/g, "").toLowerCase())
+      .map((t: string) => t.replace(/^#/, "").replace(/\s+/g, "").toLowerCase())
       .filter(Boolean)
       .slice(0, 2);
     let caption = String(parsed.caption ?? "");
