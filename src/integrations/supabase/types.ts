@@ -245,6 +245,8 @@ export type Database = {
           display_name: string | null
           id: string
           influencer_style: string
+          referral_code: string | null
+          referred_by: string | null
           updated_at: string
         }
         Insert: {
@@ -253,6 +255,8 @@ export type Database = {
           display_name?: string | null
           id: string
           influencer_style?: string
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
         }
         Update: {
@@ -261,7 +265,50 @@ export type Database = {
           display_name?: string | null
           id?: string
           influencer_style?: string
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_referred_by_fkey"
+            columns: ["referred_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referral_conversions: {
+        Row: {
+          created_at: string
+          credited_at: string | null
+          credited_cents: number
+          currency: string
+          id: string
+          referred_user_id: string
+          referrer_id: string
+          stripe_balance_txn_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          credited_at?: string | null
+          credited_cents?: number
+          currency?: string
+          id?: string
+          referred_user_id: string
+          referrer_id: string
+          stripe_balance_txn_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          credited_at?: string | null
+          credited_cents?: number
+          currency?: string
+          id?: string
+          referred_user_id?: string
+          referrer_id?: string
+          stripe_balance_txn_id?: string | null
         }
         Relationships: []
       }
@@ -443,6 +490,7 @@ export type Database = {
     }
     Functions: {
       consume_video_quota: { Args: { _user_id: string }; Returns: Json }
+      gen_referral_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
