@@ -70,7 +70,7 @@ async function generateScript(
     let caption = String(parsed.caption ?? "");
     // Ensure caption ends with the 2 hashtags
     if (hashtags.length) {
-      const tagLine = hashtags.map((h) => `#${h}`).join(" ");
+      const tagLine = hashtags.map((h: string) => `#${h}`).join(" ");
       const stripped = caption.replace(/(\s*#[\w]+)+\s*$/g, "").trimEnd();
       caption = `${stripped}\n\n${tagLine}`;
     }
