@@ -1,73 +1,35 @@
-# Build Plan: Persona Generator + SaaS Monetization
+# Referral program — "2 months free per signup"
 
-## 1. Persona generator (core feature)
+Every user gets a personal referral link. When somebody signs up through that link AND becomes a paying subscriber (Starter or Pro), the referrer gets **2 months of their current plan credited free** — applied automatically to their next Stripe invoice.
 
-**New table `personas`**: `id, user_id, name, bio, gender, age_range, vibe, niche, voice_tone, heygen_avatar_id, elevenlabs_voice_id, is_default, created_at`. RLS scoped to `auth.uid()`.
+## How it works (user POV)
 
-**New page `/personas`**: list cards + "Create persona" button. Each card shows name, avatar thumb, vibe/niche badges, "Set default" / "Edit" / "Delete".
+1. On `/billing`, every user sees a **"Refer & earn"** card with their unique link (`yoursite.com/auth?ref=ABC123`) and a counter: *"3 friends converted · $179.70 credited"*.
+2. They share it. New signup hits `/auth?ref=ABC123` → code is stored, attached to their profile on signup.
+3. When that referred user upgrades to Starter or Pro for the first time, the referrer's Stripe customer balance is credited with `2 × monthly_price` (negative balance = credit Stripe auto-applies to the next invoice).
+4. One conversion per referred user, ever. No double-dipping if they cancel and resubscribe.
 
-**Persona creator wizard** (single page, 6 fields):
-- Gender (F / M / Non-binary)
-- Age range (18-24, 25-32, 33-42, 43-55)
-- Vibe (Energetic Gen-Z, Polished Pro, Chill Friend, Bold Authority, Warm Mentor)
-- Niche (Beauty, Fitness, Tech, Finance, Lifestyle, Food, Fashion, Parenting)
-- Voice tone (Bubbly, Calm, Confident, Sultry, Authoritative)
-- Name (autosuggest from AI or type)
+## Schema changes (one migration)
 
-**Server fn `generatePersona`**: Lovable AI (`google/gemini-3-flash-preview`) takes traits → returns `{name, bio, catchphrases[], speech_quirks}`. Code maps traits → best HeyGen avatar + ElevenLabs voice from a curated lookup table. Saves to `personas`.
+- `profiles.referral_code text unique` — short 8-char code, auto-generated on signup
+- `profiles.referred_by uuid references profiles(id)` — who referred this user
+- New table `referral_conversions (id, referrer_id, referred_user_id unique, credited_cents, credited_at)` — ledger preventing double-credit + powering the dashboard counter
+- `handle_new_user()` trigger updated to:
+  - Generate a unique referral_code
+  - Read `raw_user_meta_data->>'referred_by_code'` and link `referred_by` if it matches a real code
 
-**On signup**: auto-create one starter persona ("Maya — 25F lifestyle, energetic") so users can generate immediately without setup. They can edit/delete/replace later.
+## Code changes
 
-## 2. Video generator integration
+- **`/auth` route** — read `?ref=` from URL, stash in localStorage, pass as `options.data.referred_by_code` on signUp.
+- **`src/lib/referrals.functions.ts`** — `getMyReferralStats()` returns code, conversion count, total credited.
+- **`/billing` page** — new "Refer & earn" card with copyable link + stats.
+- **`/api/public/webhooks/stripe.ts`** — on `customer.subscription.created` with status `active`/`trialing` and tier `starter`/`pro`: check if user has `referred_by` AND no existing conversion row → credit referrer via `stripe.customers.createBalanceTransaction({ amount: -2 × monthly_price, currency: 'usd' })` → insert conversion ledger row.
 
-- `/videos/new` flow: persona selector dropdown ("Generate as → [Maya ✨ | Jake 💪 | + New persona]"), defaults to user's `is_default` persona.
-- Script generator system prompt injects `persona.bio + catchphrases + speech_quirks` → scripts sound like *that* persona.
-- `videos.persona_id` FK added; `voice_id` and `heygen_avatar_id` pulled from the selected persona at render time.
+## Edge cases handled
 
-## 3. SaaS billing (Stripe via Lovable payments)
+- Self-referral blocked (referred_by ≠ self).
+- Only first-ever paid conversion per referred user counts.
+- Credit is in the referrer's currency at their current plan rate, so Pro referrers earn more ($119.90) than Starter ($59.90) — natural upgrade incentive.
+- If referrer has no Stripe customer yet (still on trial), credit waits: webhook stores conversion row with `credited_cents=0, credited_at=null`, and a follow-up applies when they first subscribe. *(Phase 2 — for v1 we just credit if they already have a customer, otherwise skip and log.)*
 
-**Two tiers:**
-- **Starter — $29.95/mo** → 15 videos/mo
-- **Pro — $59.95/mo** → 30 videos/mo
-
-**Free trial:** 3 videos on signup, no card required. Paywall on the 4th.
-
-**New tables:**
-- `subscriptions` (user_id, stripe_customer_id, stripe_subscription_id, tier, status, current_period_end)
-- `usage_counters` (user_id, period_start, videos_used) — reset monthly
-
-**Quota enforcement:** `generateVideo` server fn checks `videos_used < tier_limit` before HeyGen call; increments on success. If exceeded → throw "Upgrade required" with link to `/billing`.
-
-**New pages:**
-- `/pricing` (public) — 2 tier cards + "Start free" CTA
-- `/billing` (authenticated) — current plan, usage bar (X / 15 this month), "Upgrade" / "Manage" buttons → Stripe Checkout & Customer Portal
-
-**Stripe webhooks** at `/api/public/webhooks/stripe`: handle `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted` → sync `subscriptions` table.
-
-## 4. Commercial API key swap (later, by you)
-
-Today the app uses your personal HeyGen + ElevenLabs keys. When you're ready to sell:
-1. Create separate commercial HeyGen + ElevenLabs accounts
-2. Update `HEYGEN_API_KEY` and `ELEVENLABS_API_KEY` secrets in project settings
-3. No code change needed — same env var names
-
-## Build order (this turn)
-
-1. `personas` table + RLS + auto-create-on-signup trigger update
-2. Persona generator server fn (Lovable AI)
-3. `/personas` page (list + create + edit + delete)
-4. Wire persona selector into video generator + script prompt
-5. `subscriptions` + `usage_counters` tables
-6. Enable Lovable Stripe payments → create 2 products
-7. `/pricing` + `/billing` pages
-8. Quota check in `generateVideo` + 3-video trial logic
-9. Stripe webhook for subscription sync
-
-## Technical notes
-
-- HeyGen avatar lookup: hardcoded map of ~12 avatars (3 per gender × 4 age ranges) selected from HeyGen's public avatar library
-- ElevenLabs voice lookup: hardcoded map of 5 tones × 2 genders = 10 voices
-- Lovable Stripe payments handles Stripe account claiming later — no setup needed now
-- Free trial = `subscriptions.tier = 'trial'`, limit 3 lifetime videos (not monthly)
-
-Approve and I'll build it all in one pass.
+Ready to build?
