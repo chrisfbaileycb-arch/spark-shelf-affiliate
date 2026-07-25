@@ -15,6 +15,13 @@ import { toast } from "sonner";
 import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/products/$id")({
+  head: () => ({
+    meta: [
+      { title: "Product — ReelRipper" },
+      { name: "description", content: "Product details and video generation options for this ReelRipper item." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: ProductDetail,
 });
 

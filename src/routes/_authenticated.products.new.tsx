@@ -10,6 +10,13 @@ import { Loader2, Sparkles, Link2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/products/new")({
+  head: () => ({
+    meta: [
+      { title: "Rip a new product — ReelRipper" },
+      { name: "description", content: "Paste a product URL to ingest images, price, and details for your next AI affiliate video." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: NewProduct,
 });
 

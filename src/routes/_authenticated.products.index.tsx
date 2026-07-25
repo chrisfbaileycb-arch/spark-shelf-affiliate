@@ -7,6 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/products/")({
+  head: () => ({
+    meta: [
+      { title: "Products — ReelRipper" },
+      { name: "description", content: "Every product you've ripped into ReelRipper, ready to turn into a 15-second affiliate video." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: ProductsList,
 });
 
@@ -35,7 +42,7 @@ function ProductsList() {
               <Link to="/products/$id" params={{ id: p.id }} key={p.id}>
                 <Card className="flex gap-4 p-4 transition hover:-translate-y-0.5 hover:shadow-pop">
                   <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-muted">
-                    {imgs[0] ? <img src={imgs[0]} alt="" className="h-full w-full object-cover" /> : null}
+                    {imgs[0] ? <img src={imgs[0]} alt={`${p.title} product image`} className="h-full w-full object-cover" /> : null}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 font-medium leading-snug">{p.title}</p>

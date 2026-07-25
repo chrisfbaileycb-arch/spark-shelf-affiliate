@@ -6,6 +6,13 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/_authenticated/videos/")({
+  head: () => ({
+    meta: [
+      { title: "Videos — ReelRipper" },
+      { name: "description", content: "Your library of AI-generated affiliate videos — download, share, or repost to TikTok and Reels." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: VideosList,
 });
 
@@ -30,7 +37,7 @@ function VideosList() {
               <Link to="/videos/$id" params={{ id: v.id }} key={v.id} className="group">
                 <Card className="overflow-hidden p-0 transition group-hover:-translate-y-1 group-hover:shadow-pop">
                   <div className="aspect-[9/16] bg-secondary">
-                    {v.thumbnail_url ? <img src={v.thumbnail_url} alt="" className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-secondary-foreground/40">…</div>}
+                    {v.thumbnail_url ? <img src={v.thumbnail_url} alt={v.hook ? `Video thumbnail: ${v.hook}` : "Video thumbnail"} className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-secondary-foreground/40">…</div>}
                   </div>
                   <div className="space-y-1 p-3">
                     <p className="line-clamp-2 text-sm font-medium leading-snug">{v.hook || prod?.title || "Untitled"}</p>

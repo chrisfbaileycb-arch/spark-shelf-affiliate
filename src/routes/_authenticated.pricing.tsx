@@ -12,6 +12,13 @@ import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 export const Route = createFileRoute("/_authenticated/pricing")({
+  head: () => ({
+    meta: [
+      { title: "Pricing — ReelRipper" },
+      { name: "description", content: "Starter and Pro plans for ReelRipper — 15 or 30 AI affiliate videos every month, cancel anytime." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: Pricing,
 });
 

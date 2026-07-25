@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Plus, ArrowRight, Video as VideoIcon, Package } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  head: () => ({
+    meta: [
+      { title: "Dashboard — ReelRipper" },
+      { name: "description", content: "Your ReelRipper command center: recent videos, quota usage, and one-tap product ripping." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: Dashboard,
 });
 
@@ -57,7 +64,7 @@ function Dashboard() {
               <Link to="/videos/$id" params={{ id: v.id }} key={v.id} className="group">
                 <Card className="overflow-hidden p-0 transition group-hover:-translate-y-1 group-hover:shadow-pop">
                   <div className="aspect-[9/16] bg-secondary">
-                    {v.thumbnail_url ? <img src={v.thumbnail_url} alt="" className="h-full w-full object-cover" /> : null}
+                    {v.thumbnail_url ? <img src={v.thumbnail_url} alt={v.hook ? `Video thumbnail: ${v.hook}` : "Recent video thumbnail"} className="h-full w-full object-cover" /> : null}
                   </div>
                   <div className="p-3">
                     <p className="line-clamp-2 text-sm font-medium">{v.hook || "Untitled hook"}</p>
