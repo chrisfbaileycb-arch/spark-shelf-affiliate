@@ -9,24 +9,18 @@ export const Route = createFileRoute("/r/$code")({
         const key = process.env.SUPABASE_PUBLISHABLE_KEY;
         if (!url || !key) return new Response("Misconfigured", { status: 500 });
         const sb = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
-        const { data: link } = await sb
-          .from("affiliate_links")
-          .select("id, destination_url")
-          .eq("short_code", params.code)
-          .maybeSingle();
-        if (!link) return new Response("Link not found", { status: 404 });
 
-        // Fire-and-forget click insert (don't block redirect)
-        void sb.from("link_clicks").insert({
-          affiliate_link_id: link.id,
-          referer: request.headers.get("referer"),
-          user_agent: request.headers.get("user-agent"),
+        const { data: dest, error } = await sb.rpc("resolve_affiliate_redirect", {
+          _code: params.code,
+          _referer: request.headers.get("referer"),
+          _user_agent: request.headers.get("user-agent"),
         });
 
+        if (error || !dest) return new Response("Link not found", { status: 404 });
 
         return new Response(null, {
           status: 302,
-          headers: { Location: link.destination_url, "Cache-Control": "no-store" },
+          headers: { Location: dest as string, "Cache-Control": "no-store" },
         });
       },
     },

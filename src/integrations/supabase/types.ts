@@ -498,6 +498,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      resolve_affiliate_redirect: {
+        Args: { _code: string; _referer?: string; _user_agent?: string }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "admin" | "user"
