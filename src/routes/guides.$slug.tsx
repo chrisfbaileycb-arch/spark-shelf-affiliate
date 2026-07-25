@@ -11,9 +11,9 @@ type Guide = {
 
 const GUIDES: Record<string, Guide> = {
   "tiktok-shop-affiliate": {
-    title: "The AI-first TikTok Shop affiliate playbook",
-    description: "How to pick winning TikTok Shop products, generate 15-second AI creator videos, and post 5-10 affiliate reels a day — without ever going on camera.",
-    ogTitle: "AI-first TikTok Shop affiliate playbook",
+    title: "The AI-First Short-Form Affiliate Playbook (TikTok, Shorts, Reels)",
+    description: "How to pick winning products, generate 15-second AI creator videos, and post 5-10 affiliate reels a day across TikTok, YouTube Shorts, and Facebook Reels — without ever going on camera.",
+    ogTitle: "AI-First Short-Form Affiliate Playbook (TikTok, Shorts, Reels)",
     body: (
       <>
         <p>TikTok Shop pays creators a percentage of every sale they drive. The math is simple: more shots on goal, more commissions. The bottleneck is video production. This guide walks through how AI-generated influencer videos change that.</p>

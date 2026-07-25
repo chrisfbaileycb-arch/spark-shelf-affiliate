@@ -65,7 +65,7 @@ function Landing() {
               Turn any product link into a <span className="text-primary">scroll-stopping</span> 15-second video.
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg text-muted-foreground">
-              Paste a product URL. ReelRipper writes the hook, generates an AI female-influencer voiceover, mocks up the visuals, and hands you a TikTok-ready MP4 plus a tracked affiliate link. You post. You earn.
+              Paste a product URL. ReelRipper writes the hook, generates an AI female-influencer voiceover, mocks up the visuals, and hands you short-form videos optimized for TikTok, YouTube Shorts, and Facebook Reels.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/auth" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-95">
@@ -110,7 +110,7 @@ function Landing() {
           <h2 className="font-display text-4xl">Four steps. Done in under a minute.</h2>
           <div className="mt-12 grid gap-6 md:grid-cols-4">
             {[
-              { i: Link2, t: "Paste the URL", d: "Amazon, TikTok Shop, AliExpress — any product page." },
+              { i: Link2, t: "Paste the URL", d: "Amazon, AliExpress, Shopify, or any product URL." },
               { i: Sparkles, t: "AI ingests it", d: "Title, photos, price, hooks, hashtags — all scraped & scripted." },
               { i: Video, t: "Generate the video", d: "AI female voiceover + influencer visuals + animated captions." },
               { i: BadgeDollarSign, t: "Drop your link", d: "We build your tracked affiliate URL. You collect commissions." },

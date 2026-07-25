@@ -19,7 +19,7 @@ export const Route = createFileRoute("/guides")({
 });
 
 const GUIDES = [
-  { slug: "tiktok-shop-affiliate", title: "The AI-first TikTok Shop affiliate playbook", description: "How to pick winning products, generate 15-second creator videos, and post 5-10 affiliate reels a day without ever going on camera." },
+  { slug: "tiktok-shop-affiliate", title: "The AI-First Short-Form Affiliate Playbook (TikTok, Shorts, Reels)", description: "How to pick winning products, generate 15-second creator videos, and post 5-10 affiliate reels a day across TikTok, YouTube Shorts, and Facebook Reels — without ever going on camera." },
 ];
 
 function Guides() {
