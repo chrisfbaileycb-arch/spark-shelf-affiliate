@@ -8,6 +8,41 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Paste any product URL and get a 15-second AI influencer video with voiceover, captions, and a tracked affiliate link — ready to post on TikTok, Reels, and Shorts." },
       { property: "og:title", content: "ReelRipper — AI affiliate videos in one click" },
       { property: "og:description", content: "Paste a product URL, get an AI influencer video. Hands-off affiliate marketing." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "ReelRipper",
+              description: "AI-generated 15-second influencer videos for affiliate marketing.",
+              url: "/",
+            },
+            {
+              "@type": "WebSite",
+              name: "ReelRipper",
+              url: "/",
+              description: "Turn any product URL into a scroll-stopping 15-second AI affiliate video.",
+            },
+            {
+              "@type": "SoftwareApplication",
+              name: "ReelRipper",
+              applicationCategory: "MultimediaApplication",
+              operatingSystem: "Web",
+              offers: [
+                { "@type": "Offer", name: "Starter", price: "29.95", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Pro", price: "59.95", priceCurrency: "USD" },
+              ],
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: Landing,

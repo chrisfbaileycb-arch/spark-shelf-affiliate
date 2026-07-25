@@ -13,6 +13,7 @@ export const Route = createFileRoute("/auth")({
     meta: [
       { title: "Sign in — ReelRipper" },
       { name: "description", content: "Sign in to ReelRipper to generate AI affiliate videos." },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
   component: AuthPage,
