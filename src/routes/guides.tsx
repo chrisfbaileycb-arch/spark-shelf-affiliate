@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { PublicFooter } from "@/components/PublicFooter";
 import { PublicNav } from "@/components/PublicNav";
-import { ArrowRight } from "lucide-react";
+import { GUIDES } from "@/lib/guides.data";
 
 export const Route = createFileRoute("/guides")({
   head: () => ({
@@ -18,26 +18,22 @@ export const Route = createFileRoute("/guides")({
   component: Guides,
 });
 
-const GUIDES = [
-  { slug: "tiktok-shop-affiliate", title: "The AI-First Short-Form Affiliate Playbook (TikTok, Shorts, Reels)", description: "How to pick winning products, generate 15-second creator videos, and post 5-10 affiliate reels a day across TikTok, YouTube Shorts, and Facebook Reels — without ever going on camera." },
-];
-
 function Guides() {
+  const guide = GUIDES["tiktok-shop-affiliate"];
+
   return (
     <div className="min-h-screen bg-background">
       <PublicNav />
       <section className="mx-auto max-w-4xl px-6 py-16">
         <h1 className="font-display text-5xl">Guides</h1>
         <p className="mt-3 text-muted-foreground">Playbooks for creators building AI-first affiliate operations.</p>
-        <div className="mt-10 space-y-4">
-          {GUIDES.map((g) => (
-            <Link key={g.slug} to="/guides/$slug" params={{ slug: g.slug }} className="group block rounded-2xl border border-border bg-card p-6 shadow-pop transition hover:border-primary">
-              <p className="font-display text-2xl">{g.title}</p>
-              <p className="mt-2 text-muted-foreground">{g.description}</p>
-              <p className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">Read guide <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" /></p>
-            </Link>
-          ))}
-        </div>
+
+        <article className="prose prose-neutral mt-12">
+          <p className="text-sm uppercase tracking-wider text-muted-foreground">Guide</p>
+          <h2 className="font-display text-3xl md:text-4xl">{guide.title}</h2>
+          <p className="lead text-lg text-muted-foreground">{guide.description}</p>
+          {guide.body}
+        </article>
       </section>
       <PublicFooter />
     </div>
