@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { installClientErrorLogger } from "@/lib/error-logger";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -90,6 +91,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => { installClientErrorLogger(); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
