@@ -47,7 +47,7 @@ function Privacy() {
         <p>You can access, export, or delete your data at any time by emailing support@reelripper.app. If you are in the EEA, UK, or California, you have additional rights under GDPR/CCPA including the right to object, restrict processing, and lodge a complaint with your local regulator.</p>
 
         <h2>6. Cookies</h2>
-        <p>We use first-party cookies for authentication and to remember your referral code. We do not use third-party advertising or cross-site tracking cookies.</p>
+        <p>See our <a href="/cookies">Cookie Policy</a> for the exact list of cookies and browser storage we use. We do not use third-party advertising or cross-site tracking cookies.</p>
 
         <h2>7. Security</h2>
         <p>Data is encrypted in transit (HTTPS) and at rest by our infrastructure providers. Row-level security policies enforce that users can only access their own records. No system is perfectly secure — report suspected vulnerabilities to security@reelripper.app.</p>
