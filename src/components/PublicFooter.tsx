@@ -11,7 +11,9 @@ export function PublicFooter() {
           <Link to="/guides" className="hover:text-foreground">Guides</Link>
           <Link to="/terms" className="hover:text-foreground">Terms</Link>
           <Link to="/privacy" className="hover:text-foreground">Privacy</Link>
+          <Link to="/cookies" className="hover:text-foreground">Cookies</Link>
           <Link to="/refunds" className="hover:text-foreground">Refunds</Link>
+          <Link to="/affiliate-disclosure" className="hover:text-foreground">Affiliate disclosure</Link>
         </nav>
       </div>
     </footer>
