@@ -15,7 +15,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
-import { Route as AuthenticatedPricingRouteImport } from './routes/_authenticated.pricing'
+import { Route as AuthenticatedUpgradeRouteImport } from './routes/_authenticated.upgrade'
 import { Route as AuthenticatedPersonasRouteImport } from './routes/_authenticated.personas'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated.billing'
@@ -56,9 +56,9 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedPricingRoute = AuthenticatedPricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
+const AuthenticatedUpgradeRoute = AuthenticatedUpgradeRouteImport.update({
+  id: '/upgrade',
+  path: '/upgrade',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedPersonasRoute = AuthenticatedPersonasRouteImport.update({
@@ -124,7 +124,7 @@ export interface FileRoutesByFullPath {
   '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/personas': typeof AuthenticatedPersonasRoute
-  '/pricing': typeof AuthenticatedPricingRoute
+  '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/r/$code': typeof RCodeRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
@@ -142,7 +142,7 @@ export interface FileRoutesByTo {
   '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/personas': typeof AuthenticatedPersonasRoute
-  '/pricing': typeof AuthenticatedPricingRoute
+  '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/r/$code': typeof RCodeRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
@@ -162,7 +162,7 @@ export interface FileRoutesById {
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/personas': typeof AuthenticatedPersonasRoute
-  '/_authenticated/pricing': typeof AuthenticatedPricingRoute
+  '/_authenticated/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
@@ -182,7 +182,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/dashboard'
     | '/personas'
-    | '/pricing'
+    | '/upgrade'
     | '/checkout/return'
     | '/r/$code'
     | '/products/$id'
@@ -200,7 +200,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/dashboard'
     | '/personas'
-    | '/pricing'
+    | '/upgrade'
     | '/checkout/return'
     | '/r/$code'
     | '/products/$id'
@@ -219,7 +219,7 @@ export interface FileRouteTypes {
     | '/_authenticated/billing'
     | '/_authenticated/dashboard'
     | '/_authenticated/personas'
-    | '/_authenticated/pricing'
+    | '/_authenticated/upgrade'
     | '/checkout/return'
     | '/r/$code'
     | '/_authenticated/products/$id'
@@ -284,11 +284,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/pricing': {
-      id: '/_authenticated/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof AuthenticatedPricingRouteImport
+    '/_authenticated/upgrade': {
+      id: '/_authenticated/upgrade'
+      path: '/upgrade'
+      fullPath: '/upgrade'
+      preLoaderRoute: typeof AuthenticatedUpgradeRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/personas': {
@@ -369,7 +369,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedPersonasRoute: typeof AuthenticatedPersonasRoute
-  AuthenticatedPricingRoute: typeof AuthenticatedPricingRoute
+  AuthenticatedUpgradeRoute: typeof AuthenticatedUpgradeRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
   AuthenticatedVideosIdRoute: typeof AuthenticatedVideosIdRoute
@@ -382,7 +382,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedPersonasRoute: AuthenticatedPersonasRoute,
-  AuthenticatedPricingRoute: AuthenticatedPricingRoute,
+  AuthenticatedUpgradeRoute: AuthenticatedUpgradeRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
   AuthenticatedVideosIdRoute: AuthenticatedVideosIdRoute,
