@@ -81,10 +81,10 @@ function Billing() {
 
         <div className="flex gap-2 pt-2">
           {tier === "trial" ? (
-            <Link to="/pricing"><Button>Upgrade to a paid plan</Button></Link>
+            <Link to="/upgrade"><Button>Upgrade to a paid plan</Button></Link>
           ) : (
             <>
-              <Link to="/pricing"><Button variant="secondary">Change plan</Button></Link>
+              <Link to="/upgrade"><Button variant="secondary">Change plan</Button></Link>
               <Button onClick={() => portal.mutate()} disabled={portal.isPending}>
                 {portal.isPending ? "…" : "Manage payment & invoices"}
               </Button>
