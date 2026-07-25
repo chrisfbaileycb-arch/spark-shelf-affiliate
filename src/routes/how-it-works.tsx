@@ -19,7 +19,7 @@ export const Route = createFileRoute("/how-it-works")({
 });
 
 const STEPS = [
-  { i: Link2, t: "Paste the product URL", d: "Works with Amazon, TikTok Shop, AliExpress, Shopify stores, and most product pages. We use Firecrawl to pull the title, price, imagery, and description." },
+  { i: Link2, t: "Paste the product URL", d: "Works with Amazon, AliExpress, Shopify, or any product URL. We use Firecrawl to pull the title, price, imagery, and description." },
   { i: Sparkles, t: "AI ingests and scripts it", d: "Gemini extracts a clean product record and drafts a 15-second hook-driven script tuned to your saved persona's tone, catchphrases, and niche." },
   { i: Video, t: "Generate the video with HeyGen", d: "A HeyGen avatar performs the script in an authentic influencer style. ElevenLabs voice on the backup pipeline. Captions burned in. Vertical 720x1280 MP4." },
   { i: BadgeDollarSign, t: "Drop your tracked affiliate link", d: "We build a short /r/CODE link tied to your affiliate program ID. Click-tracked, deep-linked, and ready for your TikTok, Reels, or Shorts caption." },
