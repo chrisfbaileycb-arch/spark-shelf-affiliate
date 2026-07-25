@@ -22,7 +22,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/guides/tiktok-shop-affiliate", changefreq: "monthly", priority: "0.7" },
           { path: "/terms", changefreq: "yearly", priority: "0.3" },
           { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+          { path: "/cookies", changefreq: "yearly", priority: "0.3" },
           { path: "/refunds", changefreq: "yearly", priority: "0.3" },
+          { path: "/affiliate-disclosure", changefreq: "yearly", priority: "0.3" },
         ];
 
         const urls = entries.map((e) =>

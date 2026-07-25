@@ -35,8 +35,8 @@ function Terms() {
         <h2>3. Acceptable use</h2>
         <p>You agree not to use the Service to (a) impersonate a real person without their consent, (b) generate videos for products you are not authorized to promote, (c) infringe intellectual property or publicity rights, (d) violate the terms of any third-party platform (including TikTok, Instagram, YouTube, or any affiliate network), (e) generate deceptive, defamatory, sexual, or illegal content, or (f) misrepresent AI-generated content in a jurisdiction that requires disclosure.</p>
 
-        <h2>4. Affiliate programs</h2>
-        <p>ReelRipper does not enroll you in any affiliate program. You are responsible for signing up with each network (Amazon Associates, TikTok Shop, etc.), complying with their rules, disclosing paid partnerships where required, and paying any applicable taxes on commissions.</p>
+        <h2>4. Affiliate programs and disclosure</h2>
+        <p>ReelRipper does not enroll you in any affiliate program. You are responsible for signing up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying with their rules, paying any applicable taxes on commissions, and making all disclosures required by law and by the platforms where you publish. See our <a href="/affiliate-disclosure">Affiliate Disclosure</a> for details, including FTC and platform-specific requirements around AI-generated creators.</p>
 
         <h2>5. Subscriptions and billing</h2>
         <p>Paid plans are billed monthly in advance through Stripe. Unused video credits do not roll over. You may cancel at any time from your billing page; cancellation takes effect at the end of the current billing period. See our <a href="/refunds">Refund Policy</a> for refund terms.</p>
