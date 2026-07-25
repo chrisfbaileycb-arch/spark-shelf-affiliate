@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Link2, Video, BadgeDollarSign } from "lucide-react";
+import { PublicNav } from "@/components/PublicNav";
+import { PublicFooter } from "@/components/PublicFooter";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,18 +53,7 @@ export const Route = createFileRoute("/")({
 function Landing() {
   return (
     <div className="min-h-screen bg-background bg-grain">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-pop">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <span className="font-display text-xl font-semibold tracking-tight">ReelRipper</span>
-        </div>
-        <nav className="flex items-center gap-2">
-          <Link to="/auth" className="rounded-full px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground">Sign in</Link>
-          <Link to="/auth" className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90">Get started</Link>
-        </nav>
-      </header>
+      <PublicNav />
 
       <section className="mx-auto max-w-6xl px-6 pt-12 pb-20">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
@@ -145,9 +136,7 @@ function Landing() {
         </Link>
       </section>
 
-      <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        ReelRipper — built with Lovable Cloud.
-      </footer>
+      <PublicFooter />
     </div>
   );
 }
