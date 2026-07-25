@@ -13,6 +13,13 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/personas")({
+  head: () => ({
+    meta: [
+      { title: "Personas — ReelRipper" },
+      { name: "description", content: "Design AI influencer personas with a unique voice, vibe, and catchphrases for every video you rip." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: PersonasPage,
 });
 

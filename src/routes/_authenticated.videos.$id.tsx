@@ -8,6 +8,13 @@ import { ArrowLeft, Download, Copy, Trash2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/videos/$id")({
+  head: () => ({
+    meta: [
+      { title: "Video — ReelRipper" },
+      { name: "description", content: "Preview, download, and share your AI-generated affiliate video." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: VideoDetail,
 });
 

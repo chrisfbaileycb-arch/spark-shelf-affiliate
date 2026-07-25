@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/checkout/return")({
+  head: () => ({
+    meta: [
+      { title: "Finishing checkout — ReelRipper" },
+      { name: "description", content: "Confirming your ReelRipper subscription." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   validateSearch: (s: Record<string, unknown>): { session_id?: string } => ({
     session_id: typeof s.session_id === "string" ? s.session_id : undefined,
   }),

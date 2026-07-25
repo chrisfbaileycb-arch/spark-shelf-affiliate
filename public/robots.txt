@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /videos
+Disallow: /products
+Disallow: /personas
+Disallow: /billing
+Disallow: /pricing
+Disallow: /affiliate-programs
+Disallow: /checkout
+Disallow: /auth
+Disallow: /r/

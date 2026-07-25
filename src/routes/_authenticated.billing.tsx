@@ -10,6 +10,13 @@ import { Copy, Gift } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/billing")({
+  head: () => ({
+    meta: [
+      { title: "Billing & referrals — ReelRipper" },
+      { name: "description", content: "Manage your ReelRipper subscription, video quota, and refer-and-earn credits." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   component: Billing,
 });
 

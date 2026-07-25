@@ -1,0 +1,9 @@
+# ReelRipper
+
+> ReelRipper turns any product URL into a 15-second AI influencer-style video with voiceover, captions, and a tracked affiliate link — built for hands-off affiliate marketing on TikTok, Reels, and Shorts.
+
+ReelRipper is a SaaS app for affiliate marketers and creators. Users paste a product page, choose an AI persona, and receive a ready-to-post vertical MP4 plus a tracked short link. Plans: Starter ($29.95, 15 videos/mo) and Pro ($59.95, 30 videos/mo), with a 3-video free trial. Referrers earn 2 months of credit for every friend who upgrades.
+
+## Pages
+
+- [Home](/): What ReelRipper does and how it works.
