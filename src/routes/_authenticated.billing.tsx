@@ -13,7 +13,10 @@ export const Route = createFileRoute("/_authenticated/billing")({
   head: () => ({
     meta: [
       { title: "Billing & referrals — ReelRipper" },
-      { name: "description", content: "Manage your ReelRipper subscription, video quota, and refer-and-earn credits." },
+      {
+        name: "description",
+        content: "Manage your ReelRipper subscription, video quota, and refer-and-earn credits.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -29,11 +32,15 @@ function Billing() {
 
   const portal = useMutation({
     mutationFn: async () => {
-      const res = await ps({ data: { returnUrl: window.location.href, environment: getStripeEnvironment() } });
+      const res = await ps({
+        data: { returnUrl: window.location.href, environment: getStripeEnvironment() },
+      });
       if ("error" in res) throw new Error(res.error);
       return res;
     },
-    onSuccess: (r) => { window.location.href = r.url; },
+    onSuccess: (r) => {
+      window.location.href = r.url;
+    },
     onError: (e) => toast.error(e instanceof Error ? e.message : "Failed"),
   });
 
@@ -45,15 +52,16 @@ function Billing() {
   const pct = Math.min(100, Math.round((used / cap) * 100));
 
   const refCode = refQ.data?.referralCode;
-  const refLink = refCode && typeof window !== "undefined"
-    ? `${window.location.origin}/auth?ref=${refCode}`
-    : "";
+  const refLink =
+    refCode && typeof window !== "undefined" ? `${window.location.origin}/auth?ref=${refCode}` : "";
   const credited = ((refQ.data?.totalCreditedCents ?? 0) / 100).toFixed(2);
 
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Account
+        </p>
         <h1 className="mt-1 font-display text-4xl">Billing</h1>
       </header>
 
@@ -72,7 +80,9 @@ function Billing() {
         <div>
           <div className="mb-1 flex justify-between text-sm">
             <span>{tier === "trial" ? "Trial videos" : "Videos this month"}</span>
-            <span className="text-muted-foreground">{used} / {cap}</span>
+            <span className="text-muted-foreground">
+              {used} / {cap}
+            </span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-secondary">
             <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
@@ -81,10 +91,14 @@ function Billing() {
 
         <div className="flex gap-2 pt-2">
           {tier === "trial" ? (
-            <Link to="/upgrade"><Button>Upgrade to a paid plan</Button></Link>
+            <Link to="/upgrade">
+              <Button>Upgrade to a paid plan</Button>
+            </Link>
           ) : (
             <>
-              <Link to="/upgrade"><Button variant="secondary">Change plan</Button></Link>
+              <Link to="/upgrade">
+                <Button variant="secondary">Change plan</Button>
+              </Link>
               <Button onClick={() => portal.mutate()} disabled={portal.isPending}>
                 {portal.isPending ? "…" : "Manage payment & invoices"}
               </Button>
@@ -95,12 +109,19 @@ function Billing() {
 
       <Card className="space-y-4 bg-gradient-brand p-6 text-primary-foreground shadow-pop">
         <div className="flex items-start gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-background/20"><Gift className="h-5 w-5" /></div>
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-background/20">
+            <Gift className="h-5 w-5" />
+          </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider opacity-80">Refer & earn</p>
-            <p className="mt-1 font-display text-2xl leading-tight">Get 2 months free for every signup who upgrades</p>
+            <p className="text-xs font-semibold uppercase tracking-wider opacity-80">
+              Refer & earn
+            </p>
+            <p className="mt-1 font-display text-2xl leading-tight">
+              Get 2 months free for every signup who upgrades
+            </p>
             <p className="mt-1 text-sm opacity-80">
-              Credit lands automatically on your next invoice when someone you referred subscribes to Starter or Pro.
+              Credit lands automatically on your next invoice when someone you referred subscribes
+              to Starter or Pro.
             </p>
           </div>
         </div>
@@ -111,7 +132,10 @@ function Billing() {
             <Button
               size="sm"
               variant="secondary"
-              onClick={() => { navigator.clipboard.writeText(refLink); toast.success("Link copied"); }}
+              onClick={() => {
+                navigator.clipboard.writeText(refLink);
+                toast.success("Link copied");
+              }}
             >
               <Copy className="mr-1.5 h-3.5 w-3.5" /> Copy
             </Button>

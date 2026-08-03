@@ -7,11 +7,18 @@ export default defineTool({
   title: "List affiliate programs",
   description: "List the signed-in user's saved affiliate programs and tracking IDs.",
   inputSchema: {
-    limit: z.coerce.number().int().min(1).max(100).optional().describe("Maximum programs to return (default 50)."),
+    limit: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .optional()
+      .describe("Maximum programs to return (default 50)."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ limit }, ctx) => {
-    if (!ctx.isAuthenticated()) throw new ToolError("You must be signed in to list affiliate programs.");
+    if (!ctx.isAuthenticated())
+      throw new ToolError("You must be signed in to list affiliate programs.");
     const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase
       .from("affiliate_programs")

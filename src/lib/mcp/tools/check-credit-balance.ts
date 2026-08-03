@@ -12,13 +12,20 @@ interface HeyGenQuota {
 
 async function heygen<T = unknown>(path: string, init?: RequestInit): Promise<T> {
   const key = (() => {
-    const runtime = globalThis as typeof globalThis & { process?: { env?: Record<string, string | undefined> } };
+    const runtime = globalThis as typeof globalThis & {
+      process?: { env?: Record<string, string | undefined> };
+    };
     return runtime.process?.env?.HEYGEN_API_KEY;
   })();
   if (!key) throw new ToolError("HEYGEN_API_KEY not configured.");
   const res = await fetch(`${HEYGEN_API}${path}`, {
     ...init,
-    headers: { "X-Api-Key": key, "Content-Type": "application/json", Accept: "application/json", ...(init?.headers ?? {}) },
+    headers: {
+      "X-Api-Key": key,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(init?.headers ?? {}),
+    },
   });
   const text = await res.text();
   if (!res.ok) throw new ToolError(`HeyGen ${path} ${res.status}: ${text.slice(0, 300)}`);
@@ -59,8 +66,14 @@ export default defineTool({
     return {
       content: [
         { type: "text", text: `HeyGen credits: ${remaining} (low if below ${MIN_CREDITS})` },
-        { type: "text", text: `Subscription: ${sub?.status ?? "unknown"} (${sub?.tier ?? "trial"})` },
-        { type: "text", text: `Monthly videos: ${usage?.videos_used ?? 0} / ${usage?.videos_limit ?? 0}` },
+        {
+          type: "text",
+          text: `Subscription: ${sub?.status ?? "unknown"} (${sub?.tier ?? "trial"})`,
+        },
+        {
+          type: "text",
+          text: `Monthly videos: ${usage?.videos_used ?? 0} / ${usage?.videos_limit ?? 0}`,
+        },
       ],
     };
   },

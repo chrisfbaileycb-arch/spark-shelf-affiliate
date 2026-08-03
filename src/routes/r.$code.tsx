@@ -8,7 +8,9 @@ export const Route = createFileRoute("/r/$code")({
         const url = process.env.SUPABASE_URL;
         const key = process.env.SUPABASE_PUBLISHABLE_KEY;
         if (!url || !key) return new Response("Misconfigured", { status: 500 });
-        const sb = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+        const sb = createClient(url, key, {
+          auth: { persistSession: false, autoRefreshToken: false },
+        });
 
         const { data: dest, error } = await sb.rpc("resolve_affiliate_redirect", {
           _code: params.code,

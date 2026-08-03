@@ -11,7 +11,10 @@ export const Route = createFileRoute("/_authenticated/videos/$id")({
   head: () => ({
     meta: [
       { title: "Video — ReelRipper" },
-      { name: "description", content: "Preview, download, and share your AI-generated affiliate video." },
+      {
+        name: "description",
+        content: "Preview, download, and share your AI-generated affiliate video.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -34,7 +37,10 @@ function VideoDetail() {
 
   const delMut = useMutation({
     mutationFn: () => dv({ data: { id } }),
-    onSuccess: () => { toast.success("Deleted"); navigate({ to: "/videos" }); },
+    onSuccess: () => {
+      toast.success("Deleted");
+      navigate({ to: "/videos" });
+    },
   });
 
   if (q.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
@@ -45,26 +51,50 @@ function VideoDetail() {
 
   return (
     <div className="space-y-8">
-      <Link to="/videos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/videos"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="h-4 w-4" /> Videos
       </Link>
 
       <header className="flex items-end justify-between gap-4">
         <div>
-          <Badge variant={isReady ? "default" : video.status === "failed" || video.status === "low_credit" ? "destructive" : "secondary"}>{video.status}</Badge>
-          <h1 className="mt-3 font-display text-4xl leading-tight">{video.hook || "Generating…"}</h1>
+          <Badge
+            variant={
+              isReady
+                ? "default"
+                : video.status === "failed" || video.status === "low_credit"
+                  ? "destructive"
+                  : "secondary"
+            }
+          >
+            {video.status}
+          </Badge>
+          <h1 className="mt-3 font-display text-4xl leading-tight">
+            {video.hook || "Generating…"}
+          </h1>
           {video.generation_cost != null && (
-            <p className="mt-1 text-xs text-muted-foreground">Cost: {video.generation_cost} HeyGen credits</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Cost: {video.generation_cost} HeyGen credits
+            </p>
           )}
         </div>
-        <button onClick={() => { if (confirm("Delete?")) delMut.mutate(); }} className="text-sm text-destructive hover:underline inline-flex items-center gap-1">
+        <button
+          onClick={() => {
+            if (confirm("Delete?")) delMut.mutate();
+          }}
+          className="text-sm text-destructive hover:underline inline-flex items-center gap-1"
+        >
           <Trash2 className="h-3.5 w-3.5" /> Delete
         </button>
       </header>
 
       {video.status === "low_credit" && (
         <Card className="border-destructive bg-destructive/5 p-6">
-          <p className="flex items-center gap-2 font-medium text-destructive"><AlertTriangle className="h-4 w-4" /> Low HeyGen credit</p>
+          <p className="flex items-center gap-2 font-medium text-destructive">
+            <AlertTriangle className="h-4 w-4" /> Low HeyGen credit
+          </p>
           <p className="mt-1 text-sm text-muted-foreground">{video.error}</p>
         </Card>
       )}
@@ -81,7 +111,10 @@ function VideoDetail() {
           <div className="mx-auto h-2 w-32 overflow-hidden rounded-full bg-muted">
             <div className="h-full w-1/3 animate-pulse bg-primary" />
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">Status: <strong>{video.status}</strong>… polling every 3s. HeyGen renders typically finish in 30–90s.</p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Status: <strong>{video.status}</strong>… polling every 3s. HeyGen renders typically
+            finish in 30–90s.
+          </p>
         </Card>
       )}
 
@@ -98,7 +131,9 @@ function VideoDetail() {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="grid h-full place-items-center text-secondary-foreground/50">No video</div>
+                <div className="grid h-full place-items-center text-secondary-foreground/50">
+                  No video
+                </div>
               )}
             </div>
             {video.video_url && (
@@ -116,28 +151,64 @@ function VideoDetail() {
 
           <div className="space-y-4">
             <Card className="p-6">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Hook</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Hook
+              </p>
               <p className="mt-2 font-display text-xl">{video.hook}</p>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Script</p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Script
+              </p>
               <p className="mt-2 leading-relaxed">{video.script}</p>
             </Card>
 
             <Card className="p-6">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Caption</p>
-                <button onClick={() => { navigator.clipboard.writeText(video.caption || ""); toast.success("Copied"); }} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"><Copy className="h-3 w-3" /> Copy</button>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Caption
+                </p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(video.caption || "");
+                    toast.success("Copied");
+                  }}
+                  className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
+                >
+                  <Copy className="h-3 w-3" /> Copy
+                </button>
               </div>
               <p className="mt-2 whitespace-pre-wrap text-sm">{video.caption}</p>
               <div className="mt-4 flex flex-wrap gap-1">
-                {hashtags.map((h) => <Badge key={h} variant="secondary">#{h}</Badge>)}
+                {hashtags.map((h) => (
+                  <Badge key={h} variant="secondary">
+                    #{h}
+                  </Badge>
+                ))}
               </div>
-              <button onClick={() => { navigator.clipboard.writeText(hashtags.map((h) => "#" + h).join(" ")); toast.success("Hashtags copied"); }} className="mt-3 text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"><Copy className="h-3 w-3" /> Copy all hashtags</button>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(hashtags.map((h) => "#" + h).join(" "));
+                  toast.success("Hashtags copied");
+                }}
+                className="mt-3 text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
+              >
+                <Copy className="h-3 w-3" /> Copy all hashtags
+              </button>
             </Card>
 
             <Card className="p-6 text-sm text-muted-foreground">
-              <p>Provider: <strong className="text-foreground">{video.provider || "heygen"}</strong></p>
-              {video.heygen_video_id && <p className="mt-1">HeyGen ID: <code className="text-xs">{video.heygen_video_id}</code></p>}
-              {video.heygen_avatar_id && <p className="mt-1">Avatar: <code className="text-xs">{video.heygen_avatar_id}</code></p>}
+              <p>
+                Provider: <strong className="text-foreground">{video.provider || "heygen"}</strong>
+              </p>
+              {video.heygen_video_id && (
+                <p className="mt-1">
+                  HeyGen ID: <code className="text-xs">{video.heygen_video_id}</code>
+                </p>
+              )}
+              {video.heygen_avatar_id && (
+                <p className="mt-1">
+                  Avatar: <code className="text-xs">{video.heygen_avatar_id}</code>
+                </p>
+              )}
               <p className="mt-1">Duration: {video.duration_seconds ?? 15}s</p>
             </Card>
           </div>

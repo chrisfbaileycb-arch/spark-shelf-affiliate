@@ -13,7 +13,11 @@ export default defineTool({
   handler: async ({ product_id }, ctx) => {
     if (!ctx.isAuthenticated()) throw new ToolError("You must be signed in to fetch a product.");
     const supabase = supabaseForUser(ctx);
-    const { data, error } = await supabase.from("products").select("*").eq("id", product_id).maybeSingle();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", product_id)
+      .maybeSingle();
     if (error) throw new ToolError(`Database error: ${error.message}`);
     if (!data) throw new ToolError("Product not found.");
     return {

@@ -7,7 +7,13 @@ export default defineTool({
   title: "List products",
   description: "List the signed-in user's ingested affiliate products, newest first.",
   inputSchema: {
-    limit: z.coerce.number().int().min(1).max(100).optional().describe("Maximum products to return (default 50)."),
+    limit: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .optional()
+      .describe("Maximum products to return (default 50)."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ limit }, ctx) => {

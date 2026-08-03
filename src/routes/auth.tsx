@@ -74,16 +74,19 @@ function AuthPage() {
     }
   }
 
-
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="hidden bg-secondary text-secondary-foreground lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link to="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-brand"><Sparkles className="h-5 w-5" /></div>
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-brand">
+            <Sparkles className="h-5 w-5" />
+          </div>
           <span className="font-display text-xl">ReelRipper</span>
         </Link>
         <div>
-          <p className="font-display text-5xl leading-tight">"I made 12 affiliate videos in an afternoon. Two of them hit six figures of views."</p>
+          <p className="font-display text-5xl leading-tight">
+            "I made 12 affiliate videos in an afternoon. Two of them hit six figures of views."
+          </p>
           <p className="mt-4 text-sm opacity-70">— Future you, probably</p>
         </div>
         <div className="text-xs opacity-60">© ReelRipper</div>
@@ -91,22 +94,42 @@ function AuthPage() {
 
       <div className="flex items-center justify-center px-6 py-12">
         <Card className="w-full max-w-sm p-8 shadow-pop">
-          <h1 className="font-display text-3xl">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{mode === "signin" ? "Sign in to keep ripping." : "Free. No card required."}</p>
+          <h1 className="font-display text-3xl">
+            {mode === "signin" ? "Welcome back" : "Create your account"}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {mode === "signin" ? "Sign in to keep ripping." : "Free. No card required."}
+          </p>
           {refCode && mode === "signup" && (
             <p className="mt-2 rounded-md bg-primary/10 px-3 py-2 text-xs text-primary">
-              🎁 You were referred — code <strong>{refCode}</strong> applied. Your friend gets 2 months free once you upgrade.
+              🎁 You were referred — code <strong>{refCode}</strong> applied. Your friend gets 2
+              months free once you upgrade.
             </p>
           )}
 
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1" />
+              <Input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1"
+              />
             </div>
             <div>
               <Label htmlFor="pw">Password</Label>
-              <Input id="pw" type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1" />
+              <Input
+                id="pw"
+                type="password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1"
+              />
             </div>
             <Button type="submit" disabled={busy} className="w-full">
               {busy ? "..." : mode === "signin" ? "Sign in" : "Create account"}

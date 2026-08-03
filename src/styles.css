@@ -129,27 +129,45 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html, body {
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
 }
 
 @layer utilities {
   .bg-gradient-brand {
-    background-image: linear-gradient(135deg, oklch(0.7 0.2 32) 0%, oklch(0.62 0.22 18) 60%, oklch(0.42 0.12 340) 100%);
+    background-image: linear-gradient(
+      135deg,
+      oklch(0.7 0.2 32) 0%,
+      oklch(0.62 0.22 18) 60%,
+      oklch(0.42 0.12 340) 100%
+    );
   }
   .bg-grain {
     background-image:
       radial-gradient(circle at 20% 30%, oklch(0.7 0.2 32 / 0.08), transparent 50%),
       radial-gradient(circle at 80% 70%, oklch(0.86 0.17 120 / 0.08), transparent 50%);
   }
-  .text-balance { text-wrap: balance; }
+  .text-balance {
+    text-wrap: balance;
+  }
   .shadow-pop {
-    box-shadow: 0 1px 0 oklch(0.18 0.035 320 / 0.06), 0 12px 32px -8px oklch(0.18 0.035 320 / 0.18);
+    box-shadow:
+      0 1px 0 oklch(0.18 0.035 320 / 0.06),
+      0 12px 32px -8px oklch(0.18 0.035 320 / 0.18);
   }
 }

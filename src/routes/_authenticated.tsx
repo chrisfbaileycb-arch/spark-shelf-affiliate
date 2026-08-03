@@ -2,7 +2,16 @@ import { createFileRoute, Outlet, Link, useNavigate, useRouterState } from "@tan
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Package, Video, BadgeDollarSign, LogOut, Sparkles, Users, CreditCard } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  Video,
+  BadgeDollarSign,
+  LogOut,
+  Sparkles,
+  Users,
+  CreditCard,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -34,7 +43,11 @@ function AuthLayout() {
   }, [session, navigate]);
 
   if (session === undefined) {
-    return <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">Loading…</div>;
+    return (
+      <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">
+        Loading…
+      </div>
+    );
   }
   if (session === null) return null;
 
@@ -57,7 +70,9 @@ function AuthLayout() {
                   to={item.to}
                   className={cn(
                     "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
-                    active ? "bg-primary text-primary-foreground shadow-pop" : "text-foreground/70 hover:bg-card hover:text-foreground",
+                    active
+                      ? "bg-primary text-primary-foreground shadow-pop"
+                      : "text-foreground/70 hover:bg-card hover:text-foreground",
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -69,7 +84,10 @@ function AuthLayout() {
           <div className="mt-auto space-y-2 border-t border-border pt-4 text-xs">
             <p className="truncate px-2 text-muted-foreground">{session.user.email}</p>
             <button
-              onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); }}
+              onClick={async () => {
+                await supabase.auth.signOut();
+                navigate({ to: "/auth" });
+              }}
               className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-foreground/70 hover:bg-card hover:text-foreground"
             >
               <LogOut className="h-4 w-4" /> Sign out

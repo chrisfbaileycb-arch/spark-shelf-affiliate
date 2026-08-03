@@ -7,7 +7,13 @@ export default defineTool({
   title: "List videos",
   description: "List the signed-in user's generated AI videos, newest first.",
   inputSchema: {
-    limit: z.coerce.number().int().min(1).max(100).optional().describe("Maximum videos to return (default 50)."),
+    limit: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .optional()
+      .describe("Maximum videos to return (default 50)."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ limit }, ctx) => {
@@ -15,7 +21,9 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase
       .from("videos")
-      .select("id, hook, status, thumbnail_url, created_at, product_id, generation_cost, products(title, source_domain)")
+      .select(
+        "id, hook, status, thumbnail_url, created_at, product_id, generation_cost, products(title, source_domain)",
+      )
       .order("created_at", { ascending: false })
       .limit(limit ?? 50);
     if (error) throw new ToolError(`Database error: ${error.message}`);

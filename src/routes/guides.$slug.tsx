@@ -22,16 +22,18 @@ export const Route = createFileRoute("/guides/$slug")({
         { property: "og:url", content: `/guides/${slug}` },
       ],
       links: [{ rel: "canonical", href: `/guides/${slug}` }],
-      scripts: [{
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline: guide.title,
-          description: guide.description,
-          author: { "@type": "Organization", name: "ReelRipper" },
-        }),
-      }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: guide.title,
+            description: guide.description,
+            author: { "@type": "Organization", name: "ReelRipper" },
+          }),
+        },
+      ],
     };
   },
   notFoundComponent: () => (
@@ -39,7 +41,9 @@ export const Route = createFileRoute("/guides/$slug")({
       <PublicNav />
       <div className="mx-auto max-w-3xl px-6 py-24 text-center">
         <h1 className="font-display text-4xl">Guide not found</h1>
-        <Link to="/guides" className="mt-6 inline-block text-primary">← Back to guides</Link>
+        <Link to="/guides" className="mt-6 inline-block text-primary">
+          ← Back to guides
+        </Link>
       </div>
       <PublicFooter />
     </div>
@@ -49,7 +53,12 @@ export const Route = createFileRoute("/guides/$slug")({
       <PublicNav />
       <div className="mx-auto max-w-3xl px-6 py-24 text-center">
         <h1 className="font-display text-4xl">Something went wrong</h1>
-        <button onClick={reset} className="mt-6 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">Try again</button>
+        <button
+          onClick={reset}
+          className="mt-6 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+        >
+          Try again
+        </button>
       </div>
       <PublicFooter />
     </div>

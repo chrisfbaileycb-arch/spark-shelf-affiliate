@@ -16,9 +16,24 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
   loader: async ({ location }) => {
     const authorizationId = new URLSearchParams(location.search).get("authorization_id")!;
     const oauth = supabase.auth.oauth as unknown as {
-      getAuthorizationDetails: (id: string) => Promise<{ data?: { redirect_url?: string; redirect_to?: string; client?: { name?: string } }; error?: { message: string } }>;
-      approveAuthorization: (id: string) => Promise<{ data?: { redirect_url?: string; redirect_to?: string }; error?: { message: string } }>;
-      denyAuthorization: (id: string) => Promise<{ data?: { redirect_url?: string; redirect_to?: string }; error?: { message: string } }>;
+      getAuthorizationDetails: (
+        id: string,
+      ) => Promise<{
+        data?: { redirect_url?: string; redirect_to?: string; client?: { name?: string } };
+        error?: { message: string };
+      }>;
+      approveAuthorization: (
+        id: string,
+      ) => Promise<{
+        data?: { redirect_url?: string; redirect_to?: string };
+        error?: { message: string };
+      }>;
+      denyAuthorization: (
+        id: string,
+      ) => Promise<{
+        data?: { redirect_url?: string; redirect_to?: string };
+        error?: { message: string };
+      }>;
     };
     const { data, error } = await oauth.getAuthorizationDetails(authorizationId);
     if (error) throw new Error(error.message);
@@ -46,8 +61,18 @@ function Consent() {
   async function decide(approve: boolean) {
     setBusy(true);
     const oauth = supabase.auth.oauth as unknown as {
-      approveAuthorization: (id: string) => Promise<{ data?: { redirect_url?: string; redirect_to?: string }; error?: { message: string } }>;
-      denyAuthorization: (id: string) => Promise<{ data?: { redirect_url?: string; redirect_to?: string }; error?: { message: string } }>;
+      approveAuthorization: (
+        id: string,
+      ) => Promise<{
+        data?: { redirect_url?: string; redirect_to?: string };
+        error?: { message: string };
+      }>;
+      denyAuthorization: (
+        id: string,
+      ) => Promise<{
+        data?: { redirect_url?: string; redirect_to?: string };
+        error?: { message: string };
+      }>;
     };
     const { data, error } = approve
       ? await oauth.approveAuthorization(authorization_id)
@@ -69,12 +94,18 @@ function Consent() {
   return (
     <main className="flex min-h-screen items-center justify-center p-6">
       <div className="max-w-md rounded-2xl border border-border bg-card p-8 shadow-sm">
-        <h1 className="text-xl font-semibold tracking-tight">Connect {details?.client?.name ?? "an app"} to your account</h1>
+        <h1 className="text-xl font-semibold tracking-tight">
+          Connect {details?.client?.name ?? "an app"} to your account
+        </h1>
         <p className="mt-2 text-muted-foreground">
-          This lets {details?.client?.name ?? "the client"} use ReelRipper as you — read your products, videos, personas, and create affiliate links on your behalf.
+          This lets {details?.client?.name ?? "the client"} use ReelRipper as you — read your
+          products, videos, personas, and create affiliate links on your behalf.
         </p>
         {error && (
-          <p role="alert" className="mt-4 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+          <p
+            role="alert"
+            className="mt-4 rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
+          >
             {error}
           </p>
         )}

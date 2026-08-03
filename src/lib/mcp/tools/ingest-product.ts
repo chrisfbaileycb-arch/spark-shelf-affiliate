@@ -7,23 +7,36 @@ const AI_GATEWAY = "https://ai.gateway.lovable.dev/v1";
 
 async function firecrawlScrape(url: string) {
   const key = (() => {
-    const runtime = globalThis as typeof globalThis & { process?: { env?: Record<string, string | undefined> } };
+    const runtime = globalThis as typeof globalThis & {
+      process?: { env?: Record<string, string | undefined> };
+    };
     return runtime.process?.env?.FIRECRAWL_API_KEY;
   })();
-  if (!key) throw new ToolError("Firecrawl is not connected. Add a Firecrawl API key in project settings.");
+  if (!key)
+    throw new ToolError("Firecrawl is not connected. Add a Firecrawl API key in project settings.");
   const res = await fetch("https://api.firecrawl.dev/v2/scrape", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ url, formats: ["markdown", "links"], onlyMainContent: true, waitFor: 1500 }),
+    body: JSON.stringify({
+      url,
+      formats: ["markdown", "links"],
+      onlyMainContent: true,
+      waitFor: 1500,
+    }),
   });
-  if (!res.ok) throw new ToolError(`Scrape failed (${res.status}): ${await res.text().catch(() => "")}`);
-  const json = (await res.json()) as { data?: { markdown?: string; links?: string[]; metadata?: Record<string, unknown> } };
+  if (!res.ok)
+    throw new ToolError(`Scrape failed (${res.status}): ${await res.text().catch(() => "")}`);
+  const json = (await res.json()) as {
+    data?: { markdown?: string; links?: string[]; metadata?: Record<string, unknown> };
+  };
   return json.data ?? {};
 }
 
 async function extractProductFields(markdown: string, sourceUrl: string) {
   const key = (() => {
-    const runtime = globalThis as typeof globalThis & { process?: { env?: Record<string, string | undefined> } };
+    const runtime = globalThis as typeof globalThis & {
+      process?: { env?: Record<string, string | undefined> };
+    };
     return runtime.process?.env?.LOVABLE_API_KEY;
   })();
   if (!key) throw new ToolError("LOVABLE_API_KEY not configured.");
@@ -38,7 +51,10 @@ async function extractProductFields(markdown: string, sourceUrl: string) {
           content:
             "Extract product info from scraped page markdown. Reply ONLY with strict minified JSON: {title, description, price, currency, image_urls[]}. description = 1-2 sentence buyer-focused summary. image_urls = up to 4 absolute https URLs of product photos (skip logos/avatars/sprites). If a field is unknown use empty string or [].",
         },
-        { role: "user", content: `Source URL: ${sourceUrl}\n\nMARKDOWN:\n${markdown.slice(0, 12000)}` },
+        {
+          role: "user",
+          content: `Source URL: ${sourceUrl}\n\nMARKDOWN:\n${markdown.slice(0, 12000)}`,
+        },
       ],
       response_format: { type: "json_object" },
     }),
@@ -66,7 +82,8 @@ async function extractProductFields(markdown: string, sourceUrl: string) {
 export default defineTool({
   name: "ingest_product",
   title: "Ingest product from URL",
-  description: "Scrape a product page, extract title/price/images with AI, and save it to the user's catalog.",
+  description:
+    "Scrape a product page, extract title/price/images with AI, and save it to the user's catalog.",
   inputSchema: {
     url: z.string().url().describe("Full product page URL (Amazon, AliExpress, Shopify, etc.)."),
   },
@@ -101,7 +118,10 @@ export default defineTool({
     return {
       content: [
         { type: "text", text: `Ingested product: ${row.title}` },
-        { type: "text", text: JSON.stringify({ product: row, suggested_network: network }, null, 2) },
+        {
+          type: "text",
+          text: JSON.stringify({ product: row, suggested_network: network }, null, 2),
+        },
       ],
     };
   },

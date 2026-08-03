@@ -59,17 +59,28 @@ export const deleteProgram = createServerFn({ method: "POST" })
 // Build the destination URL by applying a template.
 // Supported placeholders: {url}, {tracking_id}
 function applyTemplate(template: string, productUrl: string, trackingId: string): string {
-  return template.replace(/\{url\}/g, encodeURIComponent(productUrl)).replace(/\{tracking_id\}/g, trackingId);
+  return template
+    .replace(/\{url\}/g, encodeURIComponent(productUrl))
+    .replace(/\{tracking_id\}/g, trackingId);
 }
 
 export const createShortLink = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z.object({ product_id: z.string().uuid(), affiliate_program_id: z.string().uuid().nullable().optional() }).parse(d),
+    z
+      .object({
+        product_id: z.string().uuid(),
+        affiliate_program_id: z.string().uuid().nullable().optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const { data: product, error: pe } = await supabase.from("products").select("source_url").eq("id", data.product_id).maybeSingle();
+    const { data: product, error: pe } = await supabase
+      .from("products")
+      .select("source_url")
+      .eq("id", data.product_id)
+      .maybeSingle();
     if (pe || !product) throw new Error("Product not found");
 
     let destination = product.source_url;
@@ -79,7 +90,8 @@ export const createShortLink = createServerFn({ method: "POST" })
         .select("link_template, tracking_id")
         .eq("id", data.affiliate_program_id)
         .maybeSingle();
-      if (prog) destination = applyTemplate(prog.link_template, product.source_url, prog.tracking_id);
+      if (prog)
+        destination = applyTemplate(prog.link_template, product.source_url, prog.tracking_id);
     }
 
     const short_code = newShortCode();

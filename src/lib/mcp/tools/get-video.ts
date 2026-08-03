@@ -13,7 +13,11 @@ export default defineTool({
   handler: async ({ video_id }, ctx) => {
     if (!ctx.isAuthenticated()) throw new ToolError("You must be signed in to fetch a video.");
     const supabase = supabaseForUser(ctx);
-    const { data, error } = await supabase.from("videos").select("*, products(*)").eq("id", video_id).maybeSingle();
+    const { data, error } = await supabase
+      .from("videos")
+      .select("*, products(*)")
+      .eq("id", video_id)
+      .maybeSingle();
     if (error) throw new ToolError(`Database error: ${error.message}`);
     if (!data) throw new ToolError("Video not found.");
     return {

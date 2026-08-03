@@ -15,7 +15,9 @@ interface ScriptOut {
 
 async function aiJson(body: Record<string, unknown>): Promise<string> {
   const key = (() => {
-    const runtime = globalThis as typeof globalThis & { process?: { env?: Record<string, string | undefined> } };
+    const runtime = globalThis as typeof globalThis & {
+      process?: { env?: Record<string, string | undefined> };
+    };
     return runtime.process?.env?.LOVABLE_API_KEY;
   })();
   if (!key) throw new ToolError("LOVABLE_API_KEY not configured.");
@@ -34,8 +36,20 @@ async function aiJson(body: Record<string, unknown>): Promise<string> {
 }
 
 async function generateScript(
-  product: { title: string; description: string | null; price: string | null; currency: string | null },
-  persona: { name: string; bio: string | null; vibe: string | null; voice_tone: string | null; catchphrases: unknown; speech_quirks: string | null } | null,
+  product: {
+    title: string;
+    description: string | null;
+    price: string | null;
+    currency: string | null;
+  },
+  persona: {
+    name: string;
+    bio: string | null;
+    vibe: string | null;
+    voice_tone: string | null;
+    catchphrases: unknown;
+    speech_quirks: string | null;
+  } | null,
 ): Promise<ScriptOut> {
   const personaBlock = persona
     ? `You ARE ${persona.name}. Vibe: ${persona.vibe ?? "energetic"}. Voice tone: ${persona.voice_tone ?? "warm"}. Bio: ${persona.bio ?? ""}. Speech quirks: ${persona.speech_quirks ?? ""}. Naturally weave in 1 of these catchphrases if it fits: ${Array.isArray(persona.catchphrases) ? (persona.catchphrases as string[]).join(" | ") : ""}.`
@@ -45,8 +59,7 @@ async function generateScript(
     messages: [
       {
         role: "system",
-        content:
-          `${personaBlock} You write punchy 15-second short-form scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). caption: 1-2 sentences then a blank line then exactly the 2 hashtags prefixed with #. hashtags: EXACTLY 2 entries — the two highest-intent, most discoverable tags for this product/niche (one broad niche tag + one specific product/trend tag). lowercase, no #, no spaces.`,
+        content: `${personaBlock} You write punchy 15-second short-form scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). caption: 1-2 sentences then a blank line then exactly the 2 hashtags prefixed with #. hashtags: EXACTLY 2 entries — the two highest-intent, most discoverable tags for this product/niche (one broad niche tag + one specific product/trend tag). lowercase, no #, no spaces.`,
       },
       {
         role: "user",
@@ -68,7 +81,12 @@ async function generateScript(
       const stripped = caption.replace(/(\s*#[\w]+)+\s*$/g, "").trimEnd();
       caption = `${stripped}\n\n${tagLine}`;
     }
-    return { hook: String(parsed.hook ?? ""), script: String(parsed.script ?? ""), caption, hashtags };
+    return {
+      hook: String(parsed.hook ?? ""),
+      script: String(parsed.script ?? ""),
+      caption,
+      hashtags,
+    };
   } catch {
     throw new ToolError("AI returned malformed script JSON");
   }
@@ -77,25 +95,47 @@ async function generateScript(
 export default defineTool({
   name: "create_video_draft",
   title: "Create video draft",
-  description: "Generate a script and save a video draft record. The actual HeyGen render must be triggered from the ReelRipper web app because rendering takes several minutes.",
+  description:
+    "Generate a script and save a video draft record. The actual HeyGen render must be triggered from the ReelRipper web app because rendering takes several minutes.",
   inputSchema: {
     product_id: z.string().uuid().describe("UUID of the product to create a video for."),
-    persona_id: z.string().uuid().optional().describe("Optional persona ID; uses default persona if omitted."),
+    persona_id: z
+      .string()
+      .uuid()
+      .optional()
+      .describe("Optional persona ID; uses default persona if omitted."),
   },
   annotations: { readOnlyHint: false, idempotentHint: false, openWorldHint: false },
   handler: async ({ product_id, persona_id }, ctx) => {
-    if (!ctx.isAuthenticated()) throw new ToolError("You must be signed in to create a video draft.");
+    if (!ctx.isAuthenticated())
+      throw new ToolError("You must be signed in to create a video draft.");
     const supabase = supabaseForUser(ctx);
 
-    const { data: product, error: pe } = await supabase.from("products").select("*").eq("id", product_id).maybeSingle();
+    const { data: product, error: pe } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", product_id)
+      .maybeSingle();
     if (pe) throw new ToolError(`Database error: ${pe.message}`);
     if (!product) throw new ToolError("Product not found.");
 
-    let persona: { id: string; name: string; bio: string | null; vibe: string | null; voice_tone: string | null; catchphrases: unknown; speech_quirks: string | null; heygen_avatar_id: string | null; elevenlabs_voice_id: string | null } | null = null;
+    let persona: {
+      id: string;
+      name: string;
+      bio: string | null;
+      vibe: string | null;
+      voice_tone: string | null;
+      catchphrases: unknown;
+      speech_quirks: string | null;
+      heygen_avatar_id: string | null;
+      elevenlabs_voice_id: string | null;
+    } | null = null;
     if (persona_id) {
       const { data: p } = await supabase
         .from("personas")
-        .select("id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id")
+        .select(
+          "id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id",
+        )
         .eq("id", persona_id)
         .maybeSingle();
       persona = p;
@@ -103,7 +143,9 @@ export default defineTool({
     if (!persona) {
       const { data: p } = await supabase
         .from("personas")
-        .select("id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id")
+        .select(
+          "id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id",
+        )
         .eq("is_default", true)
         .maybeSingle();
       persona = p;
@@ -135,8 +177,24 @@ export default defineTool({
 
     return {
       content: [
-        { type: "text", text: `Created video draft ${video.id}. Open the ReelRipper app and click "Render" to send it to HeyGen.` },
-        { type: "text", text: JSON.stringify({ video_id: video.id, hook: script.hook, script: script.script, caption: script.caption, hashtags: script.hashtags }, null, 2) },
+        {
+          type: "text",
+          text: `Created video draft ${video.id}. Open the ReelRipper app and click "Render" to send it to HeyGen.`,
+        },
+        {
+          type: "text",
+          text: JSON.stringify(
+            {
+              video_id: video.id,
+              hook: script.hook,
+              script: script.script,
+              caption: script.caption,
+              hashtags: script.hashtags,
+            },
+            null,
+            2,
+          ),
+        },
       ],
     };
   },

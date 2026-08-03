@@ -4,7 +4,9 @@ import { supabaseForUser } from "../supabase";
 import { newShortCode } from "@/lib/short-code";
 
 function applyTemplate(template: string, productUrl: string, trackingId: string): string {
-  return template.replace(/\{url\}/g, encodeURIComponent(productUrl)).replace(/\{tracking_id\}/g, trackingId);
+  return template
+    .replace(/\{url\}/g, encodeURIComponent(productUrl))
+    .replace(/\{tracking_id\}/g, trackingId);
 }
 
 export default defineTool({
@@ -13,14 +15,25 @@ export default defineTool({
   description: "Create a tracked short link for a product using a saved affiliate program.",
   inputSchema: {
     product_id: z.string().uuid().describe("UUID of the product to link to."),
-    affiliate_program_id: z.string().uuid().optional().describe("Optional saved affiliate program ID. If omitted, the link points to the original product URL."),
+    affiliate_program_id: z
+      .string()
+      .uuid()
+      .optional()
+      .describe(
+        "Optional saved affiliate program ID. If omitted, the link points to the original product URL.",
+      ),
   },
   annotations: { readOnlyHint: false, idempotentHint: false, openWorldHint: false },
   handler: async ({ product_id, affiliate_program_id }, ctx) => {
-    if (!ctx.isAuthenticated()) throw new ToolError("You must be signed in to create a short link.");
+    if (!ctx.isAuthenticated())
+      throw new ToolError("You must be signed in to create a short link.");
     const supabase = supabaseForUser(ctx);
 
-    const { data: product, error: pe } = await supabase.from("products").select("source_url").eq("id", product_id).maybeSingle();
+    const { data: product, error: pe } = await supabase
+      .from("products")
+      .select("source_url")
+      .eq("id", product_id)
+      .maybeSingle();
     if (pe || !product) throw new ToolError("Product not found");
 
     let destination = product.source_url;
@@ -30,7 +43,8 @@ export default defineTool({
         .select("link_template, tracking_id")
         .eq("id", affiliate_program_id)
         .maybeSingle();
-      if (prog) destination = applyTemplate(prog.link_template, product.source_url, prog.tracking_id);
+      if (prog)
+        destination = applyTemplate(prog.link_template, product.source_url, prog.tracking_id);
     }
 
     const short_code = newShortCode();

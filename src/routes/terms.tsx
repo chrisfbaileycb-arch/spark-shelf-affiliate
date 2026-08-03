@@ -6,7 +6,11 @@ export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
       { title: "Terms of Service — ReelRipper" },
-      { name: "description", content: "The terms governing your use of ReelRipper, an AI affiliate video generation service operated by Signal F Holdings LLC." },
+      {
+        name: "description",
+        content:
+          "The terms governing your use of ReelRipper, an AI affiliate video generation service operated by Signal F Holdings LLC.",
+      },
       { property: "og:title", content: "ReelRipper Terms of Service" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/terms" },
@@ -24,40 +28,91 @@ function Terms() {
         <h1 className="font-display text-4xl">Terms of Service</h1>
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
-        <p>These Terms of Service ("Terms") govern your access to and use of ReelRipper (the "Service"), operated by Signal F Holdings LLC ("we", "us"). By creating an account or using the Service you agree to these Terms.</p>
+        <p>
+          These Terms of Service ("Terms") govern your access to and use of ReelRipper (the
+          "Service"), operated by Signal F Holdings LLC ("we", "us"). By creating an account or
+          using the Service you agree to these Terms.
+        </p>
 
         <h2>1. The Service</h2>
-        <p>ReelRipper lets you ingest publicly-available product URLs and generate short AI-produced videos incorporating a synthetic voice, avatar, and script for use in affiliate marketing. You are solely responsible for how you use the generated videos.</p>
+        <p>
+          ReelRipper lets you ingest publicly-available product URLs and generate short AI-produced
+          videos incorporating a synthetic voice, avatar, and script for use in affiliate marketing.
+          You are solely responsible for how you use the generated videos.
+        </p>
 
         <h2>2. Your account</h2>
-        <p>You must be at least 18 years old. You are responsible for keeping your login credentials secure and for all activity under your account.</p>
+        <p>
+          You must be at least 18 years old. You are responsible for keeping your login credentials
+          secure and for all activity under your account.
+        </p>
 
         <h2>3. Acceptable use</h2>
-        <p>You agree not to use the Service to (a) impersonate a real person without their consent, (b) generate videos for products you are not authorized to promote, (c) infringe intellectual property or publicity rights, (d) violate the terms of any third-party platform (including TikTok, Instagram, YouTube, or any affiliate network), (e) generate deceptive, defamatory, sexual, or illegal content, or (f) misrepresent AI-generated content in a jurisdiction that requires disclosure.</p>
+        <p>
+          You agree not to use the Service to (a) impersonate a real person without their consent,
+          (b) generate videos for products you are not authorized to promote, (c) infringe
+          intellectual property or publicity rights, (d) violate the terms of any third-party
+          platform (including TikTok, Instagram, YouTube, or any affiliate network), (e) generate
+          deceptive, defamatory, sexual, or illegal content, or (f) misrepresent AI-generated
+          content in a jurisdiction that requires disclosure.
+        </p>
 
         <h2>4. Affiliate programs and disclosure</h2>
-        <p>ReelRipper does not enroll you in any affiliate program. You are responsible for signing up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying with their rules, paying any applicable taxes on commissions, and making all disclosures required by law and by the platforms where you publish. See our <a href="/affiliate-disclosure">Affiliate Disclosure</a> for details, including FTC and platform-specific requirements around AI-generated creators.</p>
+        <p>
+          ReelRipper does not enroll you in any affiliate program. You are responsible for signing
+          up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying with
+          their rules, paying any applicable taxes on commissions, and making all disclosures
+          required by law and by the platforms where you publish. See our{" "}
+          <a href="/affiliate-disclosure">Affiliate Disclosure</a> for details, including FTC and
+          platform-specific requirements around AI-generated creators.
+        </p>
 
         <h2>5. Subscriptions and billing</h2>
-        <p>Paid plans are billed monthly in advance through Stripe. Unused video credits do not roll over. You may cancel at any time from your billing page; cancellation takes effect at the end of the current billing period. See our <a href="/refunds">Refund Policy</a> for refund terms.</p>
+        <p>
+          Paid plans are billed monthly in advance through Stripe. Unused video credits do not roll
+          over. You may cancel at any time from your billing page; cancellation takes effect at the
+          end of the current billing period. See our <a href="/refunds">Refund Policy</a> for refund
+          terms.
+        </p>
 
         <h2>6. AI-generated content</h2>
-        <p>Videos are generated by third-party models (including HeyGen, ElevenLabs, and Google Gemini). Output may be inaccurate, offensive, or violate platform policies. You must review each video before publishing and are solely responsible for its content and any legally-required disclosures (for example, "#ad" for FTC endorsement guidelines).</p>
+        <p>
+          Videos are generated by third-party models (including HeyGen, ElevenLabs, and Google
+          Gemini). Output may be inaccurate, offensive, or violate platform policies. You must
+          review each video before publishing and are solely responsible for its content and any
+          legally-required disclosures (for example, "#ad" for FTC endorsement guidelines).
+        </p>
 
         <h2>7. Intellectual property</h2>
-        <p>You retain ownership of the videos you generate, subject to the underlying model providers' terms. We retain all rights in the Service itself.</p>
+        <p>
+          You retain ownership of the videos you generate, subject to the underlying model
+          providers' terms. We retain all rights in the Service itself.
+        </p>
 
         <h2>8. Disclaimers</h2>
-        <p>The Service is provided "as is" without warranty of any kind. We do not guarantee any level of earnings, video quality, or platform acceptance.</p>
+        <p>
+          The Service is provided "as is" without warranty of any kind. We do not guarantee any
+          level of earnings, video quality, or platform acceptance.
+        </p>
 
         <h2>9. Limitation of liability</h2>
-        <p>To the maximum extent permitted by law, our total liability for any claim arising from your use of the Service is limited to the amount you paid us in the twelve months preceding the claim.</p>
+        <p>
+          To the maximum extent permitted by law, our total liability for any claim arising from
+          your use of the Service is limited to the amount you paid us in the twelve months
+          preceding the claim.
+        </p>
 
         <h2>10. Termination</h2>
-        <p>We may suspend or terminate your account for violation of these Terms. You may delete your account at any time.</p>
+        <p>
+          We may suspend or terminate your account for violation of these Terms. You may delete your
+          account at any time.
+        </p>
 
         <h2>11. Governing law</h2>
-        <p>These Terms are governed by the laws of the State of Wyoming, without regard to conflict-of-law rules.</p>
+        <p>
+          These Terms are governed by the laws of the State of Wyoming, without regard to
+          conflict-of-law rules.
+        </p>
 
         <h2>12. Contact</h2>
         <p>Questions? Email support@reelripper.app.</p>

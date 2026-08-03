@@ -7,7 +7,13 @@ export default defineTool({
   title: "List personas",
   description: "List the signed-in user's AI influencer personas.",
   inputSchema: {
-    limit: z.coerce.number().int().min(1).max(100).optional().describe("Maximum personas to return (default 50)."),
+    limit: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .optional()
+      .describe("Maximum personas to return (default 50)."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ limit }, ctx) => {
@@ -15,7 +21,9 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase
       .from("personas")
-      .select("id, name, bio, gender, age_range, vibe, niche, voice_tone, catchphrases, speech_quirks, is_default, created_at")
+      .select(
+        "id, name, bio, gender, age_range, vibe, niche, voice_tone, catchphrases, speech_quirks, is_default, created_at",
+      )
       .order("is_default", { ascending: false })
       .order("created_at", { ascending: false })
       .limit(limit ?? 50);

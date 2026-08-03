@@ -6,7 +6,11 @@ export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
       { title: "Cookie Policy — ReelRipper" },
-      { name: "description", content: "The cookies and local storage ReelRipper uses, why we use them, and how to control them." },
+      {
+        name: "description",
+        content:
+          "The cookies and local storage ReelRipper uses, why we use them, and how to control them.",
+      },
       { property: "og:title", content: "ReelRipper Cookie Policy" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/cookies" },
@@ -24,19 +28,69 @@ function Cookies() {
         <h1 className="font-display text-4xl">Cookie Policy</h1>
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
-        <p>ReelRipper (operated by Signal F Holdings LLC) uses a small set of first-party cookies and browser storage to keep you signed in and to make the product work. We do <strong>not</strong> use third-party advertising cookies, cross-site tracking pixels, or behavioral ad networks.</p>
+        <p>
+          ReelRipper (operated by Signal F Holdings LLC) uses a small set of first-party cookies and
+          browser storage to keep you signed in and to make the product work. We do{" "}
+          <strong>not</strong> use third-party advertising cookies, cross-site tracking pixels, or
+          behavioral ad networks.
+        </p>
 
         <h2>What we use</h2>
         <table>
           <thead>
-            <tr><th>Item</th><th>Type</th><th>Purpose</th><th>Retention</th></tr>
+            <tr>
+              <th>Item</th>
+              <th>Type</th>
+              <th>Purpose</th>
+              <th>Retention</th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td><code>sb-*-auth-token</code></td><td>Local storage (strictly necessary)</td><td>Keeps you signed in via Supabase auth.</td><td>Until sign-out or session expiry</td></tr>
-            <tr><td><code>reelripper_ref</code></td><td>Local storage (functional)</td><td>Remembers a referral code from <code>?ref=</code> so we can credit the referrer if you upgrade.</td><td>30 days</td></tr>
-            <tr><td><code>__reelripper_error_buffer</code></td><td>Session storage (functional)</td><td>Buffers uncaught JavaScript errors in your tab so we can investigate crashes if you report them.</td><td>Until you close the tab</td></tr>
-            <tr><td>Stripe checkout cookies</td><td>Third-party (strictly necessary during checkout)</td><td>Set by Stripe on their embedded checkout to process your payment securely.</td><td>Per Stripe's policy</td></tr>
-            <tr><td>Affiliate short-link click cookie</td><td>First-party server log (functional)</td><td>When someone clicks your <code>/r/CODE</code> link we log the click server-side for your analytics. We do not store a browser cookie for this.</td><td>Anonymized after 90 days</td></tr>
+            <tr>
+              <td>
+                <code>sb-*-auth-token</code>
+              </td>
+              <td>Local storage (strictly necessary)</td>
+              <td>Keeps you signed in via Supabase auth.</td>
+              <td>Until sign-out or session expiry</td>
+            </tr>
+            <tr>
+              <td>
+                <code>reelripper_ref</code>
+              </td>
+              <td>Local storage (functional)</td>
+              <td>
+                Remembers a referral code from <code>?ref=</code> so we can credit the referrer if
+                you upgrade.
+              </td>
+              <td>30 days</td>
+            </tr>
+            <tr>
+              <td>
+                <code>__reelripper_error_buffer</code>
+              </td>
+              <td>Session storage (functional)</td>
+              <td>
+                Buffers uncaught JavaScript errors in your tab so we can investigate crashes if you
+                report them.
+              </td>
+              <td>Until you close the tab</td>
+            </tr>
+            <tr>
+              <td>Stripe checkout cookies</td>
+              <td>Third-party (strictly necessary during checkout)</td>
+              <td>Set by Stripe on their embedded checkout to process your payment securely.</td>
+              <td>Per Stripe's policy</td>
+            </tr>
+            <tr>
+              <td>Affiliate short-link click cookie</td>
+              <td>First-party server log (functional)</td>
+              <td>
+                When someone clicks your <code>/r/CODE</code> link we log the click server-side for
+                your analytics. We do not store a browser cookie for this.
+              </td>
+              <td>Anonymized after 90 days</td>
+            </tr>
           </tbody>
         </table>
 
@@ -48,10 +102,17 @@ function Cookies() {
         </ul>
 
         <h2>How to control cookies</h2>
-        <p>You can clear cookies and local storage at any time from your browser settings. Clearing the auth cookie will sign you out. Clearing the referral cookie will prevent us from crediting a referrer if you upgrade later.</p>
+        <p>
+          You can clear cookies and local storage at any time from your browser settings. Clearing
+          the auth cookie will sign you out. Clearing the referral cookie will prevent us from
+          crediting a referrer if you upgrade later.
+        </p>
 
         <h2>Changes</h2>
-        <p>If we add analytics or any third-party tag in the future, we will update this page and, where required, prompt you for consent before setting non-essential cookies.</p>
+        <p>
+          If we add analytics or any third-party tag in the future, we will update this page and,
+          where required, prompt you for consent before setting non-essential cookies.
+        </p>
 
         <h2>Contact</h2>
         <p>Questions? Email support@reelripper.app.</p>

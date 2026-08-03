@@ -6,19 +6,44 @@ const GenerateInput = z.object({
   name: z.string().min(1).max(60),
   gender: z.enum(["female", "male", "nonbinary"]),
   age_range: z.enum(["18-24", "25-32", "33-45", "46-60"]),
-  vibe: z.enum(["energetic-genz", "chill-millennial", "authoritative-expert", "warm-mom", "edgy-cool"]),
-  niche: z.enum(["lifestyle", "tech", "beauty", "fitness", "finance", "home", "fashion", "food", "parenting"]),
+  vibe: z.enum([
+    "energetic-genz",
+    "chill-millennial",
+    "authoritative-expert",
+    "warm-mom",
+    "edgy-cool",
+  ]),
+  niche: z.enum([
+    "lifestyle",
+    "tech",
+    "beauty",
+    "fitness",
+    "finance",
+    "home",
+    "fashion",
+    "food",
+    "parenting",
+  ]),
   voice_tone: z.enum(["bubbly", "calm", "confident", "warm", "deadpan"]),
 });
 
 // Curated HeyGen avatar + ElevenLabs voice lookup. Picks the closest match.
-function pickAvatarAndVoice(traits: z.infer<typeof GenerateInput>): { avatar: string; voice: string } {
+function pickAvatarAndVoice(traits: z.infer<typeof GenerateInput>): {
+  avatar: string;
+  voice: string;
+} {
   // Defaults — replace with your business library once HeyGen/EL accounts are swapped in.
-  const female25Bubbly = { avatar: "Daisy-inskirt-20220818", voice: "2d5b0e6cf36f460aa7fc47e3eee4ba54" };
+  const female25Bubbly = {
+    avatar: "Daisy-inskirt-20220818",
+    voice: "2d5b0e6cf36f460aa7fc47e3eee4ba54",
+  };
   const female25Calm = { avatar: "Daisy-inskirt-20220818", voice: "EXAVITQu4vr4xnSDxMaL" };
   const maleConfident = { avatar: "Tyler-incasualsuit-20220721", voice: "TX3LPaxmHKxFdv7VOQHJ" };
   const femaleWarm = { avatar: "Anna_public_3_20240108", voice: "XrExE9yKIg1WjnnlVkGX" };
-  const maleAuthoritative = { avatar: "Tyler-incasualsuit-20220721", voice: "JBFqnCBsd6RMkjVDRZzb" };
+  const maleAuthoritative = {
+    avatar: "Tyler-incasualsuit-20220721",
+    voice: "JBFqnCBsd6RMkjVDRZzb",
+  };
 
   if (traits.gender === "male") {
     if (traits.vibe === "authoritative-expert") return maleAuthoritative;
@@ -82,7 +107,9 @@ export const generatePersona = createServerFn({ method: "POST" })
       response_format: { type: "json_object" },
     });
 
-    let bio = "", catchphrases: string[] = [], speech_quirks = "";
+    let bio = "",
+      catchphrases: string[] = [],
+      speech_quirks = "";
     try {
       const p = JSON.parse(content);
       bio = String(p.bio ?? "");
@@ -123,7 +150,10 @@ export const setDefaultPersona = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     await supabase.from("personas").update({ is_default: false }).eq("user_id", userId);
-    const { error } = await supabase.from("personas").update({ is_default: true }).eq("id", data.id);
+    const { error } = await supabase
+      .from("personas")
+      .update({ is_default: true })
+      .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
