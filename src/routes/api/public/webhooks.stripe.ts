@@ -76,7 +76,6 @@ async function applyReferralCreditIfEligible(args: {
   });
 }
 
-
 export const Route = createFileRoute("/api/public/webhooks/stripe")({
   server: {
     handlers: {
@@ -102,7 +101,11 @@ export const Route = createFileRoute("/api/public/webhooks/stripe")({
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
         try {
-          if (event.type === "checkout.session.completed" || event.type === "customer.subscription.created" || event.type === "customer.subscription.updated") {
+          if (
+            event.type === "checkout.session.completed" ||
+            event.type === "customer.subscription.created" ||
+            event.type === "customer.subscription.updated"
+          ) {
             let sub: Stripe.Subscription | null = null;
             let userId: string | undefined;
 
@@ -110,7 +113,10 @@ export const Route = createFileRoute("/api/public/webhooks/stripe")({
               const session = event.data.object as Stripe.Checkout.Session;
               userId = session.metadata?.userId;
               if (session.subscription) {
-                const id = typeof session.subscription === "string" ? session.subscription : session.subscription.id;
+                const id =
+                  typeof session.subscription === "string"
+                    ? session.subscription
+                    : session.subscription.id;
                 sub = await stripe.subscriptions.retrieve(id);
               }
             } else {
@@ -121,19 +127,28 @@ export const Route = createFileRoute("/api/public/webhooks/stripe")({
             if (sub && userId) {
               const item = sub.items.data[0];
               const tier = tierFromLookupKey(item?.price?.lookup_key) ?? "starter";
-              const periodEnd = item?.current_period_end ? new Date(item.current_period_end * 1000).toISOString() : null;
+              const periodEnd = item?.current_period_end
+                ? new Date(item.current_period_end * 1000).toISOString()
+                : null;
               const status: "active" | "canceled" | "past_due" | "trialing" =
-                sub.status === "active" || sub.status === "trialing" || sub.status === "past_due" || sub.status === "canceled"
+                sub.status === "active" ||
+                sub.status === "trialing" ||
+                sub.status === "past_due" ||
+                sub.status === "canceled"
                   ? sub.status
                   : "past_due";
-              await supabaseAdmin.from("subscriptions").update({
-                tier,
-                status,
-                stripe_customer_id: typeof sub.customer === "string" ? sub.customer : sub.customer.id,
-                stripe_subscription_id: sub.id,
-                current_period_end: periodEnd,
-                updated_at: new Date().toISOString(),
-              }).eq("user_id", userId);
+              await supabaseAdmin
+                .from("subscriptions")
+                .update({
+                  tier,
+                  status,
+                  stripe_customer_id:
+                    typeof sub.customer === "string" ? sub.customer : sub.customer.id,
+                  stripe_subscription_id: sub.id,
+                  current_period_end: periodEnd,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("user_id", userId);
 
               // First-time paid signup → credit the referrer (if any) with 2 months free.
               if (
@@ -148,15 +163,17 @@ export const Route = createFileRoute("/api/public/webhooks/stripe")({
                 });
               }
             }
-
           } else if (event.type === "customer.subscription.deleted") {
             const sub = event.data.object as Stripe.Subscription;
             const userId = sub.metadata?.userId;
             if (userId) {
-              await supabaseAdmin.from("subscriptions").update({
-                status: "canceled",
-                updated_at: new Date().toISOString(),
-              }).eq("user_id", userId);
+              await supabaseAdmin
+                .from("subscriptions")
+                .update({
+                  status: "canceled",
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("user_id", userId);
             }
           }
         } catch (err) {

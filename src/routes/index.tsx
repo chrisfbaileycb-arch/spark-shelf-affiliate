@@ -7,9 +7,16 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "ReelRipper — AI affiliate videos in one click" },
-      { name: "description", content: "Paste any product URL and get a 15-second AI influencer video with voiceover, captions, and a tracked affiliate link — ready to post on TikTok, Reels, and Shorts." },
+      {
+        name: "description",
+        content:
+          "Paste any product URL and get a 15-second AI influencer video with voiceover, captions, and a tracked affiliate link — ready to post on TikTok, Reels, and Shorts.",
+      },
       { property: "og:title", content: "ReelRipper — AI affiliate videos in one click" },
-      { property: "og:description", content: "Paste a product URL, get an AI influencer video. Hands-off affiliate marketing." },
+      {
+        property: "og:description",
+        content: "Paste a product URL, get an AI influencer video. Hands-off affiliate marketing.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
     ],
@@ -30,7 +37,8 @@ export const Route = createFileRoute("/")({
               "@type": "WebSite",
               name: "ReelRipper",
               url: "/",
-              description: "Turn any product URL into a scroll-stopping 15-second AI affiliate video.",
+              description:
+                "Turn any product URL into a scroll-stopping 15-second AI affiliate video.",
             },
             {
               "@type": "SoftwareApplication",
@@ -62,20 +70,31 @@ function Landing() {
               <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Hands-off affiliate marketing
             </div>
             <h1 className="mt-6 text-balance font-display text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">
-              Turn any product link into a <span className="text-primary">scroll-stopping</span> 15-second video.
+              Turn any product link into a <span className="text-primary">scroll-stopping</span>{" "}
+              15-second video.
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg text-muted-foreground">
-              Paste a product URL. ReelRipper writes the hook, generates an AI female-influencer voiceover, mocks up the visuals, and hands you short-form videos optimized for TikTok, YouTube Shorts, and Facebook Reels.
+              Paste a product URL. ReelRipper writes the hook, generates an AI female-influencer
+              voiceover, mocks up the visuals, and hands you short-form videos optimized for TikTok,
+              YouTube Shorts, and Facebook Reels.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/auth" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-95">
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-95"
+              >
                 Start ripping <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href="#how" className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold hover:bg-surface">
+              <a
+                href="#how"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold hover:bg-surface"
+              >
                 How it works
               </a>
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">No video editing. No on-camera time. No product shipping.</p>
+            <p className="mt-4 text-xs text-muted-foreground">
+              No video editing. No on-camera time. No product shipping.
+            </p>
           </div>
 
           <div className="relative">
@@ -87,7 +106,9 @@ function Landing() {
                   <span>0:15</span>
                 </div>
                 <div>
-                  <p className="font-display text-3xl leading-tight">"Okay this is literally the only one I'll ever recommend…"</p>
+                  <p className="font-display text-3xl leading-tight">
+                    "Okay this is literally the only one I'll ever recommend…"
+                  </p>
                   <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
                     LINK IN BIO ↗
                   </div>
@@ -110,16 +131,34 @@ function Landing() {
           <h2 className="font-display text-4xl">Four steps. Done in under a minute.</h2>
           <div className="mt-12 grid gap-6 md:grid-cols-4">
             {[
-              { i: Link2, t: "Paste the URL", d: "Amazon, AliExpress, Shopify, or any product URL." },
-              { i: Sparkles, t: "AI ingests it", d: "Title, photos, price, hooks, hashtags — all scraped & scripted." },
-              { i: Video, t: "Generate the video", d: "AI female voiceover + influencer visuals + animated captions." },
-              { i: BadgeDollarSign, t: "Drop your link", d: "We build your tracked affiliate URL. You collect commissions." },
+              {
+                i: Link2,
+                t: "Paste the URL",
+                d: "Amazon, AliExpress, Shopify, or any product URL.",
+              },
+              {
+                i: Sparkles,
+                t: "AI ingests it",
+                d: "Title, photos, price, hooks, hashtags — all scraped & scripted.",
+              },
+              {
+                i: Video,
+                t: "Generate the video",
+                d: "AI female voiceover + influencer visuals + animated captions.",
+              },
+              {
+                i: BadgeDollarSign,
+                t: "Drop your link",
+                d: "We build your tracked affiliate URL. You collect commissions.",
+              },
             ].map((s, i) => (
               <div key={i} className="rounded-2xl border border-border bg-card p-6 shadow-pop">
                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">
                   <s.i className="h-5 w-5" />
                 </div>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Step {i + 1}</p>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Step {i + 1}
+                </p>
                 <p className="mt-1 font-display text-2xl">{s.t}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
               </div>
@@ -130,8 +169,13 @@ function Landing() {
 
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <h2 className="font-display text-4xl">Ready to print affiliate commissions?</h2>
-        <p className="mt-3 text-muted-foreground">Free to try. Bring your own affiliate IDs from any network.</p>
-        <Link to="/auth" className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95">
+        <p className="mt-3 text-muted-foreground">
+          Free to try. Bring your own affiliate IDs from any network.
+        </p>
+        <Link
+          to="/auth"
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95"
+        >
           Create your first video <ArrowRight className="h-4 w-4" />
         </Link>
       </section>

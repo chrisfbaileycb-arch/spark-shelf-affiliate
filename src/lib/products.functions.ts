@@ -19,8 +19,11 @@ async function firecrawlScrape(url: string) {
       waitFor: 1500,
     }),
   });
-  if (!res.ok) throw new Error(`Scrape failed (${res.status}): ${await res.text().catch(() => "")}`);
-  const json = (await res.json()) as { data?: { markdown?: string; links?: string[]; metadata?: Record<string, unknown> } };
+  if (!res.ok)
+    throw new Error(`Scrape failed (${res.status}): ${await res.text().catch(() => "")}`);
+  const json = (await res.json()) as {
+    data?: { markdown?: string; links?: string[]; metadata?: Record<string, unknown> };
+  };
   return json.data ?? {};
 }
 
@@ -39,13 +42,17 @@ async function extractProductFields(markdown: string, sourceUrl: string) {
           content:
             "Extract product info from scraped page markdown. Reply ONLY with strict minified JSON: {title, description, price, currency, image_urls[]}. description = 1-2 sentence buyer-focused summary. image_urls = up to 4 absolute https URLs of product photos (skip logos/avatars/sprites). If a field is unknown use empty string or [].",
         },
-        { role: "user", content: `Source URL: ${sourceUrl}\n\nMARKDOWN:\n${markdown.slice(0, 12000)}` },
+        {
+          role: "user",
+          content: `Source URL: ${sourceUrl}\n\nMARKDOWN:\n${markdown.slice(0, 12000)}`,
+        },
       ],
       response_format: { type: "json_object" },
     }),
   });
   if (!res.ok) {
-    if (res.status === 402) throw new Error("Lovable AI credits exhausted. Add credits to keep generating.");
+    if (res.status === 402)
+      throw new Error("Lovable AI credits exhausted. Add credits to keep generating.");
     if (res.status === 429) throw new Error("Lovable AI rate limit. Try again in a moment.");
     throw new Error(`AI extract failed (${res.status})`);
   }
@@ -112,7 +119,11 @@ export const getProduct = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    const { data: row, error } = await context.supabase.from("products").select("*").eq("id", data.id).maybeSingle();
+    const { data: row, error } = await context.supabase
+      .from("products")
+      .select("*")
+      .eq("id", data.id)
+      .maybeSingle();
     if (error) throw new Error(error.message);
     if (!row) throw new Error("Product not found");
     return row;

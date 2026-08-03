@@ -35,16 +35,18 @@ async function resolveOrCreateCustomer(
 }
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
-  .inputValidator((d: {
-    priceId: string;
-    customerEmail?: string;
-    userId?: string;
-    returnUrl: string;
-    environment: StripeEnv;
-  }) => {
-    if (!/^[a-zA-Z0-9_-]+$/.test(d.priceId)) throw new Error("Invalid priceId");
-    return d;
-  })
+  .inputValidator(
+    (d: {
+      priceId: string;
+      customerEmail?: string;
+      userId?: string;
+      returnUrl: string;
+      environment: StripeEnv;
+    }) => {
+      if (!/^[a-zA-Z0-9_-]+$/.test(d.priceId)) throw new Error("Invalid priceId");
+      return d;
+    },
+  )
   .handler(async ({ data }): Promise<CheckoutResult> => {
     try {
       const stripe = createStripeClient(data.environment);
@@ -52,9 +54,13 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       if (!prices.data.length) throw new Error("Price not found");
       const stripePrice = prices.data[0];
 
-      const customerId = (data.customerEmail || data.userId)
-        ? await resolveOrCreateCustomer(stripe, { email: data.customerEmail, userId: data.userId })
-        : undefined;
+      const customerId =
+        data.customerEmail || data.userId
+          ? await resolveOrCreateCustomer(stripe, {
+              email: data.customerEmail,
+              userId: data.userId,
+            })
+          : undefined;
 
       const session = await stripe.checkout.sessions.create({
         line_items: [{ price: stripePrice.id, quantity: 1 }],
@@ -108,7 +114,12 @@ export const getMySubscription = createServerFn({ method: "GET" })
 
     const [{ data: sub }, { data: usage }] = await Promise.all([
       supabase.from("subscriptions").select("*").eq("user_id", userId).maybeSingle(),
-      supabase.from("usage_counters").select("*").eq("user_id", userId).eq("period_start", pstartStr).maybeSingle(),
+      supabase
+        .from("usage_counters")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("period_start", pstartStr)
+        .maybeSingle(),
     ]);
 
     const tier = sub?.tier ?? "trial";
@@ -120,14 +131,20 @@ export const getMySubscription = createServerFn({ method: "GET" })
 
 export const syncSubscriptionFromStripe = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { sessionId: string; environment: StripeEnv }) => z.object({
-    sessionId: z.string().min(1),
-    environment: z.enum(["sandbox", "live"]),
-  }).parse(d))
+  .inputValidator((d: { sessionId: string; environment: StripeEnv }) =>
+    z
+      .object({
+        sessionId: z.string().min(1),
+        environment: z.enum(["sandbox", "live"]),
+      })
+      .parse(d),
+  )
   .handler(async ({ data, context }) => {
     try {
       const stripe = createStripeClient(data.environment);
-      const session = await stripe.checkout.sessions.retrieve(data.sessionId, { expand: ["subscription"] });
+      const session = await stripe.checkout.sessions.retrieve(data.sessionId, {
+        expand: ["subscription"],
+      });
       if (session.metadata?.userId && session.metadata.userId !== context.userId) {
         throw new Error("Session does not belong to current user");
       }
@@ -136,23 +153,36 @@ export const syncSubscriptionFromStripe = createServerFn({ method: "POST" })
 
       const item = sub.items.data[0];
       const priceLookup = item?.price?.lookup_key ?? null;
-      const tier = priceLookup === "starter_monthly" ? "starter" : priceLookup === "pro_monthly" ? "pro" : "starter";
-      const periodEnd = item?.current_period_end ? new Date(item.current_period_end * 1000).toISOString() : null;
+      const tier =
+        priceLookup === "starter_monthly"
+          ? "starter"
+          : priceLookup === "pro_monthly"
+            ? "pro"
+            : "starter";
+      const periodEnd = item?.current_period_end
+        ? new Date(item.current_period_end * 1000).toISOString()
+        : null;
 
       const status: "active" | "canceled" | "past_due" | "trialing" =
-        sub.status === "active" || sub.status === "trialing" || sub.status === "past_due" || sub.status === "canceled"
+        sub.status === "active" ||
+        sub.status === "trialing" ||
+        sub.status === "past_due" ||
+        sub.status === "canceled"
           ? sub.status
           : "past_due";
 
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-      await supabaseAdmin.from("subscriptions").update({
-        tier,
-        status,
-        stripe_customer_id: typeof sub.customer === "string" ? sub.customer : sub.customer.id,
-        stripe_subscription_id: sub.id,
-        current_period_end: periodEnd,
-        updated_at: new Date().toISOString(),
-      }).eq("user_id", context.userId);
+      await supabaseAdmin
+        .from("subscriptions")
+        .update({
+          tier,
+          status,
+          stripe_customer_id: typeof sub.customer === "string" ? sub.customer : sub.customer.id,
+          stripe_subscription_id: sub.id,
+          current_period_end: periodEnd,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("user_id", context.userId);
 
       return { ok: true, tier };
     } catch (error) {

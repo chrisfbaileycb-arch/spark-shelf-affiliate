@@ -51,7 +51,8 @@ export function installClientErrorLogger() {
     push({
       ts: new Date().toISOString(),
       kind: "unhandledrejection",
-      message: typeof reason === "string" ? reason : reason?.message ?? "Unhandled promise rejection",
+      message:
+        typeof reason === "string" ? reason : (reason?.message ?? "Unhandled promise rejection"),
       stack: reason?.stack,
       url: window.location.href,
     });

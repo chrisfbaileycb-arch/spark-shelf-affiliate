@@ -78,6 +78,7 @@ export function suggestNetworkForDomain(domain: string): NetworkSuggestion {
     network: "shareasale-impact",
     name: "ShareASale / Impact / CJ",
     signupUrl: "https://www.shareasale.com",
-    notes: "Check the brand's footer for an 'Affiliates' link — most run on ShareASale, Impact, or CJ.",
+    notes:
+      "Check the brand's footer for an 'Affiliates' link — most run on ShareASale, Impact, or CJ.",
   };
 }

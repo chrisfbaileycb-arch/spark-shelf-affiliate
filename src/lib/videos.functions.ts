@@ -39,8 +39,20 @@ async function aiJson(body: Record<string, unknown>): Promise<string> {
 }
 
 async function generateScript(
-  product: { title: string; description: string | null; price: string | null; currency: string | null },
-  persona: { name: string; bio: string | null; vibe: string | null; voice_tone: string | null; catchphrases: unknown; speech_quirks: string | null } | null,
+  product: {
+    title: string;
+    description: string | null;
+    price: string | null;
+    currency: string | null;
+  },
+  persona: {
+    name: string;
+    bio: string | null;
+    vibe: string | null;
+    voice_tone: string | null;
+    catchphrases: unknown;
+    speech_quirks: string | null;
+  } | null,
 ): Promise<ScriptOut> {
   const personaBlock = persona
     ? `You ARE ${persona.name}. Vibe: ${persona.vibe ?? "energetic"}. Voice tone: ${persona.voice_tone ?? "warm"}. Bio: ${persona.bio ?? ""}. Speech quirks: ${persona.speech_quirks ?? ""}. Naturally weave in 1 of these catchphrases if it fits: ${Array.isArray(persona.catchphrases) ? (persona.catchphrases as string[]).join(" | ") : ""}.`
@@ -50,8 +62,7 @@ async function generateScript(
     messages: [
       {
         role: "system",
-        content:
-          `${personaBlock} You write punchy 15-second TikTok scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). caption: 1-2 sentences then a blank line then exactly the 2 hashtags prefixed with #. hashtags: EXACTLY 2 entries — the two highest-intent, most discoverable tags for this product/niche (one broad niche tag + one specific product/trend tag). lowercase, no #, no spaces.`,
+        content: `${personaBlock} You write punchy 15-second TikTok scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). caption: 1-2 sentences then a blank line then exactly the 2 hashtags prefixed with #. hashtags: EXACTLY 2 entries — the two highest-intent, most discoverable tags for this product/niche (one broad niche tag + one specific product/trend tag). lowercase, no #, no spaces.`,
       },
       {
         role: "user",
@@ -119,7 +130,10 @@ export const checkHeygenBalance = createServerFn({ method: "GET" })
     return { remaining, low: remaining < MIN_CREDITS, threshold: MIN_CREDITS };
   });
 
-interface HeyGenGenerateResp { error: unknown; data?: { video_id?: string } }
+interface HeyGenGenerateResp {
+  error: unknown;
+  data?: { video_id?: string };
+}
 interface HeyGenStatusResp {
   code: number;
   data?: {
@@ -132,16 +146,22 @@ interface HeyGenStatusResp {
   };
 }
 
-async function pollHeygen(videoId: string, signal?: AbortSignal): Promise<NonNullable<HeyGenStatusResp["data"]>> {
+async function pollHeygen(
+  videoId: string,
+  signal?: AbortSignal,
+): Promise<NonNullable<HeyGenStatusResp["data"]>> {
   const start = Date.now();
   const timeout = 5 * 60 * 1000; // 5 min
   while (Date.now() - start < timeout) {
     if (signal?.aborted) throw new Error("Aborted");
-    const r = await heygen<HeyGenStatusResp>(`/v1/video_status.get?video_id=${encodeURIComponent(videoId)}`);
+    const r = await heygen<HeyGenStatusResp>(
+      `/v1/video_status.get?video_id=${encodeURIComponent(videoId)}`,
+    );
     const d = r.data;
     if (!d) throw new Error("HeyGen status missing data");
     if (d.status === "completed") return d;
-    if (d.status === "failed") throw new Error(d.error?.message || d.error?.detail || "HeyGen reported failure");
+    if (d.status === "failed")
+      throw new Error(d.error?.message || d.error?.detail || "HeyGen reported failure");
     await new Promise((res) => setTimeout(res, 6000));
   }
   throw new Error("HeyGen render timed out after 5 minutes");
@@ -153,17 +173,43 @@ export const generateVideo = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
-    const { data: product, error: pe } = await supabase.from("products").select("*").eq("id", data.product_id).maybeSingle();
+    const { data: product, error: pe } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", data.product_id)
+      .maybeSingle();
     if (pe || !product) throw new Error("Product not found");
 
     // Resolve persona: explicit pick, else user's default, else null (fallback baked into script prompt).
-    let persona: { id: string; name: string; bio: string | null; vibe: string | null; voice_tone: string | null; catchphrases: unknown; speech_quirks: string | null; heygen_avatar_id: string | null; elevenlabs_voice_id: string | null } | null = null;
+    let persona: {
+      id: string;
+      name: string;
+      bio: string | null;
+      vibe: string | null;
+      voice_tone: string | null;
+      catchphrases: unknown;
+      speech_quirks: string | null;
+      heygen_avatar_id: string | null;
+      elevenlabs_voice_id: string | null;
+    } | null = null;
     if (data.persona_id) {
-      const { data: p } = await supabase.from("personas").select("id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id").eq("id", data.persona_id).maybeSingle();
+      const { data: p } = await supabase
+        .from("personas")
+        .select(
+          "id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id",
+        )
+        .eq("id", data.persona_id)
+        .maybeSingle();
       persona = p;
     }
     if (!persona) {
-      const { data: p } = await supabase.from("personas").select("id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id").eq("is_default", true).maybeSingle();
+      const { data: p } = await supabase
+        .from("personas")
+        .select(
+          "id,name,bio,vibe,voice_tone,catchphrases,speech_quirks,heygen_avatar_id,elevenlabs_voice_id",
+        )
+        .eq("is_default", true)
+        .maybeSingle();
       persona = p;
     }
 
@@ -172,14 +218,27 @@ export const generateVideo = createServerFn({ method: "POST" })
 
     // Quota check & decrement BEFORE doing any expensive work.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: quotaResult, error: qErr } = await supabaseAdmin.rpc("consume_video_quota", { _user_id: userId });
+    const { data: quotaResult, error: qErr } = await supabaseAdmin.rpc("consume_video_quota", {
+      _user_id: userId,
+    });
     if (qErr) throw new Error(qErr.message);
-    const qr = quotaResult as { ok: boolean; reason?: string; tier?: string; used?: number; limit?: number } | null;
+    const qr = quotaResult as {
+      ok: boolean;
+      reason?: string;
+      tier?: string;
+      used?: number;
+      limit?: number;
+    } | null;
     if (!qr?.ok) {
       const reason = qr?.reason ?? "unknown";
-      if (reason === "trial_exhausted") throw new Error("Your 3 free trial videos are used. Upgrade to keep generating.");
-      if (reason === "quota_exceeded") throw new Error(`Monthly limit reached (${qr?.used}/${qr?.limit}). Upgrade or wait until next billing period.`);
-      if (reason === "subscription_inactive") throw new Error("Your subscription is inactive. Update billing to continue.");
+      if (reason === "trial_exhausted")
+        throw new Error("Your 3 free trial videos are used. Upgrade to keep generating.");
+      if (reason === "quota_exceeded")
+        throw new Error(
+          `Monthly limit reached (${qr?.used}/${qr?.limit}). Upgrade or wait until next billing period.`,
+        );
+      if (reason === "subscription_inactive")
+        throw new Error("Your subscription is inactive. Update billing to continue.");
       throw new Error(`Cannot generate: ${reason}`);
     }
 
@@ -201,7 +260,9 @@ export const generateVideo = createServerFn({ method: "POST" })
         })
         .select()
         .single();
-      throw new Error(`Low HeyGen credit: ${remaining} remaining (need ≥ ${MIN_CREDITS}). Video record: ${lc?.id ?? "n/a"}`);
+      throw new Error(
+        `Low HeyGen credit: ${remaining} remaining (need ≥ ${MIN_CREDITS}). Video record: ${lc?.id ?? "n/a"}`,
+      );
     }
 
     const { data: video, error: ve } = await supabase
@@ -279,7 +340,9 @@ export const listVideos = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("videos")
-      .select("id, hook, status, thumbnail_url, created_at, product_id, generation_cost, products(title, source_domain)")
+      .select(
+        "id, hook, status, thumbnail_url, created_at, product_id, generation_cost, products(title, source_domain)",
+      )
       .order("created_at", { ascending: false })
       .limit(60);
     if (error) throw new Error(error.message);

@@ -4,7 +4,7 @@ Every user gets a personal referral link. When somebody signs up through that li
 
 ## How it works (user POV)
 
-1. On `/billing`, every user sees a **"Refer & earn"** card with their unique link (`yoursite.com/auth?ref=ABC123`) and a counter: *"3 friends converted · $179.70 credited"*.
+1. On `/billing`, every user sees a **"Refer & earn"** card with their unique link (`yoursite.com/auth?ref=ABC123`) and a counter: _"3 friends converted · $179.70 credited"_.
 2. They share it. New signup hits `/auth?ref=ABC123` → code is stored, attached to their profile on signup.
 3. When that referred user upgrades to Starter or Pro for the first time, the referrer's Stripe customer balance is credited with `2 × monthly_price` (negative balance = credit Stripe auto-applies to the next invoice).
 4. One conversion per referred user, ever. No double-dipping if they cancel and resubscribe.
@@ -30,6 +30,6 @@ Every user gets a personal referral link. When somebody signs up through that li
 - Self-referral blocked (referred_by ≠ self).
 - Only first-ever paid conversion per referred user counts.
 - Credit is in the referrer's currency at their current plan rate, so Pro referrers earn more ($119.90) than Starter ($59.90) — natural upgrade incentive.
-- If referrer has no Stripe customer yet (still on trial), credit waits: webhook stores conversion row with `credited_cents=0, credited_at=null`, and a follow-up applies when they first subscribe. *(Phase 2 — for v1 we just credit if they already have a customer, otherwise skip and log.)*
+- If referrer has no Stripe customer yet (still on trial), credit waits: webhook stores conversion row with `credited_cents=0, credited_at=null`, and a follow-up applies when they first subscribe. _(Phase 2 — for v1 we just credit if they already have a customer, otherwise skip and log.)_
 
 Ready to build?

@@ -13,7 +13,11 @@ export const Route = createFileRoute("/_authenticated/products/new")({
   head: () => ({
     meta: [
       { title: "Rip a new product — ReelRipper" },
-      { name: "description", content: "Paste a product URL to ingest images, price, and details for your next AI affiliate video." },
+      {
+        name: "description",
+        content:
+          "Paste a product URL to ingest images, price, and details for your next AI affiliate video.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -43,9 +47,13 @@ function NewProduct() {
   return (
     <div className="mx-auto max-w-2xl space-y-8">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Step 1 of 2</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Step 1 of 2
+        </p>
         <h1 className="mt-1 font-display text-4xl">Paste a product URL</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Amazon, TikTok Shop, AliExpress, Etsy, Shopify, anything with a public product page.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Amazon, TikTok Shop, AliExpress, Etsy, Shopify, anything with a public product page.
+        </p>
       </header>
 
       <Card className="p-6 shadow-pop">
@@ -54,13 +62,32 @@ function NewProduct() {
             <Label htmlFor="url">Product URL</Label>
             <div className="relative mt-1">
               <Link2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input id="url" required type="url" placeholder="https://www.amazon.com/dp/..." value={url} onChange={(e) => setUrl(e.target.value)} className="pl-9" />
+              <Input
+                id="url"
+                required
+                type="url"
+                placeholder="https://www.amazon.com/dp/..."
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                className="pl-9"
+              />
             </div>
           </div>
           <Button type="submit" disabled={busy} className="w-full" size="lg">
-            {busy ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Scraping & extracting…</> : <><Sparkles className="mr-2 h-4 w-4" /> Ingest product</>}
+            {busy ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Scraping & extracting…
+              </>
+            ) : (
+              <>
+                <Sparkles className="mr-2 h-4 w-4" /> Ingest product
+              </>
+            )}
           </Button>
-          <p className="text-xs text-muted-foreground">We scrape with Firecrawl and let Lovable AI pull out the title, photos, price, and a buyer-focused summary.</p>
+          <p className="text-xs text-muted-foreground">
+            We scrape with Firecrawl and let Lovable AI pull out the title, photos, price, and a
+            buyer-focused summary.
+          </p>
         </form>
       </Card>
     </div>

@@ -15,7 +15,11 @@ export const Route = createFileRoute("/_authenticated/upgrade")({
   head: () => ({
     meta: [
       { title: "Pricing — ReelRipper" },
-      { name: "description", content: "Starter and Pro plans for ReelRipper — 15 or 30 AI affiliate videos every month, cancel anytime." },
+      {
+        name: "description",
+        content:
+          "Starter and Pro plans for ReelRipper — 15 or 30 AI affiliate videos every month, cancel anytime.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -28,14 +32,25 @@ const PLANS = [
     name: "Starter",
     price: "$29.95",
     videos: 15,
-    features: ["15 videos per month", "Persona generator", "Affiliate link tracking", "HD 720x1280 output"],
+    features: [
+      "15 videos per month",
+      "Persona generator",
+      "Affiliate link tracking",
+      "HD 720x1280 output",
+    ],
   },
   {
     id: "pro_monthly",
     name: "Pro",
     price: "$59.95",
     videos: 30,
-    features: ["30 videos per month", "Unlimited personas", "Priority rendering", "Affiliate link tracking", "HD 720x1280 output"],
+    features: [
+      "30 videos per month",
+      "Unlimited personas",
+      "Priority rendering",
+      "Affiliate link tracking",
+      "HD 720x1280 output",
+    ],
     highlight: true,
   },
 ];
@@ -54,7 +69,9 @@ function Pricing() {
     return (
       <div className="space-y-4">
         <PaymentTestModeBanner />
-        <Button variant="ghost" onClick={() => setPicked(null)}>← Back to pricing</Button>
+        <Button variant="ghost" onClick={() => setPicked(null)}>
+          ← Back to pricing
+        </Button>
         <StripeEmbeddedCheckout
           priceId={picked}
           customerEmail={session.user.email}
@@ -71,26 +88,36 @@ function Pricing() {
     <div className="space-y-8">
       <PaymentTestModeBanner />
       <header className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pricing</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Pricing
+        </p>
         <h1 className="mt-1 font-display text-4xl">Pick your plan</h1>
         <p className="mx-auto mt-2 max-w-lg text-sm text-muted-foreground">
           Free trial includes 3 videos. No card required to start.
         </p>
         {currentTier !== "trial" && (
-          <p className="mt-2 text-sm">Current plan: <strong className="capitalize">{currentTier}</strong></p>
+          <p className="mt-2 text-sm">
+            Current plan: <strong className="capitalize">{currentTier}</strong>
+          </p>
         )}
       </header>
 
       <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
         {PLANS.map((plan) => (
-          <Card key={plan.id} className={`p-8 ${plan.highlight ? "border-primary shadow-pop" : ""}`}>
+          <Card
+            key={plan.id}
+            className={`p-8 ${plan.highlight ? "border-primary shadow-pop" : ""}`}
+          >
             {plan.highlight && (
               <div className="mb-3 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
                 <Sparkles className="h-3 w-3" /> Most popular
               </div>
             )}
             <h2 className="font-display text-3xl">{plan.name}</h2>
-            <p className="mt-2 text-4xl font-bold">{plan.price}<span className="text-base font-normal text-muted-foreground">/mo</span></p>
+            <p className="mt-2 text-4xl font-bold">
+              {plan.price}
+              <span className="text-base font-normal text-muted-foreground">/mo</span>
+            </p>
             <ul className="mt-6 space-y-2">
               {plan.features.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm">
@@ -104,7 +131,9 @@ function Pricing() {
               variant={plan.highlight ? "default" : "secondary"}
               disabled={currentTier === plan.id.replace("_monthly", "")}
             >
-              {currentTier === plan.id.replace("_monthly", "") ? "Current plan" : `Choose ${plan.name}`}
+              {currentTier === plan.id.replace("_monthly", "")
+                ? "Current plan"
+                : `Choose ${plan.name}`}
             </Button>
           </Card>
         ))}

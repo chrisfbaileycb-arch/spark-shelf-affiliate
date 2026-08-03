@@ -1,12 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { listPersonas, generatePersona, setDefaultPersona, deletePersona } from "@/lib/personas.functions";
+import {
+  listPersonas,
+  generatePersona,
+  setDefaultPersona,
+  deletePersona,
+} from "@/lib/personas.functions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Star, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -16,7 +27,11 @@ export const Route = createFileRoute("/_authenticated/personas")({
   head: () => ({
     meta: [
       { title: "Personas — ReelRipper" },
-      { name: "description", content: "Design AI influencer personas with a unique voice, vibe, and catchphrases for every video you rip." },
+      {
+        name: "description",
+        content:
+          "Design AI influencer personas with a unique voice, vibe, and catchphrases for every video you rip.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -28,7 +43,16 @@ type Traits = {
   gender: "female" | "male" | "nonbinary";
   age_range: "18-24" | "25-32" | "33-45" | "46-60";
   vibe: "energetic-genz" | "chill-millennial" | "authoritative-expert" | "warm-mom" | "edgy-cool";
-  niche: "lifestyle" | "tech" | "beauty" | "fitness" | "finance" | "home" | "fashion" | "food" | "parenting";
+  niche:
+    | "lifestyle"
+    | "tech"
+    | "beauty"
+    | "fitness"
+    | "finance"
+    | "home"
+    | "fashion"
+    | "food"
+    | "parenting";
   voice_tone: "bubbly" | "calm" | "confident" | "warm" | "deadpan";
 };
 
@@ -63,12 +87,18 @@ function PersonasPage() {
 
   const setDefaultMut = useMutation({
     mutationFn: (id: string) => sd({ data: { id } }),
-    onSuccess: () => { toast.success("Default updated"); qc.invalidateQueries({ queryKey: ["personas"] }); },
+    onSuccess: () => {
+      toast.success("Default updated");
+      qc.invalidateQueries({ queryKey: ["personas"] });
+    },
   });
 
   const delMut = useMutation({
     mutationFn: (id: string) => dp({ data: { id } }),
-    onSuccess: () => { toast.success("Deleted"); qc.invalidateQueries({ queryKey: ["personas"] }); },
+    onSuccess: () => {
+      toast.success("Deleted");
+      qc.invalidateQueries({ queryKey: ["personas"] });
+    },
   });
 
   return (
@@ -77,13 +107,16 @@ function PersonasPage() {
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cast</p>
         <h1 className="mt-1 font-display text-4xl">Personas</h1>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Your AI influencers. Each persona has its own voice, avatar, and personality — scripts are tailored to sound like them.
+          Your AI influencers. Each persona has its own voice, avatar, and personality — scripts are
+          tailored to sound like them.
         </p>
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
         <div className="space-y-3">
-          {personas.isLoading ? <p className="text-sm text-muted-foreground">Loading…</p> :
+          {personas.isLoading ? (
+            <p className="text-sm text-muted-foreground">Loading…</p>
+          ) : (
             personas.data?.map((p) => (
               <Card key={p.id} className="flex items-start gap-4 p-5">
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-gradient-brand text-lg font-semibold text-primary-foreground">
@@ -92,7 +125,11 @@ function PersonasPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="font-display text-lg">{p.name}</h3>
-                    {p.is_default && <Badge variant="default" className="gap-1"><Star className="h-3 w-3" /> Default</Badge>}
+                    {p.is_default && (
+                      <Badge variant="default" className="gap-1">
+                        <Star className="h-3 w-3" /> Default
+                      </Badge>
+                    )}
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {p.gender} • {p.age_range} • {p.vibe} • {p.niche} • {p.voice_tone}
@@ -101,7 +138,12 @@ function PersonasPage() {
                   {Array.isArray(p.catchphrases) && p.catchphrases.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1">
                       {(p.catchphrases as string[]).map((c, i) => (
-                        <span key={i} className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">"{c}"</span>
+                        <span
+                          key={i}
+                          className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground"
+                        >
+                          "{c}"
+                        </span>
                       ))}
                     </div>
                   )}
@@ -112,39 +154,85 @@ function PersonasPage() {
                       <Star className="h-4 w-4" />
                     </Button>
                   )}
-                  <Button size="sm" variant="ghost" onClick={() => { if (confirm(`Delete ${p.name}?`)) delMut.mutate(p.id); }}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      if (confirm(`Delete ${p.name}?`)) delMut.mutate(p.id);
+                    }}
+                  >
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
               </Card>
-            ))}
+            ))
+          )}
         </div>
 
         <Card className="space-y-4 p-6">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Generator</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Generator
+            </p>
             <h2 className="mt-1 font-display text-2xl">Create a persona</h2>
           </div>
 
           <div className="space-y-3">
             <div>
               <Label>Name</Label>
-              <Input value={traits.name} onChange={(e) => setTraits({ ...traits, name: e.target.value })} placeholder="e.g. Sienna" />
+              <Input
+                value={traits.name}
+                onChange={(e) => setTraits({ ...traits, name: e.target.value })}
+                placeholder="e.g. Sienna"
+              />
             </div>
 
-            {([
-              ["gender", ["female", "male", "nonbinary"]],
-              ["age_range", ["18-24", "25-32", "33-45", "46-60"]],
-              ["vibe", ["energetic-genz", "chill-millennial", "authoritative-expert", "warm-mom", "edgy-cool"]],
-              ["niche", ["lifestyle", "tech", "beauty", "fitness", "finance", "home", "fashion", "food", "parenting"]],
-              ["voice_tone", ["bubbly", "calm", "confident", "warm", "deadpan"]],
-            ] as const).map(([field, opts]) => (
+            {(
+              [
+                ["gender", ["female", "male", "nonbinary"]],
+                ["age_range", ["18-24", "25-32", "33-45", "46-60"]],
+                [
+                  "vibe",
+                  [
+                    "energetic-genz",
+                    "chill-millennial",
+                    "authoritative-expert",
+                    "warm-mom",
+                    "edgy-cool",
+                  ],
+                ],
+                [
+                  "niche",
+                  [
+                    "lifestyle",
+                    "tech",
+                    "beauty",
+                    "fitness",
+                    "finance",
+                    "home",
+                    "fashion",
+                    "food",
+                    "parenting",
+                  ],
+                ],
+                ["voice_tone", ["bubbly", "calm", "confident", "warm", "deadpan"]],
+              ] as const
+            ).map(([field, opts]) => (
               <div key={field}>
                 <Label className="capitalize">{field.replace("_", " ")}</Label>
-                <Select value={traits[field]} onValueChange={(v) => setTraits({ ...traits, [field]: v } as Traits)}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                <Select
+                  value={traits[field]}
+                  onValueChange={(v) => setTraits({ ...traits, [field]: v } as Traits)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
                   <SelectContent>
-                    {opts.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+                    {opts.map((o) => (
+                      <SelectItem key={o} value={o}>
+                        {o}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -155,7 +243,15 @@ function PersonasPage() {
               disabled={genMut.isPending || !traits.name.trim()}
               className="w-full"
             >
-              {genMut.isPending ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating…</> : <><Sparkles className="mr-2 h-4 w-4" /> Generate persona</>}
+              {genMut.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating…
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-4 w-4" /> Generate persona
+                </>
+              )}
             </Button>
           </div>
         </Card>
