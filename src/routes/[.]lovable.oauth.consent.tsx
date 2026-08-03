@@ -16,21 +16,15 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
   loader: async ({ location }) => {
     const authorizationId = new URLSearchParams(location.search).get("authorization_id")!;
     const oauth = supabase.auth.oauth as unknown as {
-      getAuthorizationDetails: (
-        id: string,
-      ) => Promise<{
+      getAuthorizationDetails: (id: string) => Promise<{
         data?: { redirect_url?: string; redirect_to?: string; client?: { name?: string } };
         error?: { message: string };
       }>;
-      approveAuthorization: (
-        id: string,
-      ) => Promise<{
+      approveAuthorization: (id: string) => Promise<{
         data?: { redirect_url?: string; redirect_to?: string };
         error?: { message: string };
       }>;
-      denyAuthorization: (
-        id: string,
-      ) => Promise<{
+      denyAuthorization: (id: string) => Promise<{
         data?: { redirect_url?: string; redirect_to?: string };
         error?: { message: string };
       }>;
@@ -61,15 +55,11 @@ function Consent() {
   async function decide(approve: boolean) {
     setBusy(true);
     const oauth = supabase.auth.oauth as unknown as {
-      approveAuthorization: (
-        id: string,
-      ) => Promise<{
+      approveAuthorization: (id: string) => Promise<{
         data?: { redirect_url?: string; redirect_to?: string };
         error?: { message: string };
       }>;
-      denyAuthorization: (
-        id: string,
-      ) => Promise<{
+      denyAuthorization: (id: string) => Promise<{
         data?: { redirect_url?: string; redirect_to?: string };
         error?: { message: string };
       }>;
