@@ -36,5 +36,9 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    files: ["src/routes/mcp.ts", "src/routes/[.mcp]/**", "src/routes/[.well-known]/oauth-protected-resource.ts"],
+    rules: { "prettier/prettier": "off" },
+  },
   eslintPluginPrettier,
 );
