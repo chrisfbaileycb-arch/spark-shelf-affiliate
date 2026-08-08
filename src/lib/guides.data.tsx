@@ -85,7 +85,7 @@ export const GUIDES: Record<string, Guide> = {
             to="/auth"
             className="mt-4 inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95"
           >
-            Start ripping
+            Start free
           </Link>
         </div>
       </>

@@ -216,11 +216,50 @@ export const generateVideo = createServerFn({ method: "POST" })
     const avatarId = persona?.heygen_avatar_id || DEFAULT_AVATAR;
     const voiceId = persona?.elevenlabs_voice_id || DEFAULT_VOICE;
 
-    // Quota check & decrement BEFORE doing any expensive work.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Platform spend guardrails: kill switch + daily global and per-user render caps.
+    const { data: settings } = await supabaseAdmin
+      .from("app_settings")
+      .select("generation_enabled, daily_global_video_cap, per_user_daily_video_cap, pause_reason")
+      .eq("id", true)
+      .maybeSingle();
+    if (settings && !settings.generation_enabled) {
+      throw new Error(
+        settings.pause_reason ||
+          "Video generation is temporarily paused for maintenance. Please try again shortly.",
+      );
+    }
+    const dayStart = new Date();
+    dayStart.setUTCHours(0, 0, 0, 0);
+    const since = dayStart.toISOString();
+    const [{ count: globalToday }, { count: userToday }] = await Promise.all([
+      supabaseAdmin
+        .from("videos")
+        .select("id", { count: "exact", head: true })
+        .gte("created_at", since),
+      supabaseAdmin
+        .from("videos")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", userId)
+        .gte("created_at", since),
+    ]);
+    if (settings && (globalToday ?? 0) >= settings.daily_global_video_cap) {
+      throw new Error(
+        "We've hit today's platform-wide rendering limit. Your quota is safe — try again tomorrow.",
+      );
+    }
+    if (settings && (userToday ?? 0) >= settings.per_user_daily_video_cap) {
+      throw new Error(
+        `Daily limit reached (${settings.per_user_daily_video_cap} videos/day). Your monthly quota is untouched — try again tomorrow.`,
+      );
+    }
+
+    // Quota check & decrement BEFORE doing any expensive work.
     const { data: quotaResult, error: qErr } = await supabaseAdmin.rpc("consume_video_quota", {
       _user_id: userId,
     });
+
     if (qErr) throw new Error(qErr.message);
     const qr = quotaResult as {
       ok: boolean;

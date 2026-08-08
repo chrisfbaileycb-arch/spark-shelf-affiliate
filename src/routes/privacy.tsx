@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { OPERATOR, SUPPORT_EMAIL } from "@/lib/brand";
 import { PublicFooter } from "@/components/PublicFooter";
 import { PublicNav } from "@/components/PublicNav";
 
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/privacy")({
       {
         name: "description",
         content:
-          "How Influencer Echo collects, uses, and protects your data. Operated by Signal F Holdings LLC.",
+          "How Influencer Echo collects, uses, and protects your data, operated as an independent sole proprietorship.",
       },
       { property: "og:title", content: "Influencer Echo Privacy Policy" },
       { property: "og:type", content: "website" },
@@ -29,9 +30,9 @@ function Privacy() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          This page describes the personal information Influencer Echo ("we", operated by Signal F
-          Holdings LLC) collects, why we collect it, and the choices you have. This policy is
-          maintained by the app owner and describes current practices.
+          This page describes the personal information Influencer Echo ("we", operated by {OPERATOR}
+          ) collects, why we collect it, and the choices you have. This policy is maintained by the
+          app owner and describes current practices.
         </p>
 
         <h2>1. Information we collect</h2>
@@ -108,7 +109,9 @@ function Privacy() {
         </p>
 
         <h2>10. Contact</h2>
-        <p>Signal F Holdings LLC, Wyoming, USA. Email support@influencerecho.app.</p>
+        <p>
+          {OPERATOR}, United States. Email {SUPPORT_EMAIL}.
+        </p>
       </article>
       <PublicFooter />
     </div>

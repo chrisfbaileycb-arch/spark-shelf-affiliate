@@ -157,7 +157,7 @@ function ProductDetail() {
           <Card className="space-y-4 bg-gradient-brand p-6 text-primary-foreground shadow-pop">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider opacity-80">
-                Ready to rip?
+                Ready to create?
               </p>
               <p className="mt-1 font-display text-2xl">Generate the 15s video</p>
               <p className="mt-1 text-sm opacity-80">AI script + influencer voiceover.</p>

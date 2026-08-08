@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { OPERATOR, SUPPORT_EMAIL } from "@/lib/brand";
 
 export function PublicFooter() {
   return (
@@ -6,9 +7,10 @@ export function PublicFooter() {
       <div className="mx-auto max-w-6xl px-6 py-10">
         <p className="rounded-xl border border-border bg-surface px-4 py-3 text-xs text-muted-foreground">
           <strong className="text-foreground">Disclosure:</strong> Influencer Echo produces
-          AI-generated videos featuring synthetic avatars — not real endorsers. When you publish a
+          AI-generated videos featuring synthetic avatars — not real endorsers. When you publish an
           Influencer Echo video that promotes a product for commission, you must disclose the paid
-          relationship (e.g. <code>#ad</code>) and toggle each platform's AI-content label. See our{" "}
+          relationship (e.g. <code>#ad</code>) and toggle each platform&apos;s AI-content label. See
+          our{" "}
           <Link to="/affiliate-disclosure" className="underline hover:text-foreground">
             Affiliate Disclosure
           </Link>
@@ -16,9 +18,9 @@ export function PublicFooter() {
         </p>
         <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Signal F Holdings LLC. Influencer Echo is a product of
-            Signal F Holdings LLC.
+            © {new Date().getFullYear()} {OPERATOR}. Support: {SUPPORT_EMAIL}
           </p>
+
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
             <Link to="/how-it-works" className="hover:text-foreground">
               How it works
