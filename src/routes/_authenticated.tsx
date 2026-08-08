@@ -1,3 +1,4 @@
+import { BrandMark } from "@/components/BrandMark";
 import { createFileRoute, Outlet, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";

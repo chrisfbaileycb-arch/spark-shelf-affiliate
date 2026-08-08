@@ -10,7 +10,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, ArrowRight, Video as VideoIcon, Package } from "lucide-react";
 
-
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
@@ -39,7 +38,6 @@ function Dashboard() {
 
   return (
     <div className="space-y-10">
-
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
