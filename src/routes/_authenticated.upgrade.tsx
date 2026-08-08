@@ -14,11 +14,11 @@ import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 export const Route = createFileRoute("/_authenticated/upgrade")({
   head: () => ({
     meta: [
-      { title: "Pricing — ReelRipper" },
+      { title: "Pricing — Influencer Echo" },
       {
         name: "description",
         content:
-          "Starter and Pro plans for ReelRipper — 15 or 30 AI affiliate videos every month, cancel anytime.",
+          "Starter and Pro plans for Influencer Echo — 15 or 30 AI affiliate videos every month, cancel anytime.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

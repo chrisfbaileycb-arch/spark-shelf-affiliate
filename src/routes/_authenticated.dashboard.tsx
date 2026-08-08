@@ -10,11 +10,11 @@ import { Plus, ArrowRight, Video as VideoIcon, Package } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — ReelRipper" },
+      { title: "Dashboard — Influencer Echo" },
       {
         name: "description",
         content:
-          "Your ReelRipper command center: recent videos, quota usage, and one-tap product ripping.",
+          "Your Influencer Echo command center: recent videos, quota usage, and one-tap product ripping.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

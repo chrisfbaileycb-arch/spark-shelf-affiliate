@@ -88,7 +88,7 @@ function Consent() {
           Connect {details?.client?.name ?? "an app"} to your account
         </h1>
         <p className="mt-2 text-muted-foreground">
-          This lets {details?.client?.name ?? "the client"} use ReelRipper as you — read your
+          This lets {details?.client?.name ?? "the client"} use Influencer Echo as you — read your
           products, videos, personas, and create affiliate links on your behalf.
         </p>
         {error && (

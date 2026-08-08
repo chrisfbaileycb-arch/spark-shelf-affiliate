@@ -6,13 +6,13 @@ import { PublicFooter } from "@/components/PublicFooter";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ReelRipper — AI affiliate videos in one click" },
+      { title: "Influencer Echo — AI affiliate videos in one click" },
       {
         name: "description",
         content:
           "Paste any product URL and get a 15-second AI influencer video with voiceover, captions, and a tracked affiliate link — ready to post on TikTok, Reels, and Shorts.",
       },
-      { property: "og:title", content: "ReelRipper — AI affiliate videos in one click" },
+      { property: "og:title", content: "Influencer Echo — AI affiliate videos in one click" },
       {
         property: "og:description",
         content: "Paste a product URL, get an AI influencer video. Hands-off affiliate marketing.",
@@ -29,20 +29,20 @@ export const Route = createFileRoute("/")({
           "@graph": [
             {
               "@type": "Organization",
-              name: "ReelRipper",
+              name: "Influencer Echo",
               description: "AI-generated 15-second influencer videos for affiliate marketing.",
               url: "/",
             },
             {
               "@type": "WebSite",
-              name: "ReelRipper",
+              name: "Influencer Echo",
               url: "/",
               description:
                 "Turn any product URL into a scroll-stopping 15-second AI affiliate video.",
             },
             {
               "@type": "SoftwareApplication",
-              name: "ReelRipper",
+              name: "Influencer Echo",
               applicationCategory: "MultimediaApplication",
               operatingSystem: "Web",
               offers: [
@@ -74,9 +74,9 @@ function Landing() {
               15-second video.
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg text-muted-foreground">
-              Paste a product URL. ReelRipper writes the hook, generates an AI female-influencer
-              voiceover, mocks up the visuals, and hands you short-form videos optimized for TikTok,
-              YouTube Shorts, and Facebook Reels.
+              Paste a product URL. Influencer Echo writes the hook, generates an AI
+              female-influencer voiceover, mocks up the visuals, and hands you short-form videos
+              optimized for TikTok, YouTube Shorts, and Facebook Reels.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

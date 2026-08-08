@@ -10,7 +10,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/videos/$id")({
   head: () => ({
     meta: [
-      { title: "Video — ReelRipper" },
+      { title: "Video — Influencer Echo" },
       {
         name: "description",
         content: "Preview, download, and share your AI-generated affiliate video.",

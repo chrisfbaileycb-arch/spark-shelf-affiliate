@@ -5,13 +5,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
-      { title: "Cookie Policy — ReelRipper" },
+      { title: "Cookie Policy — Influencer Echo" },
       {
         name: "description",
         content:
-          "The cookies and local storage ReelRipper uses, why we use them, and how to control them.",
+          "The cookies and local storage Influencer Echo uses, why we use them, and how to control them.",
       },
-      { property: "og:title", content: "ReelRipper Cookie Policy" },
+      { property: "og:title", content: "Influencer Echo Cookie Policy" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/cookies" },
     ],
@@ -29,8 +29,8 @@ function Cookies() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          ReelRipper (operated by Signal F Holdings LLC) uses a small set of first-party cookies and
-          browser storage to keep you signed in and to make the product work. We do{" "}
+          Influencer Echo (operated by Signal F Holdings LLC) uses a small set of first-party
+          cookies and browser storage to keep you signed in and to make the product work. We do{" "}
           <strong>not</strong> use third-party advertising cookies, cross-site tracking pixels, or
           behavioral ad networks.
         </p>
@@ -56,7 +56,7 @@ function Cookies() {
             </tr>
             <tr>
               <td>
-                <code>reelripper_ref</code>
+                <code>influencer-echo_ref</code>
               </td>
               <td>Local storage (functional)</td>
               <td>
@@ -67,7 +67,7 @@ function Cookies() {
             </tr>
             <tr>
               <td>
-                <code>__reelripper_error_buffer</code>
+                <code>__influencer-echo_error_buffer</code>
               </td>
               <td>Session storage (functional)</td>
               <td>
@@ -115,7 +115,7 @@ function Cookies() {
         </p>
 
         <h2>Contact</h2>
-        <p>Questions? Email support@reelripper.app.</p>
+        <p>Questions? Email support@influencerecho.app.</p>
       </article>
       <PublicFooter />
     </div>

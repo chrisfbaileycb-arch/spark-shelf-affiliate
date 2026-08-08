@@ -5,13 +5,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service — ReelRipper" },
+      { title: "Terms of Service — Influencer Echo" },
       {
         name: "description",
         content:
-          "The terms governing your use of ReelRipper, an AI affiliate video generation service operated by Signal F Holdings LLC.",
+          "The terms governing your use of Influencer Echo, an AI affiliate video generation service operated by Signal F Holdings LLC.",
       },
-      { property: "og:title", content: "ReelRipper Terms of Service" },
+      { property: "og:title", content: "Influencer Echo Terms of Service" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/terms" },
     ],
@@ -29,16 +29,16 @@ function Terms() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          These Terms of Service ("Terms") govern your access to and use of ReelRipper (the
+          These Terms of Service ("Terms") govern your access to and use of Influencer Echo (the
           "Service"), operated by Signal F Holdings LLC ("we", "us"). By creating an account or
           using the Service you agree to these Terms.
         </p>
 
         <h2>1. The Service</h2>
         <p>
-          ReelRipper lets you ingest publicly-available product URLs and generate short AI-produced
-          videos incorporating a synthetic voice, avatar, and script for use in affiliate marketing.
-          You are solely responsible for how you use the generated videos.
+          Influencer Echo lets you ingest publicly-available product URLs and generate short
+          AI-produced videos incorporating a synthetic voice, avatar, and script for use in
+          affiliate marketing. You are solely responsible for how you use the generated videos.
         </p>
 
         <h2>2. Your account</h2>
@@ -59,9 +59,9 @@ function Terms() {
 
         <h2>4. Affiliate programs and disclosure</h2>
         <p>
-          ReelRipper does not enroll you in any affiliate program. You are responsible for signing
-          up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying with
-          their rules, paying any applicable taxes on commissions, and making all disclosures
+          Influencer Echo does not enroll you in any affiliate program. You are responsible for
+          signing up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying
+          with their rules, paying any applicable taxes on commissions, and making all disclosures
           required by law and by the platforms where you publish. See our{" "}
           <a href="/affiliate-disclosure">Affiliate Disclosure</a> for details, including FTC and
           platform-specific requirements around AI-generated creators.
@@ -115,7 +115,7 @@ function Terms() {
         </p>
 
         <h2>12. Contact</h2>
-        <p>Questions? Email support@reelripper.app.</p>
+        <p>Questions? Email support@influencerecho.app.</p>
       </article>
       <PublicFooter />
     </div>

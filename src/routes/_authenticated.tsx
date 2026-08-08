@@ -59,7 +59,7 @@ function AuthLayout() {
             <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-brand text-primary-foreground">
               <Sparkles className="h-4 w-4" />
             </div>
-            <span className="font-display text-lg font-semibold">ReelRipper</span>
+            <span className="font-display text-lg font-semibold">Influencer Echo</span>
           </Link>
           <nav className="space-y-1">
             {NAV.map((item) => {

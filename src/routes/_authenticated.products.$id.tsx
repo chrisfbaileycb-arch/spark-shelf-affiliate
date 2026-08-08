@@ -23,10 +23,10 @@ import { useState, useEffect } from "react";
 export const Route = createFileRoute("/_authenticated/products/$id")({
   head: () => ({
     meta: [
-      { title: "Product — ReelRipper" },
+      { title: "Product — Influencer Echo" },
       {
         name: "description",
-        content: "Product details and video generation options for this ReelRipper item.",
+        content: "Product details and video generation options for this Influencer Echo item.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

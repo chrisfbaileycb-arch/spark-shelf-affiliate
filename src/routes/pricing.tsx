@@ -6,13 +6,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — ReelRipper" },
+      { title: "Pricing — Influencer Echo" },
       {
         name: "description",
         content:
           "Simple flat pricing. Starter at $29.95/mo for 15 AI affiliate videos. Pro at $59.95/mo for 30. Cancel anytime. 3 videos free to start.",
       },
-      { property: "og:title", content: "ReelRipper Pricing — Starter & Pro plans" },
+      { property: "og:title", content: "Influencer Echo Pricing — Starter & Pro plans" },
       {
         property: "og:description",
         content: "15 or 30 AI-generated affiliate videos every month. Cancel anytime.",

@@ -5,12 +5,12 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/refunds")({
   head: () => ({
     meta: [
-      { title: "Refund Policy — ReelRipper" },
+      { title: "Refund Policy — Influencer Echo" },
       {
         name: "description",
-        content: "ReelRipper's refund policy for subscription plans and video credits.",
+        content: "Influencer Echo's refund policy for subscription plans and video credits.",
       },
-      { property: "og:title", content: "ReelRipper Refund Policy" },
+      { property: "og:title", content: "Influencer Echo Refund Policy" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/refunds" },
     ],
@@ -30,7 +30,7 @@ function Refunds() {
         <h2>Free trial</h2>
         <p>
           Every new account gets 3 free videos before entering any paid plan. Use the trial to
-          decide whether ReelRipper fits your workflow.
+          decide whether Influencer Echo fits your workflow.
         </p>
 
         <h2>Monthly subscriptions</h2>
@@ -59,8 +59,8 @@ function Refunds() {
 
         <h2>How to request</h2>
         <p>
-          Email support@reelripper.app from the address on your account with your Stripe receipt. We
-          respond within 3 business days.
+          Email support@influencerecho.app from the address on your account with your Stripe
+          receipt. We respond within 3 business days.
         </p>
 
         <h2>Chargebacks</h2>

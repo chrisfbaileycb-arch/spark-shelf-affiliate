@@ -6,13 +6,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
     meta: [
-      { title: "How ReelRipper works — Product URL to affiliate video in 60 seconds" },
+      { title: "How Influencer Echo works — Product URL to affiliate video in 60 seconds" },
       {
         name: "description",
         content:
           "See the 4-step pipeline: paste a product URL, AI ingests it, generates a 15s influencer video with voiceover, and hands you a tracked affiliate link.",
       },
-      { property: "og:title", content: "How ReelRipper works" },
+      { property: "og:title", content: "How Influencer Echo works" },
       {
         property: "og:description",
         content: "From product URL to postable affiliate video in under a minute.",
