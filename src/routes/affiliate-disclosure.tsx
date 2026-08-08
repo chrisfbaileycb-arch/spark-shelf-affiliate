@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { OPERATOR } from "@/lib/brand";
 import { PublicFooter } from "@/components/PublicFooter";
 import { PublicNav } from "@/components/PublicNav";
 
@@ -37,10 +38,10 @@ function Disclosure() {
 
         <h2>1. Influencer Echo's own affiliate relationships</h2>
         <p>
-          Signal F Holdings LLC (the operator of Influencer Echo) may earn referral or affiliate
-          compensation from third-party services we recommend inside the product or on this site —
-          for example, Stripe, HeyGen, ElevenLabs, or affiliate networks. This never changes the
-          price you pay, and we only recommend tools we actually use to build Influencer Echo.
+          {OPERATOR} (the operator of Influencer Echo) may earn referral or affiliate compensation
+          from third-party services we recommend inside the product or on this site — for example,
+          Stripe, HeyGen, ElevenLabs, or affiliate networks. This never changes the price you pay,
+          and we only recommend tools we actually use to build Influencer Echo.
         </p>
 
         <h2>2. Your responsibility as a Influencer Echo user</h2>

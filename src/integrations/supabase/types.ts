@@ -98,6 +98,33 @@ export type Database = {
         }
         Relationships: []
       }
+      app_settings: {
+        Row: {
+          daily_global_video_cap: number
+          generation_enabled: boolean
+          id: boolean
+          pause_reason: string | null
+          per_user_daily_video_cap: number
+          updated_at: string
+        }
+        Insert: {
+          daily_global_video_cap?: number
+          generation_enabled?: boolean
+          id?: boolean
+          pause_reason?: string | null
+          per_user_daily_video_cap?: number
+          updated_at?: string
+        }
+        Update: {
+          daily_global_video_cap?: number
+          generation_enabled?: boolean
+          id?: boolean
+          pause_reason?: string | null
+          per_user_daily_video_cap?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       link_clicks: {
         Row: {
           affiliate_link_id: string

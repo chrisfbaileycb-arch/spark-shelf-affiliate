@@ -3,9 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listVideos } from "@/lib/videos.functions";
 import { listProducts } from "@/lib/products.functions";
+import { listPersonas } from "@/lib/personas.functions";
+import { listPrograms } from "@/lib/affiliate.functions";
+import { OnboardingChecklist } from "@/components/OnboardingChecklist";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, ArrowRight, Video as VideoIcon, Package } from "lucide-react";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -26,17 +30,22 @@ function Dashboard() {
   const navigate = useNavigate();
   const lv = useServerFn(listVideos);
   const lp = useServerFn(listProducts);
+  const lpe = useServerFn(listPersonas);
+  const lpr = useServerFn(listPrograms);
   const videos = useQuery({ queryKey: ["videos"], queryFn: () => lv() });
   const products = useQuery({ queryKey: ["products"], queryFn: () => lp() });
+  const personas = useQuery({ queryKey: ["personas"], queryFn: () => lpe() });
+  const programs = useQuery({ queryKey: ["programs"], queryFn: () => lpr() });
 
   return (
     <div className="space-y-10">
+
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Studio
           </p>
-          <h1 className="mt-1 font-display text-4xl">Let's rip another one.</h1>
+          <h1 className="mt-1 font-display text-4xl">Let&apos;s echo another one.</h1>
         </div>
         <Button
           onClick={() => navigate({ to: "/products/new" })}
@@ -47,12 +56,20 @@ function Dashboard() {
         </Button>
       </header>
 
+      <OnboardingChecklist
+        hasPersona={(personas.data?.length ?? 0) > 0}
+        hasProduct={(products.data?.length ?? 0) > 0}
+        hasProgram={(programs.data?.length ?? 0) > 0}
+        hasVideo={(videos.data?.length ?? 0) > 0}
+      />
+
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard label="Videos generated" value={videos.data?.length ?? 0} icon={VideoIcon} />
         <StatCard label="Products ingested" value={products.data?.length ?? 0} icon={Package} />
         <Card className="flex items-center justify-between bg-gradient-brand p-6 text-primary-foreground shadow-pop">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider opacity-80">Quick rip</p>
+            <p className="text-xs font-semibold uppercase tracking-wider opacity-80">Quick start</p>
+
             <p className="mt-1 font-display text-2xl">Paste a product URL</p>
           </div>
           <Link

@@ -1,15 +1,14 @@
 import { Link } from "@tanstack/react-router";
-import { Sparkles } from "lucide-react";
+import { BrandMark } from "@/components/BrandMark";
 
 export function PublicNav() {
   return (
     <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
       <Link to="/" className="flex items-center gap-2">
-        <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-pop">
-          <Sparkles className="h-5 w-5" />
-        </div>
+        <BrandMark />
         <span className="font-display text-xl font-semibold tracking-tight">Influencer Echo</span>
       </Link>
+
       <nav className="flex items-center gap-1 md:gap-2">
         <Link
           to="/how-it-works"

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { OPERATOR } from "@/lib/brand";
 import { PublicFooter } from "@/components/PublicFooter";
 import { PublicNav } from "@/components/PublicNav";
 
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/terms")({
       {
         name: "description",
         content:
-          "The terms governing your use of Influencer Echo, an AI affiliate video generation service operated by Signal F Holdings LLC.",
+          "The terms governing your use of Influencer Echo, an AI affiliate video generation service.",
       },
       { property: "og:title", content: "Influencer Echo Terms of Service" },
       { property: "og:type", content: "website" },
@@ -30,8 +31,8 @@ function Terms() {
 
         <p>
           These Terms of Service ("Terms") govern your access to and use of Influencer Echo (the
-          "Service"), operated by Signal F Holdings LLC ("we", "us"). By creating an account or
-          using the Service you agree to these Terms.
+          "Service"), operated by {OPERATOR} ("we", "us"). By creating an account or using the
+          Service you agree to these Terms.
         </p>
 
         <h2>1. The Service</h2>
