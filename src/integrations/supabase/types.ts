@@ -533,7 +533,7 @@ export type Database = {
     Enums: {
       app_role: "admin" | "user"
       sub_status: "active" | "past_due" | "canceled" | "trialing"
-      sub_tier: "trial" | "starter" | "pro"
+      sub_tier: "trial" | "starter" | "pro" | "test"
       video_status:
         | "pending"
         | "scripting"
@@ -672,7 +672,7 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "user"],
       sub_status: ["active", "past_due", "canceled", "trialing"],
-      sub_tier: ["trial", "starter", "pro"],
+      sub_tier: ["trial", "starter", "pro", "test"],
       video_status: [
         "pending",
         "scripting",

@@ -1,0 +1,1 @@
+ALTER TYPE public.sub_tier ADD VALUE IF NOT EXISTS 'test';
