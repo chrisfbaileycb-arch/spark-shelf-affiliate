@@ -56,9 +56,8 @@ function AuthLayout() {
       <div className="mx-auto flex max-w-[1400px]">
         <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-surface px-4 py-6 md:flex">
           <Link to="/dashboard" className="mb-8 flex items-center gap-2 px-2">
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-brand text-primary-foreground">
-              <Sparkles className="h-4 w-4" />
-            </div>
+            <BrandMark className="h-8 w-8 rounded-lg" />
+
             <span className="font-display text-lg font-semibold">Influencer Echo</span>
           </Link>
           <nav className="space-y-1">
