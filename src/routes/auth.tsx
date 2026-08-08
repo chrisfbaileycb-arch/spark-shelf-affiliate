@@ -101,7 +101,7 @@ function AuthPage() {
             {mode === "signin" ? "Welcome back" : "Create your account"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {mode === "signin" ? "Sign in to keep ripping." : "Free. No card required."}
+            {mode === "signin" ? "Sign in to keep creating." : "Free. No card required."}
           </p>
           {refCode && mode === "signup" && (
             <p className="mt-2 rounded-md bg-primary/10 px-3 py-2 text-xs text-primary">

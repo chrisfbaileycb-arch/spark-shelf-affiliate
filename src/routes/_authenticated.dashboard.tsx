@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       {
         name: "description",
         content:
-          "Your Influencer Echo command center: recent videos, quota usage, and one-tap product ripping.",
+          "Your Influencer Echo command center: recent videos, quota usage, and one-tap product ingestion.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

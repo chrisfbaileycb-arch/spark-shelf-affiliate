@@ -12,7 +12,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/products/new")({
   head: () => ({
     meta: [
-      { title: "Rip a new product — Influencer Echo" },
+      { title: "Add a new product — Influencer Echo" },
       {
         name: "description",
         content:

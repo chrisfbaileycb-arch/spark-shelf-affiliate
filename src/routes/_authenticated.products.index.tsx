@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/products/")({
       {
         name: "description",
         content:
-          "Every product you've ripped into Influencer Echo, ready to turn into a 15-second affiliate video.",
+          "Every product you've added to Influencer Echo, ready to turn into a 15-second affiliate video.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

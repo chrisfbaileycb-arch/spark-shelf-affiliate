@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_authenticated/personas")({
       {
         name: "description",
         content:
-          "Design AI influencer personas with a unique voice, vibe, and catchphrases for every video you rip.",
+          "Design AI influencer personas with a unique voice, vibe, and catchphrases for every video you create.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],
