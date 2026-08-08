@@ -29,8 +29,8 @@ function Disclosure() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          Influencer Echo is a tool that helps creators produce affiliate marketing videos. This page
-          explains both how <strong>we</strong> use affiliate relationships and what{" "}
+          Influencer Echo is a tool that helps creators produce affiliate marketing videos. This
+          page explains both how <strong>we</strong> use affiliate relationships and what{" "}
           <strong>you</strong> as a Influencer Echo user are responsible for when publishing videos
           generated with our service.
         </p>
@@ -45,8 +45,8 @@ function Disclosure() {
 
         <h2>2. Your responsibility as a Influencer Echo user</h2>
         <p>
-          When you use Influencer Echo to generate a video for a product you promote via an affiliate
-          network (Amazon Associates, TikTok Shop, ShareASale, Impact, CJ, etc.),{" "}
+          When you use Influencer Echo to generate a video for a product you promote via an
+          affiliate network (Amazon Associates, TikTok Shop, ShareASale, Impact, CJ, etc.),{" "}
           <strong>you are the advertiser</strong>. You are legally required to:
         </p>
         <ul>
@@ -64,8 +64,8 @@ function Disclosure() {
           <li>
             <strong>Disclose the use of AI</strong> where required. TikTok, Meta, and YouTube each
             require creators to label AI-generated or AI-modified content that depicts
-            realistic-looking people or scenes. Influencer Echo videos meet that bar — always toggle the
-            platform's AI content label on.
+            realistic-looking people or scenes. Influencer Echo videos meet that bar — always toggle
+            the platform's AI content label on.
           </li>
           <li>
             <strong>Comply with each affiliate network's terms</strong> — Amazon Associates
@@ -89,8 +89,8 @@ function Disclosure() {
 
         <h2>4. AI-generated persona notice</h2>
         <p>
-          The creators who appear in Influencer Echo videos are AI avatars, not real endorsers. You may
-          not present them as real customers or real professionals (doctors, dentists, lawyers,
+          The creators who appear in Influencer Echo videos are AI avatars, not real endorsers. You
+          may not present them as real customers or real professionals (doctors, dentists, lawyers,
           financial advisors, etc.) making claims about a product.
         </p>
 

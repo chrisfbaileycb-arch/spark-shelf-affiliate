@@ -94,7 +94,8 @@ function Privacy() {
         <p>
           Data is encrypted in transit (HTTPS) and at rest by our infrastructure providers.
           Row-level security policies enforce that users can only access their own records. No
-          system is perfectly secure — report suspected vulnerabilities to security@influencerecho.app.
+          system is perfectly secure — report suspected vulnerabilities to
+          security@influencerecho.app.
         </p>
 
         <h2>8. Children</h2>

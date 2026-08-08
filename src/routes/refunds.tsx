@@ -59,8 +59,8 @@ function Refunds() {
 
         <h2>How to request</h2>
         <p>
-          Email support@influencerecho.app from the address on your account with your Stripe receipt. We
-          respond within 3 business days.
+          Email support@influencerecho.app from the address on your account with your Stripe
+          receipt. We respond within 3 business days.
         </p>
 
         <h2>Chargebacks</h2>

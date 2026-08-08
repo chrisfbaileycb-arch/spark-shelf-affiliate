@@ -15,7 +15,8 @@ export const Route = createFileRoute("/_authenticated/billing")({
       { title: "Billing & referrals — Influencer Echo" },
       {
         name: "description",
-        content: "Manage your Influencer Echo subscription, video quota, and refer-and-earn credits.",
+        content:
+          "Manage your Influencer Echo subscription, video quota, and refer-and-earn credits.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

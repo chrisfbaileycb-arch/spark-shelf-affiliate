@@ -74,9 +74,9 @@ function Landing() {
               15-second video.
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg text-muted-foreground">
-              Paste a product URL. Influencer Echo writes the hook, generates an AI female-influencer
-              voiceover, mocks up the visuals, and hands you short-form videos optimized for TikTok,
-              YouTube Shorts, and Facebook Reels.
+              Paste a product URL. Influencer Echo writes the hook, generates an AI
+              female-influencer voiceover, mocks up the visuals, and hands you short-form videos
+              optimized for TikTok, YouTube Shorts, and Facebook Reels.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

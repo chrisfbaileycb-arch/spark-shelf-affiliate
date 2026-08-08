@@ -12,7 +12,10 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — Influencer Echo" },
-      { name: "description", content: "Sign in to Influencer Echo to generate AI affiliate videos." },
+      {
+        name: "description",
+        content: "Sign in to Influencer Echo to generate AI affiliate videos.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

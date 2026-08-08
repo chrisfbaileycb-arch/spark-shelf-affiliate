@@ -36,9 +36,9 @@ function Terms() {
 
         <h2>1. The Service</h2>
         <p>
-          Influencer Echo lets you ingest publicly-available product URLs and generate short AI-produced
-          videos incorporating a synthetic voice, avatar, and script for use in affiliate marketing.
-          You are solely responsible for how you use the generated videos.
+          Influencer Echo lets you ingest publicly-available product URLs and generate short
+          AI-produced videos incorporating a synthetic voice, avatar, and script for use in
+          affiliate marketing. You are solely responsible for how you use the generated videos.
         </p>
 
         <h2>2. Your account</h2>
@@ -59,9 +59,9 @@ function Terms() {
 
         <h2>4. Affiliate programs and disclosure</h2>
         <p>
-          Influencer Echo does not enroll you in any affiliate program. You are responsible for signing
-          up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying with
-          their rules, paying any applicable taxes on commissions, and making all disclosures
+          Influencer Echo does not enroll you in any affiliate program. You are responsible for
+          signing up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying
+          with their rules, paying any applicable taxes on commissions, and making all disclosures
           required by law and by the platforms where you publish. See our{" "}
           <a href="/affiliate-disclosure">Affiliate Disclosure</a> for details, including FTC and
           platform-specific requirements around AI-generated creators.

@@ -29,8 +29,8 @@ function Cookies() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          Influencer Echo (operated by Signal F Holdings LLC) uses a small set of first-party cookies and
-          browser storage to keep you signed in and to make the product work. We do{" "}
+          Influencer Echo (operated by Signal F Holdings LLC) uses a small set of first-party
+          cookies and browser storage to keep you signed in and to make the product work. We do{" "}
           <strong>not</strong> use third-party advertising cookies, cross-site tracking pixels, or
           behavioral ad networks.
         </p>
