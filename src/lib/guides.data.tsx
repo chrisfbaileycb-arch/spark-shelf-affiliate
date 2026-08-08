@@ -37,7 +37,7 @@ export const GUIDES: Record<string, Guide> = {
         <h2>2. Grab the product URL</h2>
         <p>
           Copy the product page link directly from Amazon, AliExpress, Shopify, or any supported
-          store. Paste it into ReelRipper. We pull the product name, price, image, and description
+          store. Paste it into Influencer Echo. We pull the product name, price, image, and description
           automatically.
         </p>
 
@@ -52,26 +52,26 @@ export const GUIDES: Record<string, Guide> = {
         <h2>4. Generate, review, post</h2>
         <p>
           Each video takes about a minute to render. Preview it, tweak the caption if needed, add
-          your tracked affiliate link from ReelRipper's link manager, and post. Aim for 5-10 posts
+          your tracked affiliate link from Influencer Echo's link manager, and post. Aim for 5-10 posts
           per day across 2-3 personas.
         </p>
 
         <h2>5. Disclose the partnership</h2>
         <p>
           FTC guidelines require you to disclose paid or commissioned relationships. Add #ad or use
-          each platform's "Paid partnership" toggle on every post. ReelRipper appends two hashtags
+          each platform's "Paid partnership" toggle on every post. Influencer Echo appends two hashtags
           automatically — leave those in and add the disclosure hashtag yourself.
         </p>
 
         <h2>6. Read the click data</h2>
         <p>
-          Every affiliate link ReelRipper generates is click-tracked. After a week you'll see which
+          Every affiliate link Influencer Echo generates is click-tracked. After a week you'll see which
           persona × product combinations convert. Double down on the winners. Retire the losers.
         </p>
 
         <h2>7. Compound with referrals</h2>
         <p>
-          ReelRipper gives you 2 months free for every creator you refer who upgrades. If you're
+          Influencer Echo gives you 2 months free for every creator you refer who upgrades. If you're
           posting daily anyway, add your referral link to your bio and drop it in creator
           communities. That's how the machine keeps running while you focus on picking better
           products.

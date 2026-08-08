@@ -8,7 +8,7 @@ export function PublicNav() {
         <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-pop">
           <Sparkles className="h-5 w-5" />
         </div>
-        <span className="font-display text-xl font-semibold tracking-tight">ReelRipper</span>
+        <span className="font-display text-xl font-semibold tracking-tight">Influencer Echo</span>
       </Link>
       <nav className="flex items-center gap-1 md:gap-2">
         <Link

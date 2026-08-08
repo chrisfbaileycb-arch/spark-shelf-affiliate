@@ -10,11 +10,11 @@ export const Route = createFileRoute("/guides/$slug")({
     return { guide, slug: params.slug };
   },
   head: ({ loaderData }) => {
-    if (!loaderData) return { meta: [{ title: "Guide not found — ReelRipper" }] };
+    if (!loaderData) return { meta: [{ title: "Guide not found — Influencer Echo" }] };
     const { guide, slug } = loaderData;
     return {
       meta: [
-        { title: `${guide.title} — ReelRipper` },
+        { title: `${guide.title} — Influencer Echo` },
         { name: "description", content: guide.description },
         { property: "og:title", content: guide.ogTitle },
         { property: "og:description", content: guide.description },
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/guides/$slug")({
             "@type": "Article",
             headline: guide.title,
             description: guide.description,
-            author: { "@type": "Organization", name: "ReelRipper" },
+            author: { "@type": "Organization", name: "Influencer Echo" },
           }),
         },
       ],

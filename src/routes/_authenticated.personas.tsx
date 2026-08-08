@@ -26,7 +26,7 @@ import { useState } from "react";
 export const Route = createFileRoute("/_authenticated/personas")({
   head: () => ({
     meta: [
-      { title: "Personas — ReelRipper" },
+      { title: "Personas — Influencer Echo" },
       {
         name: "description",
         content:

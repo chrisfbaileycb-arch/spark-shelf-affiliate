@@ -56,7 +56,7 @@ async function applyReferralCreditIfEligible(args: {
       const txn = await stripe.customers.createBalanceTransaction(refSub.stripe_customer_id, {
         amount: -amount, // negative = credit applied to next invoice
         currency: "usd",
-        description: `ReelRipper referral credit — 2 months ${tier}`,
+        description: `Influencer Echo referral credit — 2 months ${tier}`,
       });
       balanceTxnId = txn.id;
       appliedCents = amount;

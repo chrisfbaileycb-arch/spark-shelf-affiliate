@@ -96,7 +96,7 @@ export default defineTool({
   name: "create_video_draft",
   title: "Create video draft",
   description:
-    "Generate a script and save a video draft record. The actual HeyGen render must be triggered from the ReelRipper web app because rendering takes several minutes.",
+    "Generate a script and save a video draft record. The actual HeyGen render must be triggered from the Influencer Echo web app because rendering takes several minutes.",
   inputSchema: {
     product_id: z.string().uuid().describe("UUID of the product to create a video for."),
     persona_id: z
@@ -179,7 +179,7 @@ export default defineTool({
       content: [
         {
           type: "text",
-          text: `Created video draft ${video.id}. Open the ReelRipper app and click "Render" to send it to HeyGen.`,
+          text: `Created video draft ${video.id}. Open the Influencer Echo app and click "Render" to send it to HeyGen.`,
         },
         {
           type: "text",

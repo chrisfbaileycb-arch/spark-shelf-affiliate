@@ -11,7 +11,7 @@ type LoggedError = {
   url: string;
 };
 
-const BUFFER_KEY = "__reelripper_error_buffer";
+const BUFFER_KEY = "__influencer-echo_error_buffer";
 const MAX_BUFFER = 25;
 
 function push(entry: LoggedError) {
@@ -27,7 +27,7 @@ function push(entry: LoggedError) {
   // Loud console output during development; a future hook can forward this
   // to Sentry/PostHog without touching call sites.
   // eslint-disable-next-line no-console
-  console.error(`[reelripper:${entry.kind}]`, entry.message, entry.stack ?? "");
+  console.error(`[influencer-echo:${entry.kind}]`, entry.message, entry.stack ?? "");
 }
 
 let installed = false;

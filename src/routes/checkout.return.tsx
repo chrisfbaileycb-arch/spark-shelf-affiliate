@@ -10,8 +10,8 @@ import { CheckCircle2, Loader2 } from "lucide-react";
 export const Route = createFileRoute("/checkout/return")({
   head: () => ({
     meta: [
-      { title: "Finishing checkout — ReelRipper" },
-      { name: "description", content: "Confirming your ReelRipper subscription." },
+      { title: "Finishing checkout — Influencer Echo" },
+      { name: "description", content: "Confirming your Influencer Echo subscription." },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

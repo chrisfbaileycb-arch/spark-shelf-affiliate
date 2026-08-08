@@ -6,13 +6,13 @@ import { GUIDES } from "@/lib/guides.data";
 export const Route = createFileRoute("/guides")({
   head: () => ({
     meta: [
-      { title: "Affiliate marketing guides for creators — ReelRipper" },
+      { title: "Affiliate marketing guides for creators — Influencer Echo" },
       {
         name: "description",
         content:
           "Step-by-step guides on running an AI-first affiliate marketing operation across TikTok Shop, Amazon Associates, and Reels.",
       },
-      { property: "og:title", content: "ReelRipper Guides" },
+      { property: "og:title", content: "Influencer Echo Guides" },
       { property: "og:description", content: "Playbooks for AI-first affiliate creators." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/guides" },

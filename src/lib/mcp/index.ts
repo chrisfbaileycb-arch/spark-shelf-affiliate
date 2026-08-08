@@ -19,7 +19,7 @@ export default defineMcp({
   title: "Influencer Echo",
   version: "0.1.0",
   instructions:
-    "Tools for ReelRipper / Influencer Echo: ingest affiliate products, generate influencer scripts, create video drafts, manage personas, build tracked affiliate short links, and check rendering credits. All tools act on behalf of the signed-in user.",
+    "Tools for Influencer Echo / Influencer Echo: ingest affiliate products, generate influencer scripts, create video drafts, manage personas, build tracked affiliate short links, and check rendering credits. All tools act on behalf of the signed-in user.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
