@@ -136,7 +136,11 @@ function VideoPanel() {
         onClick={() => run.mutate()}
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
       >
-        {run.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <VideoIcon className="h-4 w-4" />}
+        {run.isPending ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <VideoIcon className="h-4 w-4" />
+        )}
         Generate 15-second video
       </button>
       <p className="text-xs text-muted-foreground">

@@ -9,7 +9,8 @@ export const RATIO_SIZE: Record<Ratio, string> = {
 };
 
 const SURFACE: Record<Ratio, string> = {
-  "1:1": "Facebook/Instagram feed square. Centered hero composition, product clearly readable at thumbnail size.",
+  "1:1":
+    "Facebook/Instagram feed square. Centered hero composition, product clearly readable at thumbnail size.",
   "9:16":
     "TikTok / Reels / Stories vertical. Keep the top 15% and bottom 20% visually clear for platform UI; subject centered in the safe zone.",
   "16:9":

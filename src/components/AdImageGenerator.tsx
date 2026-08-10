@@ -117,7 +117,6 @@ export function AdImageGenerator() {
               )}
             </div>
 
-
             <div>
               <label
                 htmlFor="ad-angle"
@@ -184,7 +183,11 @@ export function AdImageGenerator() {
               onClick={() => start(selected)}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImageIcon className="h-4 w-4" />}
+              {busy ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <ImageIcon className="h-4 w-4" />
+              )}
               Generate {selected.length || 0} image{selected.length === 1 ? "" : "s"}
             </button>
           </Card>
@@ -270,7 +273,11 @@ export function AdImageGenerator() {
 
 function FrameCard({ frame }: { frame: Frame }) {
   const aspect =
-    frame.ratio === "1:1" ? "aspect-square" : frame.ratio === "9:16" ? "aspect-[9/16]" : "aspect-video";
+    frame.ratio === "1:1"
+      ? "aspect-square"
+      : frame.ratio === "9:16"
+        ? "aspect-[9/16]"
+        : "aspect-video";
   return (
     <div className="space-y-2" data-testid={`frame-${frame.ratio.replace(":", "-")}`}>
       <div className="flex items-center justify-between">
