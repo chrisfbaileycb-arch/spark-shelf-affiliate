@@ -291,7 +291,12 @@ export const generateVideo = createServerFn({ method: "POST" })
       const taskId = await createVideoTask({
         prompt,
         durationSeconds: clipSeconds,
-        firstFrameImage: (product as { image_url?: string | null }).image_url ?? null,
+        firstFrameImage: Array.isArray(product.images)
+          ? ((product.images as unknown[]).find(
+              (u) => typeof u === "string" && u.startsWith("https://"),
+            ) as string | undefined) ?? null
+          : null,
+
       });
       await patch({ heygen_video_id: taskId });
 
