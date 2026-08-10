@@ -34,8 +34,9 @@ export const GUIDES: Record<string, Guide> = {
         </p>
         <ul>
           <li>
-            <strong>E-Commerce &amp; Amazon:</strong> look for items with a &gt;20% commission rate,
-            an under-$40 price point (impulse buy), and a clear "problem → payoff" visual demo.
+            <strong>E-Commerce &amp; Amazon:</strong> a common starting filter is a healthy
+            commission rate, an impulse-friendly price point, and a clear "problem → payoff" visual
+            demo. Check the current terms on the program's own page — rates change often.
           </li>
           <li>
             <strong>Real Estate &amp; Local Services:</strong> grab active property or service
@@ -46,6 +47,7 @@ export const GUIDES: Record<string, Guide> = {
             web interfaces or mobile app screenshots.
           </li>
         </ul>
+
 
         <h2>2. Paste the URL into Influencer Echo</h2>
         <p>
