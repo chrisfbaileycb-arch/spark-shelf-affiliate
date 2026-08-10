@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_authenticated/upgrade")({
       {
         name: "description",
         content:
-          "Test, Starter and Pro Scale plans for Influencer Echo — 3, 15 or 30 AI affiliate videos every month, cancel anytime.",
+          "Starter, Pro Creator and Agency plans for Influencer Echo — AI video shorts plus ad images and app/web mockups every month.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],
@@ -26,62 +26,6 @@ export const Route = createFileRoute("/_authenticated/upgrade")({
   component: Pricing,
 });
 
-type Plan = {
-  id: string;
-  tier: string;
-  name: string;
-  price: string;
-  videos: number;
-  cta: string;
-  features: string[];
-  highlight?: boolean;
-};
-
-const PLANS: Plan[] = [
-  {
-    id: "test_monthly",
-    tier: "test",
-    name: "Test the Waters",
-    price: "$19.95",
-    videos: 3,
-    cta: "Start Test Pass ($19.95)",
-    features: [
-      "3 videos per month",
-      "Persona generator & hook writer",
-      "Click-tracked affiliate links",
-      "HD 720x1280 output",
-    ],
-  },
-  {
-    id: "starter_monthly",
-    tier: "starter",
-    name: "Starter",
-    price: "$39.95",
-    videos: 15,
-    cta: "Get Starter ($39.95)",
-    features: [
-      "15 videos per month",
-      "Persona generator & hook writer",
-      "Affiliate tracking & performance dashboard",
-      "Priority rendering queue",
-    ],
-    highlight: true,
-  },
-  {
-    id: "pro_monthly",
-    tier: "pro",
-    name: "Pro Scale",
-    price: "$69.95",
-    videos: 30,
-    cta: "Scale to Pro ($69.95)",
-    features: [
-      "30 videos per month — one a day",
-      "Unlimited personas & niche test profiles",
-      "Ultra-fast priority rendering",
-      "Advanced affiliate tracking & analytics",
-    ],
-  },
-];
 
 function Pricing() {
   const [session, setSession] = useState<Session | null>(null);
