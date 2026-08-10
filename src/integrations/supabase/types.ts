@@ -16,8 +16,12 @@ export type Database = {
     Tables: {
       ad_images: {
         Row: {
+          campaign_id: string | null
           created_at: string
+          headline: string | null
           id: string
+          mockup_style: string | null
+          primary_text: string | null
           product_id: string | null
           prompt: string
           ratio: string
@@ -26,8 +30,12 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          campaign_id?: string | null
           created_at?: string
+          headline?: string | null
           id?: string
+          mockup_style?: string | null
+          primary_text?: string | null
           product_id?: string | null
           prompt: string
           ratio: string
@@ -36,8 +44,12 @@ export type Database = {
           user_id: string
         }
         Update: {
+          campaign_id?: string | null
           created_at?: string
+          headline?: string | null
           id?: string
+          mockup_style?: string | null
+          primary_text?: string | null
           product_id?: string | null
           prompt?: string
           ratio?: string
@@ -46,6 +58,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "ad_images_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "ad_images_product_id_fkey"
             columns: ["product_id"]
@@ -166,6 +185,90 @@ export type Database = {
         }
         Relationships: []
       }
+      campaigns: {
+        Row: {
+          ad_description: string | null
+          asset_kind: Database["public"]["Enums"]["asset_kind"]
+          created_at: string
+          destination_url: string | null
+          error: string | null
+          headline: string | null
+          id: string
+          include_video: boolean
+          name: string
+          primary_text: string | null
+          product_id: string | null
+          source_url: string
+          status: string
+          step: string | null
+          updated_at: string
+          user_id: string
+          utm_campaign: string | null
+          utm_medium: string
+          utm_source: string
+          video_id: string | null
+        }
+        Insert: {
+          ad_description?: string | null
+          asset_kind?: Database["public"]["Enums"]["asset_kind"]
+          created_at?: string
+          destination_url?: string | null
+          error?: string | null
+          headline?: string | null
+          id?: string
+          include_video?: boolean
+          name?: string
+          primary_text?: string | null
+          product_id?: string | null
+          source_url: string
+          status?: string
+          step?: string | null
+          updated_at?: string
+          user_id: string
+          utm_campaign?: string | null
+          utm_medium?: string
+          utm_source?: string
+          video_id?: string | null
+        }
+        Update: {
+          ad_description?: string | null
+          asset_kind?: Database["public"]["Enums"]["asset_kind"]
+          created_at?: string
+          destination_url?: string | null
+          error?: string | null
+          headline?: string | null
+          id?: string
+          include_video?: boolean
+          name?: string
+          primary_text?: string | null
+          product_id?: string | null
+          source_url?: string
+          status?: string
+          step?: string | null
+          updated_at?: string
+          user_id?: string
+          utm_campaign?: string | null
+          utm_medium?: string
+          utm_source?: string
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       link_clicks: {
         Row: {
           affiliate_link_id: string
@@ -260,6 +363,7 @@ export type Database = {
       }
       products: {
         Row: {
+          asset_kind: Database["public"]["Enums"]["asset_kind"]
           created_at: string
           currency: string | null
           description: string | null
@@ -275,6 +379,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          asset_kind?: Database["public"]["Enums"]["asset_kind"]
           created_at?: string
           currency?: string | null
           description?: string | null
@@ -290,6 +395,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          asset_kind?: Database["public"]["Enums"]["asset_kind"]
           created_at?: string
           currency?: string | null
           description?: string | null
@@ -418,18 +524,21 @@ export type Database = {
       }
       usage_counters: {
         Row: {
+          images_used: number
           period_start: string
           updated_at: string
           user_id: string
           videos_used: number
         }
         Insert: {
+          images_used?: number
           period_start: string
           updated_at?: string
           user_id: string
           videos_used?: number
         }
         Update: {
+          images_used?: number
           period_start?: string
           updated_at?: string
           user_id?: string
@@ -557,6 +666,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_image_quota: {
+        Args: { _count?: number; _user_id: string }
+        Returns: Json
+      }
       consume_video_quota: { Args: { _user_id: string }; Returns: Json }
       gen_referral_code: { Args: never; Returns: string }
       has_role: {
@@ -566,6 +679,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      plan_limits: {
+        Args: { _tier: Database["public"]["Enums"]["sub_tier"] }
+        Returns: Json
+      }
+      release_image_quota: {
+        Args: { _count?: number; _user_id: string }
+        Returns: undefined
+      }
       resolve_affiliate_redirect: {
         Args: { _code: string; _referer?: string; _user_agent?: string }
         Returns: string
@@ -573,8 +694,9 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      asset_kind: "ecommerce" | "mobile_app" | "saas"
       sub_status: "active" | "past_due" | "canceled" | "trialing"
-      sub_tier: "trial" | "starter" | "pro" | "test"
+      sub_tier: "trial" | "starter" | "pro" | "test" | "agency"
       video_status:
         | "pending"
         | "scripting"
@@ -712,8 +834,9 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      asset_kind: ["ecommerce", "mobile_app", "saas"],
       sub_status: ["active", "past_due", "canceled", "trialing"],
-      sub_tier: ["trial", "starter", "pro", "test"],
+      sub_tier: ["trial", "starter", "pro", "test", "agency"],
       video_status: [
         "pending",
         "scripting",

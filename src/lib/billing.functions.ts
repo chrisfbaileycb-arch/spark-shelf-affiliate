@@ -2,6 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { type StripeEnv, createStripeClient, getStripeErrorMessage } from "@/lib/stripe.server";
+import { PLAN_LIMITS, TIER_LABEL, tierFromLookupKey, type TierId } from "@/lib/plans";
+
 
 type CheckoutResult = { clientSecret: string } | { error: string };
 
@@ -122,12 +124,23 @@ export const getMySubscription = createServerFn({ method: "GET" })
         .maybeSingle(),
     ]);
 
-    const tier = sub?.tier ?? "trial";
-    const cap = tier === "test" ? 3 : tier === "starter" ? 15 : tier === "pro" ? 30 : 0;
-    const used = tier === "trial" ? 0 : (usage?.videos_used ?? 0);
+    const tier = (sub?.tier ?? "trial") as TierId;
+    const limits = PLAN_LIMITS[tier] ?? PLAN_LIMITS.trial;
+    const used = usage?.videos_used ?? 0;
+    const imagesUsed = usage?.images_used ?? 0;
 
-    return { subscription: sub, tier, status: sub?.status ?? "trialing", used, cap };
+    return {
+      subscription: sub,
+      tier,
+      tierLabel: TIER_LABEL[tier] ?? "No plan",
+      status: sub?.status ?? "trialing",
+      used,
+      cap: limits.videos,
+      imagesUsed,
+      imagesCap: limits.images,
+    };
   });
+
 
 export const syncSubscriptionFromStripe = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -153,12 +166,8 @@ export const syncSubscriptionFromStripe = createServerFn({ method: "POST" })
 
       const item = sub.items.data[0];
       const priceLookup = item?.price?.lookup_key ?? null;
-      const tier =
-        priceLookup === "starter_monthly"
-          ? "starter"
-          : priceLookup === "pro_monthly"
-            ? "pro"
-            : "starter";
+      const tier = tierFromLookupKey(priceLookup) ?? "starter";
+
       const periodEnd = item?.current_period_end
         ? new Date(item.current_period_end * 1000).toISOString()
         : null;

@@ -5,10 +5,12 @@ import { useServerFn } from "@tanstack/react-start";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { AdImageGenerator } from "@/components/AdImageGenerator";
+import { CampaignLauncher } from "@/components/CampaignLauncher";
 import { listProducts } from "@/lib/products.functions";
 import { listPersonas } from "@/lib/personas.functions";
 import { generateVideo } from "@/lib/videos.functions";
-import { Loader2, Video as VideoIcon, Image as ImageIcon } from "lucide-react";
+import { Loader2, Video as VideoIcon, Image as ImageIcon, Layers } from "lucide-react";
+
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/studio")({
@@ -35,13 +37,16 @@ function Studio() {
         </p>
         <h1 className="mt-1 font-display text-4xl">Make the campaign</h1>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          One product in, a full campaign kit out — a 15-second video plus ad images sized for every
-          surface you post on.
+          One URL in, a full campaign kit out — ad copy, creatives sized for every surface, and an
+          avatar video, all tracked with your own UTMs.
         </p>
       </header>
 
-      <Tabs defaultValue="video">
+      <Tabs defaultValue="campaign">
         <TabsList data-testid="studio-tabs">
+          <TabsTrigger value="campaign" data-testid="tab-campaign" className="gap-2">
+            <Layers className="h-4 w-4" /> Campaign Kit
+          </TabsTrigger>
           <TabsTrigger value="video" data-testid="tab-video" className="gap-2">
             <VideoIcon className="h-4 w-4" /> AI Video Generator
           </TabsTrigger>
@@ -50,6 +55,9 @@ function Studio() {
           </TabsTrigger>
         </TabsList>
 
+        <TabsContent value="campaign" className="mt-6">
+          <CampaignLauncher />
+        </TabsContent>
         <TabsContent value="video" className="mt-6">
           <VideoPanel />
         </TabsContent>
@@ -57,6 +65,7 @@ function Studio() {
           <AdImageGenerator />
         </TabsContent>
       </Tabs>
+
     </div>
   );
 }

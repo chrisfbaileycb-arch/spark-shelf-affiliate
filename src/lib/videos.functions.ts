@@ -5,6 +5,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 const GenerateInput = z.object({
   product_id: z.string().uuid(),
   persona_id: z.string().uuid().optional(),
+  duration_seconds: z.union([z.literal(15), z.literal(30)]).default(15),
 });
 
 const AI_GATEWAY = "https://ai.gateway.lovable.dev/v1";
@@ -53,6 +54,7 @@ async function generateScript(
     catchphrases: unknown;
     speech_quirks: string | null;
   } | null,
+  durationSeconds = 15,
 ): Promise<ScriptOut> {
   const personaBlock = persona
     ? `You ARE ${persona.name}. Vibe: ${persona.vibe ?? "energetic"}. Voice tone: ${persona.voice_tone ?? "warm"}. Bio: ${persona.bio ?? ""}. Speech quirks: ${persona.speech_quirks ?? ""}. Naturally weave in 1 of these catchphrases if it fits: ${Array.isArray(persona.catchphrases) ? (persona.catchphrases as string[]).join(" | ") : ""}.`
@@ -62,7 +64,7 @@ async function generateScript(
     messages: [
       {
         role: "system",
-        content: `${personaBlock} You write punchy 15-second TikTok scripts for affiliate marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be 35-42 spoken words (≈15s at normal pace). caption: 1-2 sentences then a blank line then exactly the 2 hashtags prefixed with #. hashtags: EXACTLY 2 entries — the two highest-intent, most discoverable tags for this product/niche (one broad niche tag + one specific product/trend tag). lowercase, no #, no spaces.`,
+        content: `${personaBlock} You write punchy ${durationSeconds}-second short-form scripts for affiliate and product marketing. Tone: warm, excited, conversational, zero corporate. Open with a strong scroll-stopping hook. End with a clear "link in bio" CTA. Reply ONLY with strict JSON: {hook, script, caption, hashtags[]}. The combined hook + script must be ${durationSeconds === 30 ? "72-84" : "35-42"} spoken words (≈${durationSeconds}s at normal pace). caption: 1-2 sentences then a blank line then exactly the 2 hashtags prefixed with #. hashtags: EXACTLY 2 entries — the two highest-intent, most discoverable tags for this product/niche (one broad niche tag + one specific product/trend tag). lowercase, no #, no spaces.`,
       },
       {
         role: "user",
@@ -217,6 +219,7 @@ export const generateVideo = createServerFn({ method: "POST" })
     const voiceId = persona?.elevenlabs_voice_id || DEFAULT_VOICE;
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { PLAN_REQUIRED_MESSAGE } = await import("@/lib/plans");
 
     // Platform spend guardrails: kill switch + daily global and per-user render caps.
     const { data: settings } = await supabaseAdmin
@@ -270,10 +273,8 @@ export const generateVideo = createServerFn({ method: "POST" })
     } | null;
     if (!qr?.ok) {
       const reason = qr?.reason ?? "unknown";
-      if (reason === "plan_required" || reason === "trial_exhausted")
-        throw new Error(
-          "Pick a plan to start generating — Test the Waters is $19.95/mo for 3 videos.",
-        );
+      if (reason === "plan_required" || reason === "trial_exhausted" || reason === "no_subscription")
+        throw new Error(PLAN_REQUIRED_MESSAGE);
       if (reason === "quota_exceeded")
         throw new Error(
           `Monthly limit reached (${qr?.used}/${qr?.limit}). Upgrade or wait until next billing period.`,
@@ -296,7 +297,7 @@ export const generateVideo = createServerFn({ method: "POST" })
           voice_id: voiceId,
           heygen_avatar_id: avatarId,
           status: "low_credit",
-          duration_seconds: 15,
+          duration_seconds: data.duration_seconds,
           error: `HeyGen balance ${remaining} credits is below threshold ${MIN_CREDITS}. Top up and retry.`,
         })
         .select()
@@ -316,7 +317,7 @@ export const generateVideo = createServerFn({ method: "POST" })
         heygen_avatar_id: avatarId,
         provider: "heygen",
         status: "scripting",
-        duration_seconds: 15,
+        duration_seconds: data.duration_seconds,
       })
       .select()
       .single();
@@ -327,7 +328,7 @@ export const generateVideo = createServerFn({ method: "POST" })
       (supabase.from("videos") as any).update(fields).eq("id", video.id);
 
     try {
-      const script = await generateScript(product, persona);
+      const script = await generateScript(product, persona, data.duration_seconds);
       const spoken = `${script.hook} ${script.script}`.trim();
       await patch({
         status: "rendering",
@@ -364,7 +365,7 @@ export const generateVideo = createServerFn({ method: "POST" })
         video_url: completed.video_url,
         thumbnail_url: completed.thumbnail_url ?? null,
         generation_cost: completed.credit_used ?? null,
-        duration_seconds: Math.round(completed.duration ?? 15),
+        duration_seconds: Math.round(completed.duration ?? data.duration_seconds),
         error: null,
       });
 

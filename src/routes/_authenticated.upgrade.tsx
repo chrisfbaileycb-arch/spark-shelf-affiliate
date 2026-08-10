@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
 import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { PLANS } from "@/lib/plans";
+
 
 export const Route = createFileRoute("/_authenticated/upgrade")({
   head: () => ({
@@ -18,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/upgrade")({
       {
         name: "description",
         content:
-          "Test, Starter and Pro Scale plans for Influencer Echo — 3, 15 or 30 AI affiliate videos every month, cancel anytime.",
+          "Starter, Pro Creator and Agency plans for Influencer Echo — AI video shorts plus ad images and app/web mockups every month.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],
@@ -26,62 +28,6 @@ export const Route = createFileRoute("/_authenticated/upgrade")({
   component: Pricing,
 });
 
-type Plan = {
-  id: string;
-  tier: string;
-  name: string;
-  price: string;
-  videos: number;
-  cta: string;
-  features: string[];
-  highlight?: boolean;
-};
-
-const PLANS: Plan[] = [
-  {
-    id: "test_monthly",
-    tier: "test",
-    name: "Test the Waters",
-    price: "$19.95",
-    videos: 3,
-    cta: "Start Test Pass ($19.95)",
-    features: [
-      "3 videos per month",
-      "Persona generator & hook writer",
-      "Click-tracked affiliate links",
-      "HD 720x1280 output",
-    ],
-  },
-  {
-    id: "starter_monthly",
-    tier: "starter",
-    name: "Starter",
-    price: "$39.95",
-    videos: 15,
-    cta: "Get Starter ($39.95)",
-    features: [
-      "15 videos per month",
-      "Persona generator & hook writer",
-      "Affiliate tracking & performance dashboard",
-      "Priority rendering queue",
-    ],
-    highlight: true,
-  },
-  {
-    id: "pro_monthly",
-    tier: "pro",
-    name: "Pro Scale",
-    price: "$69.95",
-    videos: 30,
-    cta: "Scale to Pro ($69.95)",
-    features: [
-      "30 videos per month — one a day",
-      "Unlimited personas & niche test profiles",
-      "Ultra-fast priority rendering",
-      "Advanced affiliate tracking & analytics",
-    ],
-  },
-];
 
 function Pricing() {
   const [session, setSession] = useState<Session | null>(null);
@@ -133,7 +79,8 @@ function Pricing() {
       <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
         {PLANS.map((plan) => (
           <Card
-            key={plan.id}
+            key={plan.priceId}
+            data-testid={`upgrade-plan-${plan.tier}`}
             className={`p-8 ${plan.highlight ? "border-primary shadow-pop" : ""}`}
           >
             {plan.highlight && (
@@ -142,9 +89,12 @@ function Pricing() {
               </div>
             )}
             <h2 className="font-display text-3xl">{plan.name}</h2>
-            <p className="mt-2 text-4xl font-bold">
+            <p className="mt-2 font-mono text-4xl font-bold tabular-nums">
               {plan.price}
-              <span className="text-base font-normal text-muted-foreground">/mo</span>
+              <span className="font-sans text-base font-normal text-muted-foreground">/mo</span>
+            </p>
+            <p className="mt-2 font-mono text-sm tabular-nums text-muted-foreground">
+              {plan.videos} videos · {plan.images} images / mo
             </p>
             <ul className="mt-6 space-y-2">
               {plan.features.map((f) => (
@@ -154,7 +104,7 @@ function Pricing() {
               ))}
             </ul>
             <Button
-              onClick={() => setPicked(plan.id)}
+              onClick={() => setPicked(plan.priceId)}
               className="mt-6 w-full"
               variant={plan.highlight ? "default" : "secondary"}
               disabled={currentTier === plan.tier}
@@ -164,6 +114,7 @@ function Pricing() {
           </Card>
         ))}
       </div>
+
     </div>
   );
 }
