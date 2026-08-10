@@ -5,10 +5,12 @@ import { useServerFn } from "@tanstack/react-start";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { AdImageGenerator } from "@/components/AdImageGenerator";
+import { CampaignLauncher } from "@/components/CampaignLauncher";
 import { listProducts } from "@/lib/products.functions";
 import { listPersonas } from "@/lib/personas.functions";
 import { generateVideo } from "@/lib/videos.functions";
-import { Loader2, Video as VideoIcon, Image as ImageIcon } from "lucide-react";
+import { Loader2, Video as VideoIcon, Image as ImageIcon, Layers } from "lucide-react";
+
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/studio")({
