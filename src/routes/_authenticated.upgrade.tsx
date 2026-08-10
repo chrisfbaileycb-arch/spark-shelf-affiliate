@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_authenticated/upgrade")({
       {
         name: "description",
         content:
-          "Starter and Pro plans for Influencer Echo — 15 or 30 AI affiliate videos every month, cancel anytime.",
+          "Test, Starter and Pro Scale plans for Influencer Echo — 3, 15 or 30 AI affiliate videos every month, cancel anytime.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],
@@ -26,32 +26,60 @@ export const Route = createFileRoute("/_authenticated/upgrade")({
   component: Pricing,
 });
 
-const PLANS = [
+type Plan = {
+  id: string;
+  tier: string;
+  name: string;
+  price: string;
+  videos: number;
+  cta: string;
+  features: string[];
+  highlight?: boolean;
+};
+
+const PLANS: Plan[] = [
   {
-    id: "starter_monthly",
-    name: "Starter",
-    price: "$29.95",
-    videos: 15,
+    id: "test_monthly",
+    tier: "test",
+    name: "Test the Waters",
+    price: "$19.95",
+    videos: 3,
+    cta: "Start Test Pass ($19.95)",
     features: [
-      "15 videos per month",
-      "Persona generator",
-      "Affiliate link tracking",
+      "3 videos per month",
+      "Persona generator & hook writer",
+      "Click-tracked affiliate links",
       "HD 720x1280 output",
     ],
   },
   {
-    id: "pro_monthly",
-    name: "Pro",
-    price: "$59.95",
-    videos: 30,
+    id: "starter_monthly",
+    tier: "starter",
+    name: "Starter",
+    price: "$39.95",
+    videos: 15,
+    cta: "Get Starter ($39.95)",
     features: [
-      "30 videos per month",
-      "Unlimited personas",
-      "Priority rendering",
-      "Affiliate link tracking",
-      "HD 720x1280 output",
+      "15 videos per month",
+      "Persona generator & hook writer",
+      "Affiliate tracking & performance dashboard",
+      "Priority rendering queue",
     ],
     highlight: true,
+  },
+  {
+    id: "pro_monthly",
+    tier: "pro",
+    name: "Pro Scale",
+    price: "$69.95",
+    videos: 30,
+    cta: "Scale to Pro ($69.95)",
+    features: [
+      "30 videos per month — one a day",
+      "Unlimited personas & niche test profiles",
+      "Ultra-fast priority rendering",
+      "Advanced affiliate tracking & analytics",
+    ],
   },
 ];
 
@@ -93,7 +121,7 @@ function Pricing() {
         </p>
         <h1 className="mt-1 font-display text-4xl">Pick your plan</h1>
         <p className="mx-auto mt-2 max-w-lg text-sm text-muted-foreground">
-          Free trial includes 3 videos. No card required to start.
+          Every plan includes the persona generator, hook writer, and tracked affiliate links.
         </p>
         {currentTier !== "trial" && (
           <p className="mt-2 text-sm">
@@ -102,7 +130,7 @@ function Pricing() {
         )}
       </header>
 
-      <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
+      <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
         {PLANS.map((plan) => (
           <Card
             key={plan.id}
@@ -129,11 +157,9 @@ function Pricing() {
               onClick={() => setPicked(plan.id)}
               className="mt-6 w-full"
               variant={plan.highlight ? "default" : "secondary"}
-              disabled={currentTier === plan.id.replace("_monthly", "")}
+              disabled={currentTier === plan.tier}
             >
-              {currentTier === plan.id.replace("_monthly", "")
-                ? "Current plan"
-                : `Choose ${plan.name}`}
+              {currentTier === plan.tier ? "Current plan" : plan.cta}
             </Button>
           </Card>
         ))}

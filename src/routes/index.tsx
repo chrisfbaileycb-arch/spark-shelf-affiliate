@@ -171,8 +171,8 @@ function Landing() {
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <h2 className="font-display text-4xl">Ready to print affiliate commissions?</h2>
         <p className="mt-3 text-muted-foreground">
-          Test the waters with 3 videos for $19.95, or unlock daily posts with Starter. Bring
-          your own affiliate IDs from any network.
+          Test the waters with 3 videos for $19.95, or unlock daily posts with Starter. Bring your
+          own affiliate IDs from any network.
         </p>
         <Link
           to="/auth"

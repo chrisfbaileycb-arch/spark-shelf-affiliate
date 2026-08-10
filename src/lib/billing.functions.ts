@@ -123,8 +123,7 @@ export const getMySubscription = createServerFn({ method: "GET" })
     ]);
 
     const tier = sub?.tier ?? "trial";
-    const cap =
-      tier === "test" ? 3 : tier === "starter" ? 15 : tier === "pro" ? 30 : 0;
+    const cap = tier === "test" ? 3 : tier === "starter" ? 15 : tier === "pro" ? 30 : 0;
     const used = tier === "trial" ? 0 : (usage?.videos_used ?? 0);
 
     return { subscription: sub, tier, status: sub?.status ?? "trialing", used, cap };

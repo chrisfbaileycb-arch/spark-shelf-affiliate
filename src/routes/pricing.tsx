@@ -25,7 +25,17 @@ export const Route = createFileRoute("/pricing")({
   component: PublicPricing,
 });
 
-const PLANS = [
+type Plan = {
+  name: string;
+  price: string;
+  videos: number;
+  cta: string;
+  badge?: string;
+  features: string[];
+  highlight?: boolean;
+};
+
+const PLANS: Plan[] = [
   {
     name: "Test the Waters",
     price: "$19.95",
