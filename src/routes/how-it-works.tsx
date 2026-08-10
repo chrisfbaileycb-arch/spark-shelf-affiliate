@@ -79,7 +79,9 @@ function HowItWorks() {
         <div className="mt-16 rounded-2xl border border-border bg-surface p-8 text-center">
           <h2 className="font-display text-3xl">Ready to try it?</h2>
           <p className="mt-2 text-muted-foreground">
-            Pick your pass and generate your first 15-second video in under 60 seconds.
+            Pick your pass and generate your first 15-second video — renders usually finish in
+            about 30–90 seconds.
+
           </p>
           <Link
             to="/auth"
