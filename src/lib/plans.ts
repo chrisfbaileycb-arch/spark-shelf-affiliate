@@ -106,4 +106,4 @@ export function monthlyCentsForTier(tier: TierId): number {
 
 /** Copy shown when a plan is required before a render can run. */
 export const PLAN_REQUIRED_MESSAGE =
-  "Pick a plan to start generating — Starter is $29/mo for 5 videos and 30 ad images.";
+  "Pick a plan to start generating — the Test Pass is $29.95/mo for 5 video shorts and 30 fluid ad images.";
