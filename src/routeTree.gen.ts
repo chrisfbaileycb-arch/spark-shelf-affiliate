@@ -16,6 +16,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -74,6 +75,11 @@ const GuidesRoute = GuidesRouteImport.update({
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesRoute = IndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -216,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/cookies': typeof CookiesRoute
   '/guides': typeof GuidesRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/industries': typeof IndustriesRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -249,6 +256,7 @@ export interface FileRoutesByTo {
   '/cookies': typeof CookiesRoute
   '/guides': typeof GuidesRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/industries': typeof IndustriesRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -284,6 +292,7 @@ export interface FileRoutesById {
   '/cookies': typeof CookiesRoute
   '/guides': typeof GuidesRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/industries': typeof IndustriesRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -319,6 +328,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/guides'
     | '/how-it-works'
+    | '/industries'
     | '/mcp'
     | '/pricing'
     | '/privacy'
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/guides'
     | '/how-it-works'
+    | '/industries'
     | '/mcp'
     | '/pricing'
     | '/privacy'
@@ -386,6 +397,7 @@ export interface FileRouteTypes {
     | '/cookies'
     | '/guides'
     | '/how-it-works'
+    | '/industries'
     | '/mcp'
     | '/pricing'
     | '/privacy'
@@ -421,6 +433,7 @@ export interface RootRouteChildren {
   CookiesRoute: typeof CookiesRoute
   GuidesRoute: typeof GuidesRouteWithChildren
   HowItWorksRoute: typeof HowItWorksRoute
+  IndustriesRoute: typeof IndustriesRoute
   McpRoute: typeof McpRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -485,6 +498,13 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/how-it-works'
       preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries': {
+      id: '/industries'
+      path: '/industries'
+      fullPath: '/industries'
+      preLoaderRoute: typeof IndustriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -716,6 +736,7 @@ const rootRouteChildren: RootRouteChildren = {
   CookiesRoute: CookiesRoute,
   GuidesRoute: GuidesRouteWithChildren,
   HowItWorksRoute: HowItWorksRoute,
+  IndustriesRoute: IndustriesRoute,
   McpRoute: McpRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
