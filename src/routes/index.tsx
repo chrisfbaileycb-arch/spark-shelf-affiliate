@@ -9,16 +9,16 @@ import { INDUSTRIES } from "@/lib/industries";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Influencer Echo — AI affiliate videos in one click" },
+      { title: "Influencer Echo — AI ad kits & video shorts from any URL" },
       {
         name: "description",
         content:
-          "Paste any product URL and get a 15-second AI influencer video with voiceover, captions, and a tracked affiliate link — ready to post on TikTok, Reels, and Shorts.",
+          "Paste any product, app, or website URL. Get 15–30s vertical AI video shorts plus fluid 1:1, 9:16, and 16:9 ad image kits for TikTok, Instagram, and Facebook.",
       },
-      { property: "og:title", content: "Influencer Echo — AI affiliate videos in one click" },
+      { property: "og:title", content: "Influencer Echo — AI ad kits & video shorts from any URL" },
       {
         property: "og:description",
-        content: "Paste a product URL, get an AI influencer video. Hands-off affiliate marketing.",
+        content: "One URL in. Multi-ratio ad cards and AI video shorts out — for every industry.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
@@ -49,7 +49,7 @@ export const Route = createFileRoute("/")({
               applicationCategory: "MultimediaApplication",
               operatingSystem: "Web",
               offers: [
-                { "@type": "Offer", name: "Starter", price: "29.00", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Starter", price: "29.95", priceCurrency: "USD" },
                 { "@type": "Offer", name: "Pro Creator", price: "49.00", priceCurrency: "USD" },
                 { "@type": "Offer", name: "Agency", price: "99.00", priceCurrency: "USD" },
               ],
