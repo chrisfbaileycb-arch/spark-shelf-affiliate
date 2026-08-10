@@ -87,7 +87,9 @@ export const TIER_LABEL: Record<TierId, string> = {
   agency: "Agency",
 };
 
-export function tierFromLookupKey(key: string | null | undefined): TierId | null {
+export function tierFromLookupKey(
+  key: string | null | undefined,
+): Exclude<TierId, "trial"> | null {
   if (key === "starter_monthly") return "starter";
   if (key === "pro_monthly") return "pro";
   if (key === "agency_monthly") return "agency";
