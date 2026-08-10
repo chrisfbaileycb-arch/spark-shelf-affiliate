@@ -121,7 +121,7 @@ const STEPS = [
   { icon: BadgeDollarSign, accent: "bg-gradient-brand text-primary-foreground", title: "Drop your link", body: "Tracked affiliate URL built. You collect commissions on every sale." },
 ] as const;
 
-// "Loved by creators at" logo marquee (Fyxer-style trust band).
+// Platform surfaces this kit feeds (honest partner/ecosystem names, no invented logos).
 const PLATFORMS = [
   "TikTok",
   "Instagram",
@@ -133,23 +133,24 @@ const PLATFORMS = [
   "Impact",
 ] as const;
 
-// Influencer gallery tiles (replace with licensed creator photos + real metrics before launch).
-const CREATORS = [
-  { name: "Maya R.", platform: "TikTok", metric: "412K views", src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=70" },
-  { name: "Devin K.", platform: "Reels", metric: "1.1M views", src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=70" },
-  { name: "Priya S.", platform: "Instagram", metric: "88K likes", src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=70" },
-  { name: "Leo M.", platform: "TikTok", metric: "2.4M views", src: "https://images.unsplash.com/photo-1531427186611-ec0f4d5bc970?auto=format&fit=crop&w=400&q=70" },
-  { name: "Ava T.", platform: "Reels", metric: "540K views", src: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=400&q=70" },
-  { name: "Noah B.", platform: "YouTube Shorts", metric: "3.2M", src: "https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=400&q=70" },
+// Output-format showcase tiles — honest placeholders, not real creators or fake metrics.
+const OUTPUT_STYLES = [
+  { label: "9:16 Vertical Short", note: "TikTok / Reels / Shorts", src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=400&q=70" },
+  { label: "1:1 Feed Card", note: "Instagram & Facebook feed", src: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=400&q=70" },
+  { label: "16:9 Landscape", note: "Facebook display & web", src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=70" },
+  { label: "Product Motion Clip", note: "Silent cinematic b-roll", src: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=400&q=70" },
+  { label: "Avatar Talking Head", note: "AI voiceover + captions", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=70" },
+  { label: "Campaign Kit Bundle", note: "One URL, every format", src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=70" },
 ] as const;
 
-const STATS = [
-  { value: "23K+", label: "creators", color: "text-primary" },
-  { value: "1.2M", label: "videos shipped", color: "text-[oklch(0.88_0.10_0)]" },
-  { value: "$4.7M", label: "commissions tracked", color: "text-[oklch(0.90_0.13_145)]" },
-  { value: "6", label: "industries", color: "text-[oklch(0.90_0.08_240)]" },
+// Honest value-prop band — no invented user counts or revenue claims.
+const VALUE_PROPS = [
   { value: "3", label: "aspect ratios", color: "text-primary" },
-  { value: "<60s", label: "per ad kit", color: "text-[oklch(0.88_0.10_0)]" },
+  { value: "15–30s", label: "video shorts", color: "text-[oklch(0.88_0.10_0)]" },
+  { value: "6", label: "industry verticals", color: "text-[oklch(0.90_0.13_145)]" },
+  { value: "2", label: "video engines", color: "text-[oklch(0.90_0.08_240)]" },
+  { value: "1", label: "URL to full kit", color: "text-primary" },
+  { value: "<60s", label: "per campaign", color: "text-[oklch(0.88_0.10_0)]" },
 ] as const;
 
 function Landing() {
