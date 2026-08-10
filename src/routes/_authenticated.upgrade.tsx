@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
 import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { PLANS } from "@/lib/plans";
+
 
 export const Route = createFileRoute("/_authenticated/upgrade")({
   head: () => ({
