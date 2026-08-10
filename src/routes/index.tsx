@@ -70,33 +70,35 @@ function Landing() {
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Hands-off affiliate marketing
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" /> AI video shorts &amp; fluid ad
+              studio
             </div>
             <h1 className="mt-6 text-balance font-display text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">
-              Turn any URL into a <span className="text-primary">scroll-stopping</span> multi-format
-              ad kit.
+              Turn any link into <span className="text-primary">scroll-stopping</span> ads &amp;
+              video shorts.
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg text-muted-foreground">
-              Paste a product, app store, or website URL. Influencer Echo writes the ad copy, renders
-              creatives in every ratio — feed, stories, landscape — mocks apps and sites into real
-              device frames, and hands you an AI-avatar short for TikTok, Shorts, and Reels.
+              Paste any product, app, or website URL. Influencer Echo writes the hook, renders 15–30
+              second vertical video shorts, and builds complete multi-ratio ad image kits for
+              TikTok, Instagram, and Facebook.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                to="/auth"
+                to="/pricing"
+                data-testid="hero-start-test-pass"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-95"
               >
-                Start with Starter ($29) <ArrowRight className="h-4 w-4" />
+                Start Test Pass ($29.95) <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href="#how"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold hover:bg-surface"
+              <Link
+                to="/industries"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold transition-colors hover:bg-surface"
               >
-                How it works
-              </a>
+                Browse industries
+              </Link>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
-              No design work. No on-camera time. No product shipping.
+              No video editing. No camera time. Fluid 1:1, 9:16, and 16:9 ad sets included.
             </p>
           </div>
 
