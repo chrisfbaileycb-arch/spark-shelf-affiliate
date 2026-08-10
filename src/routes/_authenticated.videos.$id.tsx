@@ -76,7 +76,7 @@ function VideoDetail() {
           </h1>
           {video.generation_cost != null && (
             <p className="mt-1 text-xs text-muted-foreground">
-              Cost: {video.generation_cost} HeyGen credits
+              Cost: {video.generation_cost} credits
             </p>
           )}
         </div>
@@ -93,7 +93,7 @@ function VideoDetail() {
       {video.status === "low_credit" && (
         <Card className="border-destructive bg-destructive/5 p-6">
           <p className="flex items-center gap-2 font-medium text-destructive">
-            <AlertTriangle className="h-4 w-4" /> Low HeyGen credit
+            <AlertTriangle className="h-4 w-4" /> Video provider unavailable
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{video.error}</p>
         </Card>
@@ -112,7 +112,7 @@ function VideoDetail() {
             <div className="h-full w-1/3 animate-pulse bg-primary" />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
-            Status: <strong>{video.status}</strong>… polling every 3s. HeyGen renders typically
+            Status: <strong>{video.status}</strong>… polling every 3s. MiniMax renders typically
             finish in 30–90s.
           </p>
         </Card>
@@ -197,11 +197,11 @@ function VideoDetail() {
 
             <Card className="p-6 text-sm text-muted-foreground">
               <p>
-                Provider: <strong className="text-foreground">{video.provider || "heygen"}</strong>
+                Provider: <strong className="text-foreground">{video.provider || "minimax"}</strong>
               </p>
               {video.heygen_video_id && (
                 <p className="mt-1">
-                  HeyGen ID: <code className="text-xs">{video.heygen_video_id}</code>
+                  Task ID: <code className="text-xs">{video.heygen_video_id}</code>
                 </p>
               )}
               {video.heygen_avatar_id && (
