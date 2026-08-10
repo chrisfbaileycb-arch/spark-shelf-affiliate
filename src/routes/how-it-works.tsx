@@ -78,12 +78,14 @@ function HowItWorks() {
         </div>
         <div className="mt-16 rounded-2xl border border-border bg-surface p-8 text-center">
           <h2 className="font-display text-3xl">Ready to try it?</h2>
-          <p className="mt-2 text-muted-foreground">3 videos free. No credit card.</p>
+          <p className="mt-2 text-muted-foreground">
+            Pick your pass and generate your first 15-second video in under 60 seconds.
+          </p>
           <Link
             to="/auth"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95"
           >
-            Start free <ArrowRight className="h-4 w-4" />
+            Start Test Pass ($19.95) <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>

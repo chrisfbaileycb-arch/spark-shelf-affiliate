@@ -80,12 +80,14 @@ export const GUIDES: Record<string, Guide> = {
 
         <div className="not-prose mt-10 rounded-2xl border border-border bg-surface p-6">
           <p className="font-display text-2xl">Ready to run the playbook?</p>
-          <p className="mt-2 text-muted-foreground">3 videos free. No credit card.</p>
+          <p className="mt-2 text-muted-foreground">
+            Pick your pass and generate your first 15-second video in under 60 seconds.
+          </p>
           <Link
             to="/auth"
             className="mt-4 inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95"
           >
-            Start free
+            Start Test Pass ($19.95)
           </Link>
         </div>
       </>

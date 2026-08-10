@@ -10,12 +10,12 @@ export const Route = createFileRoute("/pricing")({
       {
         name: "description",
         content:
-          "Simple flat pricing. Starter at $29.95/mo for 15 AI affiliate videos. Pro at $59.95/mo for 30. Cancel anytime. 3 videos free to start.",
+          "Test the Waters at $19.95/mo for 3 AI affiliate videos, Starter at $39.95 for 15, Pro Scale at $69.95 for 30. Cancel anytime.",
       },
-      { property: "og:title", content: "Influencer Echo Pricing — Starter & Pro plans" },
+      { property: "og:title", content: "Influencer Echo Pricing — Test, Starter & Pro Scale" },
       {
         property: "og:description",
-        content: "15 or 30 AI-generated affiliate videos every month. Cancel anytime.",
+        content: "3, 15, or 30 AI-generated affiliate videos every month. Cancel anytime.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/pricing" },
@@ -25,32 +25,57 @@ export const Route = createFileRoute("/pricing")({
   component: PublicPricing,
 });
 
-const PLANS = [
+type Plan = {
+  name: string;
+  price: string;
+  videos: number;
+  cta: string;
+  badge?: string;
+  features: string[];
+  highlight?: boolean;
+};
+
+const PLANS: Plan[] = [
   {
-    name: "Starter",
-    price: "$29.95",
-    videos: 15,
+    name: "Test the Waters",
+    price: "$19.95",
+    videos: 3,
+    cta: "Start Test Pass ($19.95)",
     features: [
-      "15 videos / month",
-      "Persona generator",
-      "Affiliate link tracking",
-      "HD 720x1280 output",
+      "3 AI videos / month",
+      "Full persona generator & hook writer",
+      "Click-tracked affiliate links",
+      "HD 720x1280 vertical output",
       "2 months free per referral",
     ],
   },
   {
-    name: "Pro",
-    price: "$59.95",
-    videos: 30,
+    name: "Starter",
+    price: "$39.95",
+    videos: 15,
+    cta: "Get Starter ($39.95)",
+    badge: "Most popular",
     features: [
-      "30 videos / month",
-      "Unlimited personas",
-      "Priority rendering",
-      "Affiliate link tracking",
-      "HD 720x1280 output",
+      "15 AI videos / month",
+      "Full persona generator & hook writer",
+      "Affiliate tracking & performance dashboard",
+      "Priority rendering queue",
       "2 months free per referral",
     ],
     highlight: true,
+  },
+  {
+    name: "Pro Scale",
+    price: "$69.95",
+    videos: 30,
+    cta: "Scale to Pro ($69.95)",
+    features: [
+      "30 AI videos / month — one a day",
+      "Unlimited personas & niche test profiles",
+      "Ultra-fast priority rendering queue",
+      "Advanced affiliate tracking & analytics",
+      "2 months free per referral",
+    ],
   },
 ];
 
@@ -58,21 +83,26 @@ function PublicPricing() {
   return (
     <div className="min-h-screen bg-background bg-grain">
       <PublicNav />
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
+      <section className="mx-auto max-w-6xl px-6 py-16 md:py-24">
         <div className="text-center">
           <h1 className="font-display text-5xl md:text-6xl">
             Pricing that scales with your posts.
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Start free with 3 videos. Upgrade when you're ready to scale.
+            Test the waters with 3 videos for $19.95, or unlock daily posts with Starter.
           </p>
         </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
           {PLANS.map((p) => (
             <div
               key={p.name}
               className={`rounded-2xl border p-8 shadow-pop ${p.highlight ? "border-primary bg-primary/5" : "border-border bg-card"}`}
             >
+              {p.badge && (
+                <p className="mb-3 inline-block rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                  {p.badge}
+                </p>
+              )}
               <p className="font-display text-2xl">{p.name}</p>
               <p className="mt-2 text-4xl font-semibold">
                 {p.price}
@@ -91,7 +121,7 @@ function PublicPricing() {
                 to="/auth"
                 className="mt-8 block rounded-full bg-primary py-3 text-center text-sm font-semibold text-primary-foreground hover:opacity-95"
               >
-                Start free trial
+                {p.cta}
               </Link>
             </div>
           ))}

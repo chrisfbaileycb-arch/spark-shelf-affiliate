@@ -270,8 +270,10 @@ export const generateVideo = createServerFn({ method: "POST" })
     } | null;
     if (!qr?.ok) {
       const reason = qr?.reason ?? "unknown";
-      if (reason === "trial_exhausted")
-        throw new Error("Your 3 free trial videos are used. Upgrade to keep generating.");
+      if (reason === "plan_required" || reason === "trial_exhausted")
+        throw new Error(
+          "Pick a plan to start generating — Test the Waters is $19.95/mo for 3 videos.",
+        );
       if (reason === "quota_exceeded")
         throw new Error(
           `Monthly limit reached (${qr?.used}/${qr?.limit}). Upgrade or wait until next billing period.`,
