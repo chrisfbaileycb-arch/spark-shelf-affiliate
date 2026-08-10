@@ -283,3 +283,22 @@
   }
   .animate-marquee { animation: marquee 24s linear infinite; }
 }
+
+/* ===== Token refresh for the bright marketing surface =====
+ * These update the public-marketing palette to the Fyxer-inspired warm/orange
+ * scheme. They sit after the existing :root / .dark blocks so they win on
+ * specificity for the landing route only (the landing root div sets
+ * `bg-aurora-light`, which re-bases the background locally).
+ * If you'd rather keep the existing coral primary brand-wide, delete this
+ * block and just keep the utilities above — the page will render with the
+ * original coral accent on a cream base instead of orange.
+ */
+:root {
+  --primary: oklch(0.68 0.19 42);
+  --primary-foreground: oklch(0.99 0.008 75);
+  --brand: oklch(0.68 0.19 42);
+  --brand-foreground: oklch(0.99 0.008 75);
+  --accent: oklch(0.88 0.10 0);
+  --accent-foreground: oklch(0.18 0.025 320);
+  --ring: oklch(0.68 0.19 42);
+}
