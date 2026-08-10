@@ -96,7 +96,7 @@ export default defineTool({
   name: "create_video_draft",
   title: "Create video draft",
   description:
-    "Generate a script and save a video draft record. The actual HeyGen render must be triggered from the Influencer Echo web app because rendering takes several minutes.",
+    "Generate a script and save an avatar video draft record. The actual HeyGen render must be triggered from the Influencer Echo web app because rendering takes several minutes.",
   inputSchema: {
     product_id: z.string().uuid().describe("UUID of the product to create a video for."),
     persona_id: z
@@ -164,6 +164,7 @@ export default defineTool({
         voice_id: voiceId,
         heygen_avatar_id: avatarId,
         provider: "heygen",
+        video_kind: "avatar",
         status: "scripting",
         duration_seconds: 15,
         hook: script.hook,
