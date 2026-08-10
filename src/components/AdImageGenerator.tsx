@@ -111,10 +111,12 @@ export function AdImageGenerator() {
               </select>
               {activeProduct && (
                 <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
-                  {activeProduct.description}
+                  {activeProduct.source_domain}
+                  {activeProduct.price ? ` · ${activeProduct.price}` : ""}
                 </p>
               )}
             </div>
+
 
             <div>
               <label
