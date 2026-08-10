@@ -150,7 +150,7 @@ const VALUE_PROPS = [
   { value: "6", label: "industry verticals", color: "text-[oklch(0.90_0.13_145)]" },
   { value: "2", label: "video engines", color: "text-[oklch(0.90_0.08_240)]" },
   { value: "1", label: "URL to full kit", color: "text-primary" },
-  { value: "<60s", label: "per campaign", color: "text-[oklch(0.88_0.10_0)]" },
+  { value: "0", label: "cameras needed", color: "text-[oklch(0.88_0.10_0)]" },
 ] as const;
 
 function Landing() {

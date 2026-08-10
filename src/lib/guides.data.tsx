@@ -16,15 +16,16 @@ export const GUIDES: Record<string, Guide> = {
     body: (
       <>
         <p>
-          TikTok Shop, YouTube Shopping, Facebook Reels, and Meta Ads reward campaigns that test
-          multiple angles daily. The math is simple: more creative variations = higher conversion
-          rates.
+          TikTok Shop, YouTube Shopping, Facebook Reels, and Meta Ads all reward accounts that keep
+          posting fresh angles. Testing more creative variations gives you more chances to find the
+          one that lands — no single format wins every time.
         </p>
         <p>
           The traditional bottleneck has always been production time. This playbook details how
-          Influencer Echo's multi-engine creative studio eliminates that bottleneck by turning a
-          single URL into a full media kit in minutes.
+          Influencer Echo's multi-engine creative studio shortens that bottleneck by turning a
+          single URL into a full media kit without a camera, a studio, or an editor.
         </p>
+
 
         <h2>1. Pick products or services with real demand</h2>
         <p>
@@ -33,8 +34,9 @@ export const GUIDES: Record<string, Guide> = {
         </p>
         <ul>
           <li>
-            <strong>E-Commerce &amp; Amazon:</strong> look for items with a &gt;20% commission rate,
-            an under-$40 price point (impulse buy), and a clear "problem → payoff" visual demo.
+            <strong>E-Commerce &amp; Amazon:</strong> a common starting filter is a healthy
+            commission rate, an impulse-friendly price point, and a clear "problem → payoff" visual
+            demo. Check the current terms on the program's own page — rates change often.
           </li>
           <li>
             <strong>Real Estate &amp; Local Services:</strong> grab active property or service
@@ -45,6 +47,7 @@ export const GUIDES: Record<string, Guide> = {
             web interfaces or mobile app screenshots.
           </li>
         </ul>
+
 
         <h2>2. Paste the URL into Influencer Echo</h2>
         <p>
@@ -85,7 +88,10 @@ export const GUIDES: Record<string, Guide> = {
         </p>
 
         <h2>5. Generate, review &amp; post across channels</h2>
-        <p>Each campaign render takes under a minute. Review your multi-format output set:</p>
+        <p>
+          Renders typically take about 30–90 seconds per asset, depending on the engine and current
+          queue. Review your multi-format output set:
+        </p>
         <ul>
           <li>Grab your HeyGen talking-head video short for direct-to-camera pitches.</li>
           <li>Grab your MiniMax silent b-roll clips for sleek visual cuts or background overlays.</li>
@@ -96,7 +102,7 @@ export const GUIDES: Record<string, Guide> = {
         </ul>
         <p>
           Attach your click-tracked affiliate or campaign link from Influencer Echo's Link Manager
-          and post. Aim for 5–10 multi-format assets daily.
+          and post. A steady daily posting habit beats one big batch — pick a cadence you can keep.
         </p>
 
         <h2>6. FTC compliance &amp; disclosures</h2>
@@ -109,11 +115,13 @@ export const GUIDES: Record<string, Guide> = {
 
         <h2>7. Measure clicks &amp; scale what works</h2>
         <p>
-          Every link generated in Influencer Echo is click-tracked in real time. Review your
-          performance dashboard weekly to identify which persona × product × media format
-          combinations convert best. Double down on winning product hooks and scale up to
-          higher-volume production tiers.
+          Every link generated in Influencer Echo is click-tracked, and the click count for each
+          link shows on its product page. Check in weekly to see which persona × product × media
+          format combinations pull the most clicks, then put more of your output behind the hooks
+          that earn attention. Conversions and payouts are reported by your affiliate network, not
+          by Influencer Echo.
         </p>
+
 
         <h2>8. Tiered studio expansion &amp; referral growth</h2>
         <p>As your volume grows, upgrade through Influencer Echo's flexible plans:</p>
@@ -128,20 +136,21 @@ export const GUIDES: Record<string, Guide> = {
           </li>
           <li>
             <strong>Agency ($99/mo):</strong> 30 HeyGen avatar shorts + 100 MiniMax motion clips +
-            500 Fluid Ad Images + team features.
+            500 Fluid Ad Images + white-label / agency exports.
           </li>
         </ul>
         <p>
           Plus, earn 2 free months for every creator or agency you refer who upgrades to a paid
-          plan. Drop your referral link in creator communities to keep your studio running
-          cost-free.
+          plan. Refer enough active creators and your referral credit can cover part or all of your
+          own subscription.
         </p>
 
         <div className="not-prose mt-10 rounded-2xl border border-border bg-surface p-6">
           <p className="font-display text-2xl">Ready to run the playbook?</p>
           <p className="mt-2 text-muted-foreground">
-            Pick your pass and turn your first URL into a full campaign kit in under a minute.
+            Pick your pass and turn your first URL into a full campaign kit.
           </p>
+
           <Link
             to="/auth"
             className="mt-4 inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95"
