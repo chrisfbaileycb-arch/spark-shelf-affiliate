@@ -135,7 +135,7 @@ const PLATFORMS = [
 
 // Output-format showcase tiles — honest placeholders, not real creators or fake metrics.
 const OUTPUT_STYLES = [
-  { label: "9:16 Vertical Short", note: "TikTok / Reels / Shorts", src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=400&q=70" },
+  { label: "9:16 Vertical Short", note: "TikTok / Reels / Shorts", src: "https://images.unsplash.com/photo-1596558450255-7c0b7be9d56a?auto=format&fit=crop&w=400&q=70" },
   { label: "1:1 Feed Card", note: "Instagram & Facebook feed", src: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=400&q=70" },
   { label: "16:9 Landscape", note: "Facebook display & web", src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=70" },
   { label: "Product Motion Clip", note: "Silent cinematic b-roll", src: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=400&q=70" },
@@ -217,11 +217,11 @@ function Landing() {
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <Link
-              to="/pricing"
-              data-testid="hero-start-test-pass"
+              to="/auth"
+              data-testid="hero-start-free-trial"
               className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop glow-orange transition hover:brightness-105"
             >
-              Start Test Pass ($29.95) <ArrowRight className="h-4 w-4" />
+              Start free trial <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/industries"
