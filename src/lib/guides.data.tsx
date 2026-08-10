@@ -136,20 +136,21 @@ export const GUIDES: Record<string, Guide> = {
           </li>
           <li>
             <strong>Agency ($99/mo):</strong> 30 HeyGen avatar shorts + 100 MiniMax motion clips +
-            500 Fluid Ad Images + team features.
+            500 Fluid Ad Images + white-label / agency exports.
           </li>
         </ul>
         <p>
           Plus, earn 2 free months for every creator or agency you refer who upgrades to a paid
-          plan. Drop your referral link in creator communities to keep your studio running
-          cost-free.
+          plan. Refer enough active creators and your referral credit can cover part or all of your
+          own subscription.
         </p>
 
         <div className="not-prose mt-10 rounded-2xl border border-border bg-surface p-6">
           <p className="font-display text-2xl">Ready to run the playbook?</p>
           <p className="mt-2 text-muted-foreground">
-            Pick your pass and turn your first URL into a full campaign kit in under a minute.
+            Pick your pass and turn your first URL into a full campaign kit.
           </p>
+
           <Link
             to="/auth"
             className="mt-4 inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95"
