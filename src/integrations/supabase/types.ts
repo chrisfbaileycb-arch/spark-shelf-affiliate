@@ -164,6 +164,7 @@ export type Database = {
           generation_enabled: boolean
           id: boolean
           pause_reason: string | null
+          per_user_daily_broll_cap: number
           per_user_daily_video_cap: number
           updated_at: string
         }
@@ -172,6 +173,7 @@ export type Database = {
           generation_enabled?: boolean
           id?: boolean
           pause_reason?: string | null
+          per_user_daily_broll_cap?: number
           per_user_daily_video_cap?: number
           updated_at?: string
         }
@@ -180,6 +182,7 @@ export type Database = {
           generation_enabled?: boolean
           id?: boolean
           pause_reason?: string | null
+          per_user_daily_broll_cap?: number
           per_user_daily_video_cap?: number
           updated_at?: string
         }
@@ -524,6 +527,7 @@ export type Database = {
       }
       usage_counters: {
         Row: {
+          broll_used: number
           images_used: number
           period_start: string
           updated_at: string
@@ -531,6 +535,7 @@ export type Database = {
           videos_used: number
         }
         Insert: {
+          broll_used?: number
           images_used?: number
           period_start: string
           updated_at?: string
@@ -538,6 +543,7 @@ export type Database = {
           videos_used?: number
         }
         Update: {
+          broll_used?: number
           images_used?: number
           period_start?: string
           updated_at?: string
@@ -588,6 +594,7 @@ export type Database = {
           thumbnail_url: string | null
           updated_at: string
           user_id: string
+          video_kind: string
           video_url: string | null
           voice_id: string | null
         }
@@ -611,6 +618,7 @@ export type Database = {
           thumbnail_url?: string | null
           updated_at?: string
           user_id: string
+          video_kind?: string
           video_url?: string | null
           voice_id?: string | null
         }
@@ -634,6 +642,7 @@ export type Database = {
           thumbnail_url?: string | null
           updated_at?: string
           user_id?: string
+          video_kind?: string
           video_url?: string | null
           voice_id?: string | null
         }
@@ -666,6 +675,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_broll_quota: { Args: { _user_id: string }; Returns: Json }
       consume_image_quota: {
         Args: { _count?: number; _user_id: string }
         Returns: Json
@@ -683,6 +693,7 @@ export type Database = {
         Args: { _tier: Database["public"]["Enums"]["sub_tier"] }
         Returns: Json
       }
+      release_broll_quota: { Args: { _user_id: string }; Returns: undefined }
       release_image_quota: {
         Args: { _count?: number; _user_id: string }
         Returns: undefined
