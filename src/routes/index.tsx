@@ -148,11 +148,48 @@ function Landing() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+              Vertical solution matrix
+            </p>
+            <h2 className="mt-2 font-display text-4xl">Built for your industry, not a template.</h2>
+            <p className="mt-3 max-w-xl text-muted-foreground">
+              Every vertical gets its own hook angle, ad-card layouts, and short-form script
+              structure — from listing tours to menu promos.
+            </p>
+          </div>
+          <Link
+            to="/industries"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold transition-colors hover:bg-surface"
+          >
+            See all industries <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {INDUSTRIES.map((ind) => (
+            <Link
+              key={ind.slug}
+              to="/industries"
+              data-testid={`home-industry-${ind.slug}`}
+              className="group rounded-3xl border border-border bg-card p-6 shadow-pop transition-transform hover:-translate-y-1"
+            >
+              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary/10 text-primary">
+                <ind.icon className="h-5 w-5" />
+              </div>
+              <p className="mt-4 font-display text-xl">{ind.name}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{ind.headline}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <h2 className="font-display text-4xl">Ready to print affiliate commissions?</h2>
+        <h2 className="font-display text-4xl">Ready to fill every surface?</h2>
         <p className="mt-3 text-muted-foreground">
-          Start on Starter at $29/mo for 5 videos and 30 ad images, or scale to Pro Creator and Agency. Bring your
-          own affiliate IDs from any network.
+          Start the Test Pass at $29.95/mo for 5 video shorts and 30 fluid ad images, or scale to
+          Pro Creator ($49) and Agency ($99).
         </p>
         <Link
           to="/auth"
