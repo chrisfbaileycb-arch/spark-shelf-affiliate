@@ -336,7 +336,7 @@
       {
         "name": "check_credit_balance",
         "title": "Check credit balance",
-        "description": "Check remaining HeyGen credits and current monthly video quota usage.",
+        "description": "Check video provider configuration and current monthly video quota usage.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
