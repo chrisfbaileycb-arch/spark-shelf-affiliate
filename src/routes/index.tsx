@@ -195,7 +195,7 @@ function Landing() {
         <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
           <div className="mx-auto inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground/80">
             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse-soft" />
-            Join 23,000+ creators shipping daily
+            AI campaign studio for solo creators
           </div>
 
           <h1 className="mt-7 text-balance font-display text-6xl font-semibold leading-[0.92] tracking-tight text-foreground sm:text-7xl md:text-8xl">
