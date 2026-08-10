@@ -94,76 +94,14 @@ async function generateScript(
   }
 }
 
-async function heygen<T = unknown>(path: string, init?: RequestInit): Promise<T> {
-  const key = process.env.HEYGEN_API_KEY;
-  if (!key) throw new Error("HEYGEN_API_KEY not configured");
-  const res = await fetch(`${HEYGEN_API}${path}`, {
-    ...init,
-    headers: {
-      "X-Api-Key": key,
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      ...(init?.headers ?? {}),
-    },
-  });
-  const text = await res.text();
-  if (!res.ok) throw new Error(`HeyGen ${path} ${res.status}: ${text.slice(0, 300)}`);
-  try {
-    return JSON.parse(text) as T;
-  } catch {
-    throw new Error(`HeyGen returned non-JSON from ${path}`);
-  }
-}
-
-interface HeyGenQuota {
-  error: unknown;
-  data?: { remaining_quota?: number };
-}
-
-export const checkHeygenBalance = createServerFn({ method: "GET" })
+/** Provider status: MiniMax has no public balance endpoint, so we report reachability. */
+export const checkVideoProviderStatus = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async () => {
-    const json = await heygen<HeyGenQuota>("/v2/user/remaining_quota");
-    const remaining = json.data?.remaining_quota ?? 0;
-    return { remaining, low: remaining < MIN_CREDITS, threshold: MIN_CREDITS };
+    const configured = Boolean(process.env["MINIMAX_API_KEY"]);
+    return { provider: "minimax" as const, configured, low: !configured };
   });
 
-interface HeyGenGenerateResp {
-  error: unknown;
-  data?: { video_id?: string };
-}
-interface HeyGenStatusResp {
-  code: number;
-  data?: {
-    status: "pending" | "processing" | "completed" | "failed" | "waiting";
-    video_url?: string;
-    thumbnail_url?: string;
-    error?: { detail?: string; message?: string } | null;
-    duration?: number;
-    credit_used?: number;
-  };
-}
-
-async function pollHeygen(
-  videoId: string,
-  signal?: AbortSignal,
-): Promise<NonNullable<HeyGenStatusResp["data"]>> {
-  const start = Date.now();
-  const timeout = 5 * 60 * 1000; // 5 min
-  while (Date.now() - start < timeout) {
-    if (signal?.aborted) throw new Error("Aborted");
-    const r = await heygen<HeyGenStatusResp>(
-      `/v1/video_status.get?video_id=${encodeURIComponent(videoId)}`,
-    );
-    const d = r.data;
-    if (!d) throw new Error("HeyGen status missing data");
-    if (d.status === "completed") return d;
-    if (d.status === "failed")
-      throw new Error(d.error?.message || d.error?.detail || "HeyGen reported failure");
-    await new Promise((res) => setTimeout(res, 6000));
-  }
-  throw new Error("HeyGen render timed out after 5 minutes");
-}
 
 export const generateVideo = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
