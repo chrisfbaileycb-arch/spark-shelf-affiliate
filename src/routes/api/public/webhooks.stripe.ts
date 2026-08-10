@@ -1,20 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type Stripe from "stripe";
 import { createStripeClient, getWebhookSecret, type StripeEnv } from "@/lib/stripe.server";
+import { monthlyCentsForTier, tierFromLookupKey, type TierId } from "@/lib/plans";
 
-function tierFromLookupKey(key: string | null | undefined): "test" | "starter" | "pro" | null {
-  if (key === "test_monthly") return "test";
-  if (key === "starter_monthly") return "starter";
-  if (key === "pro_monthly") return "pro";
-  return null;
-}
+type PaidTier = Exclude<TierId, "trial">;
 
 // 2 months of credit at the subscriber's monthly rate (cents).
-function referralCreditCents(tier: "test" | "starter" | "pro"): number {
-  // Mirror the published plan amounts: test $19.95, starter $39.95, pro $69.95.
-  const monthly = tier === "pro" ? 6995 : tier === "starter" ? 3995 : 1995;
-  return monthly * 2;
+function referralCreditCents(tier: PaidTier): number {
+  return monthlyCentsForTier(tier) * 2;
 }
+
 
 async function applyReferralCreditIfEligible(args: {
   stripe: ReturnType<typeof import("@/lib/stripe.server").createStripeClient>;
