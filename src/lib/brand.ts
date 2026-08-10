@@ -6,7 +6,7 @@
 export const BRAND = "Influencer Echo";
 
 /** The legal person or entity that operates the Service. */
-export const OPERATOR = "Chris (FULL LEGAL NAME PENDING), sole proprietor d/b/a Influencer Echo";
+export const OPERATOR = "Christopher Bailey, sole proprietor d/b/a Influencer Echo";
 
 /** Short form used inline in sentences. */
 export const OPERATOR_SHORT = "the owner of Influencer Echo, a sole proprietorship";
