@@ -88,7 +88,10 @@ export const GUIDES: Record<string, Guide> = {
         </p>
 
         <h2>5. Generate, review &amp; post across channels</h2>
-        <p>Each campaign render takes under a minute. Review your multi-format output set:</p>
+        <p>
+          Renders typically take about 30–90 seconds per asset, depending on the engine and current
+          queue. Review your multi-format output set:
+        </p>
         <ul>
           <li>Grab your HeyGen talking-head video short for direct-to-camera pitches.</li>
           <li>Grab your MiniMax silent b-roll clips for sleek visual cuts or background overlays.</li>
@@ -99,7 +102,7 @@ export const GUIDES: Record<string, Guide> = {
         </ul>
         <p>
           Attach your click-tracked affiliate or campaign link from Influencer Echo's Link Manager
-          and post. Aim for 5–10 multi-format assets daily.
+          and post. A steady daily posting habit beats one big batch — pick a cadence you can keep.
         </p>
 
         <h2>6. FTC compliance &amp; disclosures</h2>
@@ -112,11 +115,13 @@ export const GUIDES: Record<string, Guide> = {
 
         <h2>7. Measure clicks &amp; scale what works</h2>
         <p>
-          Every link generated in Influencer Echo is click-tracked in real time. Review your
-          performance dashboard weekly to identify which persona × product × media format
-          combinations convert best. Double down on winning product hooks and scale up to
-          higher-volume production tiers.
+          Every link generated in Influencer Echo is click-tracked, and the click count for each
+          link shows on its product page. Check in weekly to see which persona × product × media
+          format combinations pull the most clicks, then put more of your output behind the hooks
+          that earn attention. Conversions and payouts are reported by your affiliate network, not
+          by Influencer Echo.
         </p>
+
 
         <h2>8. Tiered studio expansion &amp; referral growth</h2>
         <p>As your volume grows, upgrade through Influencer Echo's flexible plans:</p>
