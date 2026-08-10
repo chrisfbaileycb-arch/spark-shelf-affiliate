@@ -166,12 +166,8 @@ export const syncSubscriptionFromStripe = createServerFn({ method: "POST" })
 
       const item = sub.items.data[0];
       const priceLookup = item?.price?.lookup_key ?? null;
-      const tier =
-        priceLookup === "starter_monthly"
-          ? "starter"
-          : priceLookup === "pro_monthly"
-            ? "pro"
-            : "starter";
+      const tier = tierFromLookupKey(priceLookup) ?? "starter";
+
       const periodEnd = item?.current_period_end
         ? new Date(item.current_period_end * 1000).toISOString()
         : null;
