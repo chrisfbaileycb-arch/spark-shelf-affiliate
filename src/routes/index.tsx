@@ -373,35 +373,33 @@ function Landing() {
         </div>
       </section>
 
-      {/* ===================== SOCIAL PROOF / INFLUENCER GALLERY ===================== */}
+      {/* ===================== OUTPUT FORMAT SHOWCASE ===================== */}
       <section className="relative z-10 border-y border-border bg-surface/60">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="mb-12 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              Don&apos;t take our word for it
+              One URL, every format you need
             </p>
             <h2 className="mt-3 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-              Join 23,000+ creators already shipping.
+              Built for creators who&apos;d rather ship than edit.
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {CREATORS.map((c) => (
+            {OUTPUT_STYLES.map((item) => (
               <figure
-                key={c.name}
+                key={item.label}
                 className="lift glass-strong relative aspect-[4/5] overflow-hidden rounded-2xl shadow-soft"
               >
                 <img
-                  src={c.src}
-                  alt={`${c.name}, ${c.platform} creator`}
+                  src={item.src}
+                  alt={item.label}
                   className="h-full w-full object-cover"
                   loading="lazy"
                 />
                 <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/85 to-transparent p-3">
-                  <p className="text-sm font-semibold text-white">{c.name}</p>
-                  <p className="text-[0.65rem] text-white/80">
-                    {c.platform} · {c.metric}
-                  </p>
+                  <p className="text-sm font-semibold text-white">{item.label}</p>
+                  <p className="text-[0.65rem] text-white/80">{item.note}</p>
                 </figcaption>
               </figure>
             ))}
@@ -409,8 +407,8 @@ function Landing() {
 
           <div className="mt-12 overflow-hidden rounded-2xl glass-strong">
             <div className="flex w-max animate-marquee gap-12 px-6 py-5 text-sm font-semibold text-foreground/80">
-              {[...STATS, ...STATS].map((s, i) => (
-                <span key={`stat-${i}`} className="flex items-center gap-2">
+              {[...VALUE_PROPS, ...VALUE_PROPS].map((s, i) => (
+                <span key={`prop-${i}`} className="flex items-center gap-2">
                   <span className={s.color}>{s.value}</span> {s.label}
                 </span>
               ))}
