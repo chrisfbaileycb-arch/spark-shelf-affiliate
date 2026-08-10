@@ -126,3 +126,33 @@ export function buildVideoPrompt(input: {
     .filter(Boolean)
     .join(" ");
 }
+
+const KIND_SETTING: Record<string, string> = {
+  ecommerce:
+    "Studio-quality product beauty shot: the product on a clean surface with soft depth of field, slow dolly-in and gentle parallax.",
+  mobile_app:
+    "A modern smartphone held in frame or resting on a desk, screen glowing, slow camera orbit and subtle rack focus.",
+  saas: "A sleek laptop or desktop monitor on a bright modern desk, slow push-in, soft ambient office light and gentle bokeh.",
+};
+
+/** Silent cinematic b-roll / product motion prompt — no presenter, no speech. */
+export function buildBRollPrompt(input: {
+  productTitle: string;
+  productDescription?: string | null;
+  assetKind?: string | null;
+  styleNote?: string | null;
+}): string {
+  const setting = KIND_SETTING[input.assetKind ?? "ecommerce"] ?? KIND_SETTING["ecommerce"];
+  return [
+    `Vertical 9:16 cinematic b-roll motion clip featuring "${input.productTitle}".`,
+    input.productDescription ? `Context: ${input.productDescription}` : "",
+    setting,
+    input.styleNote ? `Art direction: ${input.styleNote}.` : "",
+    "Smooth cinematic camera movement, premium commercial lighting, shallow depth of field, realistic materials.",
+    "No people speaking, no talking head, no dialogue — silent visual b-roll only.",
+    "No text overlays, no captions, no logos, no watermarks, no distorted geometry.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
