@@ -16,15 +16,16 @@ export const GUIDES: Record<string, Guide> = {
     body: (
       <>
         <p>
-          TikTok Shop, YouTube Shopping, Facebook Reels, and Meta Ads reward campaigns that test
-          multiple angles daily. The math is simple: more creative variations = higher conversion
-          rates.
+          TikTok Shop, YouTube Shopping, Facebook Reels, and Meta Ads all reward accounts that keep
+          posting fresh angles. Testing more creative variations gives you more chances to find the
+          one that lands — no single format wins every time.
         </p>
         <p>
           The traditional bottleneck has always been production time. This playbook details how
-          Influencer Echo's multi-engine creative studio eliminates that bottleneck by turning a
-          single URL into a full media kit in minutes.
+          Influencer Echo's multi-engine creative studio shortens that bottleneck by turning a
+          single URL into a full media kit without a camera, a studio, or an editor.
         </p>
+
 
         <h2>1. Pick products or services with real demand</h2>
         <p>
