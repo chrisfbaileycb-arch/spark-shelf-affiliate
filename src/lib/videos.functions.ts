@@ -149,8 +149,10 @@ export const generateVideo = createServerFn({ method: "POST" })
       persona = p;
     }
 
-    const avatarId = persona?.heygen_avatar_id || DEFAULT_AVATAR;
-    const voiceId = persona?.elevenlabs_voice_id || DEFAULT_VOICE;
+    // Legacy avatar/voice columns are kept for persona bookkeeping; MiniMax renders from prompt.
+    const avatarId = persona?.heygen_avatar_id ?? null;
+    const voiceId = persona?.elevenlabs_voice_id ?? null;
+
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { PLAN_REQUIRED_MESSAGE } = await import("@/lib/plans");
