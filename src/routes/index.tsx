@@ -71,20 +71,20 @@ function Landing() {
               <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Hands-off affiliate marketing
             </div>
             <h1 className="mt-6 text-balance font-display text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">
-              Turn any product link into a <span className="text-primary">scroll-stopping</span>{" "}
-              15-second video.
+              Turn any URL into a <span className="text-primary">scroll-stopping</span> multi-format
+              ad kit.
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg text-muted-foreground">
-              Paste a product URL. Influencer Echo writes the hook, generates an AI
-              female-influencer voiceover, mocks up the visuals, and hands you short-form videos
-              optimized for TikTok, YouTube Shorts, and Facebook Reels.
+              Paste a product, app store, or website URL. Influencer Echo writes the ad copy, renders
+              creatives in every ratio — feed, stories, landscape — mocks apps and sites into real
+              device frames, and hands you an AI-avatar short for TikTok, Shorts, and Reels.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/auth"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-95"
               >
-                Start Test Pass ($19.95) <ArrowRight className="h-4 w-4" />
+                Start with Starter ($29) <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#how"
@@ -94,36 +94,12 @@ function Landing() {
               </a>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
-              No video editing. No on-camera time. No product shipping.
+              No design work. No on-camera time. No product shipping.
             </p>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-brand opacity-30 blur-3xl" />
-            <div className="mx-auto aspect-[9/16] w-full max-w-sm overflow-hidden rounded-[2rem] border border-border bg-secondary text-secondary-foreground shadow-pop">
-              <div className="flex h-full flex-col justify-between p-6">
-                <div className="flex items-center justify-between text-xs uppercase tracking-wider opacity-80">
-                  <span>● live preview</span>
-                  <span>0:15</span>
-                </div>
-                <div>
-                  <p className="font-display text-3xl leading-tight">
-                    "Okay this is literally the only one I'll ever recommend…"
-                  </p>
-                  <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
-                    LINK IN BIO ↗
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 text-xs">
-                  <div className="h-8 w-8 rounded-full bg-primary" />
-                  <div>
-                    <p className="font-semibold">@your_creator</p>
-                    <p className="opacity-70">#ad #affiliate</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <AssetShowcase />
+
         </div>
       </section>
 
