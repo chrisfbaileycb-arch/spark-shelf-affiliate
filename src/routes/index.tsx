@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Link2, Video, BadgeDollarSign } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { PublicFooter } from "@/components/PublicFooter";
+import { AssetShowcase } from "@/components/AssetShowcase";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
