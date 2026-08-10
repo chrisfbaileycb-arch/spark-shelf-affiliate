@@ -23,16 +23,16 @@ export const PLANS: Plan[] = [
     priceId: "starter_monthly",
     tier: "starter",
     name: "Starter",
-    price: "$29",
-    amountCents: 2900,
+    price: "$29.95",
+    amountCents: 2995,
     videos: 5,
     images: 30,
-    cta: "Get Starter ($29)",
+    cta: "Start Test Pass ($29.95)",
     features: [
-      "5 AI video shorts (up to 30s) / month",
+      "5 AI video shorts (15–30s) / month",
       "30 fluid ad images & app/web mockups / month",
-      "Full persona generator & hook writer",
-      "Click-tracked affiliate links",
+      "15s & 30s script hook engine",
+      "Standard rendering queue",
     ],
   },
   {
@@ -47,10 +47,10 @@ export const PLANS: Plan[] = [
     badge: "Most popular",
     highlight: true,
     features: [
-      "15 AI video shorts (up to 30s) / month",
+      "15 AI video shorts (15–30s) / month",
       "150 fluid ad images & app/web mockups / month",
       "Priority rendering queue",
-      "Affiliate tracking & performance analytics",
+      "Multi-ratio campaign exports (1:1, 9:16, 16:9)",
     ],
   },
   {
@@ -63,10 +63,11 @@ export const PLANS: Plan[] = [
     images: 500,
     cta: "Scale to Agency ($99)",
     features: [
-      "30 AI video shorts (up to 30s) / month",
+      "30 AI video shorts (15–30s) / month",
       "500 fluid ad images & app/web mockups / month",
-      "Unlimited personas & niche test profiles",
-      "Multi-format campaign exports (1:1, 9:16, 16:9)",
+      "Ultra-fast priority rendering queue",
+      "Real estate & local business campaign kits",
+      "White-label / agency team exports",
     ],
   },
 ];
@@ -105,4 +106,4 @@ export function monthlyCentsForTier(tier: TierId): number {
 
 /** Copy shown when a plan is required before a render can run. */
 export const PLAN_REQUIRED_MESSAGE =
-  "Pick a plan to start generating — Starter is $29/mo for 5 videos and 30 ad images.";
+  "Pick a plan to start generating — the Test Pass is $29.95/mo for 5 video shorts and 30 fluid ad images.";

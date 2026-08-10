@@ -11,7 +11,7 @@ export const Route = createFileRoute("/pricing")({
       {
         name: "description",
         content:
-          "Starter $29/mo for 5 video shorts and 30 ad images, Pro Creator $49 for 15 and 150, Agency $99 for 30 and 500. Cancel anytime.",
+          "Starter Test Pass $29.95/mo for 5 video shorts (15–30s) and 30 fluid ad images, Pro Creator $49 for 15 and 150, Agency $99 for 30 and 500. Cancel anytime.",
       },
       { property: "og:title", content: "Influencer Echo Pricing — Starter, Pro Creator & Agency" },
       {

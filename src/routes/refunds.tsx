@@ -29,7 +29,7 @@ function Refunds() {
 
         <h2>Starting small</h2>
         <p>
-          The Starter plan ($29/mo, 5 videos and 30 images) exists so you can evaluate Influencer Echo
+          The Starter Test Pass ($29.95/mo, 5 videos and 30 images) exists so you can evaluate Influencer Echo
           at low cost before committing to a larger plan. You can upgrade, downgrade, or cancel at
           any time.
         </p>
