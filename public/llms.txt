@@ -1,8 +1,8 @@
 # Influencer Echo
 
-> Influencer Echo turns any product URL into a 15-second AI influencer-style video with voiceover, captions, and a tracked affiliate link — built for hands-off affiliate marketing on TikTok, Reels, and Shorts.
+> Influencer Echo turns any product, app store, or website URL into a full ad kit: multi-ratio ad images and device mockups plus a 15- or 30-second AI influencer-style video with voiceover, captions, and a tracked link — built for hands-off affiliate marketing on TikTok, Reels, and Shorts.
 
-Influencer Echo is a SaaS app for affiliate marketers and creators. Users paste a product page, choose an AI persona, and receive a ready-to-post vertical MP4 plus a tracked short link. Plans: Test the Waters ($19.95, 3 videos/mo), Starter ($39.95, 15 videos/mo), and Pro Scale ($69.95, 30 videos/mo). Referrers earn 2 months of credit for every friend who upgrades.
+Influencer Echo is a SaaS app for affiliate marketers and creators. Users paste a product page, choose an AI persona, and receive a ready-to-post vertical MP4 plus a tracked short link. Plans: Starter ($29/mo, 5 videos + 30 images), Pro Creator ($49/mo, 15 videos + 150 images), and Agency ($99/mo, 30 videos + 500 images). Referrers earn 2 months of credit for every friend who upgrades.
 
 ## Pages
 
