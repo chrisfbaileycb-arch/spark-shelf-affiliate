@@ -77,7 +77,8 @@ function Pricing() {
       <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
         {PLANS.map((plan) => (
           <Card
-            key={plan.id}
+            key={plan.priceId}
+            data-testid={`upgrade-plan-${plan.tier}`}
             className={`p-8 ${plan.highlight ? "border-primary shadow-pop" : ""}`}
           >
             {plan.highlight && (
@@ -86,9 +87,12 @@ function Pricing() {
               </div>
             )}
             <h2 className="font-display text-3xl">{plan.name}</h2>
-            <p className="mt-2 text-4xl font-bold">
+            <p className="mt-2 font-mono text-4xl font-bold tabular-nums">
               {plan.price}
-              <span className="text-base font-normal text-muted-foreground">/mo</span>
+              <span className="font-sans text-base font-normal text-muted-foreground">/mo</span>
+            </p>
+            <p className="mt-2 font-mono text-sm tabular-nums text-muted-foreground">
+              {plan.videos} videos · {plan.images} images / mo
             </p>
             <ul className="mt-6 space-y-2">
               {plan.features.map((f) => (
@@ -98,7 +102,7 @@ function Pricing() {
               ))}
             </ul>
             <Button
-              onClick={() => setPicked(plan.id)}
+              onClick={() => setPicked(plan.priceId)}
               className="mt-6 w-full"
               variant={plan.highlight ? "default" : "secondary"}
               disabled={currentTier === plan.tier}
@@ -108,6 +112,7 @@ function Pricing() {
           </Card>
         ))}
       </div>
+
     </div>
   );
 }
