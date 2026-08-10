@@ -85,7 +85,7 @@ function HowItWorks() {
             to="/auth"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-95"
           >
-            Start with Starter ($29) <ArrowRight className="h-4 w-4" />
+            Start Test Pass ($29.95) <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>
