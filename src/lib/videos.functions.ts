@@ -9,11 +9,7 @@ const GenerateInput = z.object({
 });
 
 const AI_GATEWAY = "https://ai.gateway.lovable.dev/v1";
-const HEYGEN_API = "https://api.heygen.com";
-// Sensible defaults — overridable per-request from the UI.
-const DEFAULT_AVATAR = "Daisy-inskirt-20220818";
-const DEFAULT_VOICE = "2d5b0e6cf36f460aa7fc47e3eee4ba54";
-const MIN_CREDITS = 30; // ~30s of video; below this we flag low_credit
+
 
 interface ScriptOut {
   hook: string;
