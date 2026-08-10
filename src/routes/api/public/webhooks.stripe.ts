@@ -15,7 +15,7 @@ async function applyReferralCreditIfEligible(args: {
   stripe: ReturnType<typeof import("@/lib/stripe.server").createStripeClient>;
   supabaseAdmin: import("@supabase/supabase-js").SupabaseClient;
   referredUserId: string;
-  tier: "test" | "starter" | "pro";
+  tier: PaidTier;
 }) {
   const { stripe, supabaseAdmin, referredUserId, tier } = args;
   // Who referred this user?
