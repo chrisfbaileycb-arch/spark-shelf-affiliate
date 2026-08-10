@@ -46,8 +46,9 @@ export const Route = createFileRoute("/")({
               applicationCategory: "MultimediaApplication",
               operatingSystem: "Web",
               offers: [
-                { "@type": "Offer", name: "Starter", price: "29.95", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Pro", price: "59.95", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Test the Waters", price: "19.95", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Starter", price: "39.95", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Pro Scale", price: "69.95", priceCurrency: "USD" },
               ],
             },
           ],
@@ -83,7 +84,7 @@ function Landing() {
                 to="/auth"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-95"
               >
-                Start free <ArrowRight className="h-4 w-4" />
+                Start Test Pass ($19.95) <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#how"
@@ -170,7 +171,8 @@ function Landing() {
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <h2 className="font-display text-4xl">Ready to print affiliate commissions?</h2>
         <p className="mt-3 text-muted-foreground">
-          Free to try. Bring your own affiliate IDs from any network.
+          Test the waters with 3 videos for $19.95, or unlock daily posts with Starter. Bring
+          your own affiliate IDs from any network.
         </p>
         <Link
           to="/auth"

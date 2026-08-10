@@ -27,10 +27,11 @@ function Refunds() {
         <h1 className="font-display text-4xl">Refund Policy</h1>
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
-        <h2>Free trial</h2>
+        <h2>Starting small</h2>
         <p>
-          Every new account gets 3 free videos before entering any paid plan. Use the trial to
-          decide whether Influencer Echo fits your workflow.
+          The Test the Waters plan ($19.95/mo, 3 videos) exists so you can evaluate Influencer Echo
+          at low cost before committing to a larger plan. You can upgrade, downgrade, or cancel at
+          any time.
         </p>
 
         <h2>Monthly subscriptions</h2>

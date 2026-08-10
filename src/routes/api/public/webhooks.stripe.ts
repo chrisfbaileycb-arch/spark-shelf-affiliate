@@ -2,16 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import type Stripe from "stripe";
 import { createStripeClient, getWebhookSecret, type StripeEnv } from "@/lib/stripe.server";
 
-function tierFromLookupKey(key: string | null | undefined): "starter" | "pro" | null {
+function tierFromLookupKey(key: string | null | undefined): "test" | "starter" | "pro" | null {
+  if (key === "test_monthly") return "test";
   if (key === "starter_monthly") return "starter";
   if (key === "pro_monthly") return "pro";
   return null;
 }
 
 // 2 months of credit at the subscriber's monthly rate (cents).
-function referralCreditCents(tier: "starter" | "pro"): number {
-  // Mirror payments--batch_create_product amounts: starter $29.95, pro $59.95.
-  const monthly = tier === "pro" ? 5995 : 2995;
+function referralCreditCents(tier: "test" | "starter" | "pro"): number {
+  // Mirror the published plan amounts: test $19.95, starter $39.95, pro $69.95.
+  const monthly = tier === "pro" ? 6995 : tier === "starter" ? 3995 : 1995;
   return monthly * 2;
 }
 
@@ -19,7 +20,7 @@ async function applyReferralCreditIfEligible(args: {
   stripe: ReturnType<typeof import("@/lib/stripe.server").createStripeClient>;
   supabaseAdmin: import("@supabase/supabase-js").SupabaseClient;
   referredUserId: string;
-  tier: "starter" | "pro";
+  tier: "test" | "starter" | "pro";
 }) {
   const { stripe, supabaseAdmin, referredUserId, tier } = args;
   // Who referred this user?
