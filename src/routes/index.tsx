@@ -48,9 +48,9 @@ export const Route = createFileRoute("/")({
               applicationCategory: "MultimediaApplication",
               operatingSystem: "Web",
               offers: [
-                { "@type": "Offer", name: "Test the Waters", price: "19.95", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Starter", price: "39.95", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Pro Scale", price: "69.95", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Starter", price: "29.00", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Pro Creator", price: "49.00", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Agency", price: "99.00", priceCurrency: "USD" },
               ],
             },
           ],
@@ -149,7 +149,7 @@ function Landing() {
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <h2 className="font-display text-4xl">Ready to print affiliate commissions?</h2>
         <p className="mt-3 text-muted-foreground">
-          Test the waters with 3 videos for $19.95, or unlock daily posts with Starter. Bring your
+          Start on Starter at $29/mo for 5 videos and 30 ad images, or scale to Pro Creator and Agency. Bring your
           own affiliate IDs from any network.
         </p>
         <Link
