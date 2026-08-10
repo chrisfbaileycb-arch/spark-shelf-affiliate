@@ -15,50 +15,80 @@ export const generateAdImage = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => GenerateInput.parse(d))
   .handler(async ({ data, context }) => {
     const { buildAdPrompt, renderAdImage, RATIO_SIZE } = await import("@/lib/ad-images.server");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { PLAN_REQUIRED_MESSAGE } = await import("@/lib/plans");
     const { supabase, userId } = context;
 
     const { data: product, error: pe } = await supabase
       .from("products")
-      .select("title, description, price, currency, source_domain")
+      .select("title, description, price, currency, source_domain, asset_kind")
       .eq("id", data.product_id)
       .maybeSingle();
     if (pe || !product) throw new Error("Product not found");
 
-    const { data: persona } = await supabase
-      .from("personas")
-      .select("name, vibe, voice_tone, bio")
-      .eq("is_default", true)
-      .maybeSingle();
+    // Charge the monthly image allowance before any expensive work; refund on failure.
+    const { data: quota, error: qe } = await supabaseAdmin.rpc("consume_image_quota", {
+      _user_id: userId,
+      _count: 1,
+    });
+    if (qe) throw new Error(qe.message);
+    const q = quota as { ok: boolean; reason?: string; used?: number; limit?: number } | null;
+    if (!q?.ok) {
+      if (q?.reason === "plan_required" || q?.reason === "no_subscription")
+        throw new Error(PLAN_REQUIRED_MESSAGE);
+      if (q?.reason === "quota_exceeded")
+        throw new Error(
+          `Monthly image limit reached (${q.used}/${q.limit}). Upgrade or wait for the next billing period.`,
+        );
+      if (q?.reason === "subscription_inactive")
+        throw new Error("Your subscription is inactive. Update billing to continue.");
+      throw new Error(`Cannot generate: ${q?.reason ?? "unknown"}`);
+    }
 
-    const prompt = buildAdPrompt(product, data.ratio, persona ?? null, data.angle);
-    const bytes = await renderAdImage(prompt, data.ratio);
+    try {
+      const { data: persona } = await supabase
+        .from("personas")
+        .select("name, vibe, voice_tone, bio")
+        .eq("is_default", true)
+        .maybeSingle();
 
-    const path = `${userId}/${crypto.randomUUID()}.png`;
-    const { error: ue } = await supabase.storage
-      .from("ad-images")
-      .upload(path, bytes, { contentType: "image/png", upsert: false });
-    if (ue) throw new Error(`Upload failed: ${ue.message}`);
+      const prompt = buildAdPrompt(product, data.ratio, persona ?? null, {
+        kind: (product.asset_kind ?? "ecommerce") as "ecommerce" | "mobile_app" | "saas",
+        ...(data.angle ? { angle: data.angle } : {}),
+      });
+      const bytes = await renderAdImage(prompt, data.ratio);
 
-    const { data: row, error: ie } = await supabase
-      .from("ad_images")
-      .insert({
-        user_id: userId,
-        product_id: data.product_id,
-        ratio: data.ratio,
-        size: RATIO_SIZE[data.ratio],
-        prompt,
-        storage_path: path,
-      })
-      .select("id, ratio, size, prompt, storage_path, created_at")
-      .single();
-    if (ie || !row) throw new Error(ie?.message ?? "Could not save image record");
+      const path = `${userId}/${crypto.randomUUID()}.png`;
+      const { error: ue } = await supabase.storage
+        .from("ad-images")
+        .upload(path, bytes, { contentType: "image/png", upsert: false });
+      if (ue) throw new Error(`Upload failed: ${ue.message}`);
 
-    const { data: signed } = await supabase.storage
-      .from("ad-images")
-      .createSignedUrl(path, 60 * 60 * 24 * 7);
+      const { data: row, error: ie } = await supabase
+        .from("ad_images")
+        .insert({
+          user_id: userId,
+          product_id: data.product_id,
+          ratio: data.ratio,
+          size: RATIO_SIZE[data.ratio],
+          prompt,
+          storage_path: path,
+        })
+        .select("id, ratio, size, prompt, storage_path, created_at")
+        .single();
+      if (ie || !row) throw new Error(ie?.message ?? "Could not save image record");
 
-    return { ...row, url: signed?.signedUrl ?? null };
+      const { data: signed } = await supabase.storage
+        .from("ad-images")
+        .createSignedUrl(path, 60 * 60 * 24 * 7);
+
+      return { ...row, url: signed?.signedUrl ?? null };
+    } catch (err) {
+      await supabaseAdmin.rpc("release_image_quota", { _user_id: userId, _count: 1 });
+      throw err;
+    }
   });
+
 
 export const listAdImages = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
