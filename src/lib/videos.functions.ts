@@ -218,10 +218,7 @@ export const generateVideo = createServerFn({ method: "POST" })
       throw new Error(`Cannot generate: ${reason}`);
     }
 
-    // HeyGen balance check
-    const quota = await heygen<HeyGenQuota>("/v2/user/remaining_quota");
-    const remaining = quota.data?.remaining_quota ?? 0;
-    if (remaining < MIN_CREDITS) {
+    if (!process.env["MINIMAX_API_KEY"]) {
       const { data: lc } = await supabase
         .from("videos")
         .insert({
@@ -230,14 +227,15 @@ export const generateVideo = createServerFn({ method: "POST" })
           persona_id: persona?.id ?? null,
           voice_id: voiceId,
           heygen_avatar_id: avatarId,
+          provider: "minimax",
           status: "low_credit",
           duration_seconds: data.duration_seconds,
-          error: `HeyGen balance ${remaining} credits is below threshold ${MIN_CREDITS}. Top up and retry.`,
+          error: "MINIMAX_API_KEY is not configured on the server.",
         })
         .select()
         .single();
       throw new Error(
-        `Low HeyGen credit: ${remaining} remaining (need ≥ ${MIN_CREDITS}). Video record: ${lc?.id ?? "n/a"}`,
+        `Video provider not configured (MINIMAX_API_KEY missing). Video record: ${lc?.id ?? "n/a"}`,
       );
     }
 
@@ -249,7 +247,7 @@ export const generateVideo = createServerFn({ method: "POST" })
         persona_id: persona?.id ?? null,
         voice_id: voiceId,
         heygen_avatar_id: avatarId,
-        provider: "heygen",
+        provider: "minimax",
         status: "scripting",
         duration_seconds: data.duration_seconds,
       })
@@ -263,7 +261,6 @@ export const generateVideo = createServerFn({ method: "POST" })
 
     try {
       const script = await generateScript(product, persona, data.duration_seconds);
-      const spoken = `${script.hook} ${script.script}`.trim();
       await patch({
         status: "rendering",
         hook: script.hook,
@@ -272,38 +269,42 @@ export const generateVideo = createServerFn({ method: "POST" })
         hashtags: script.hashtags,
       });
 
-      const gen = await heygen<HeyGenGenerateResp>("/v2/video/generate", {
-        method: "POST",
-        body: JSON.stringify({
-          video_inputs: [
-            {
-              character: { type: "avatar", avatar_id: avatarId, avatar_style: "normal" },
-              voice: { type: "text", input_text: spoken, voice_id: voiceId, speed: 1.05 },
-              background: { type: "color", value: "#FAF7F2" },
-            },
-          ],
-          dimension: { width: 720, height: 1280 },
-          caption: true,
-        }),
+      const {
+        buildVideoPrompt,
+        createVideoTask,
+        pollVideoTask,
+        retrieveFileUrl,
+        minimaxClipSeconds,
+      } = await import("@/lib/minimax.server");
+
+      const clipSeconds = minimaxClipSeconds(data.duration_seconds);
+      const prompt = buildVideoPrompt({
+        hook: script.hook,
+        script: script.script,
+        productTitle: product.title,
+        productDescription: product.description,
+        personaVibe: persona?.vibe ?? null,
       });
-      const heygenVideoId = gen.data?.video_id;
-      if (!heygenVideoId) throw new Error("HeyGen did not return a video_id");
 
-      await patch({ heygen_video_id: heygenVideoId });
+      const taskId = await createVideoTask({
+        prompt,
+        durationSeconds: clipSeconds,
+        firstFrameImage: (product as { image_url?: string | null }).image_url ?? null,
+      });
+      await patch({ heygen_video_id: taskId });
 
-      const completed = await pollHeygen(heygenVideoId);
-      if (!completed.video_url) throw new Error("HeyGen completed without a video_url");
+      const fileId = await pollVideoTask(taskId);
+      const videoUrl = await retrieveFileUrl(fileId);
 
       await patch({
         status: "ready",
-        video_url: completed.video_url,
-        thumbnail_url: completed.thumbnail_url ?? null,
-        generation_cost: completed.credit_used ?? null,
-        duration_seconds: Math.round(completed.duration ?? data.duration_seconds),
+        video_url: videoUrl,
+        duration_seconds: clipSeconds,
         error: null,
       });
 
-      return { video_id: video.id, heygen_video_id: heygenVideoId };
+      return { video_id: video.id, provider_task_id: taskId };
+
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       await patch({ status: "failed", error: message });
