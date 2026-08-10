@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      ad_images: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string | null
+          prompt: string
+          ratio: string
+          size: string
+          storage_path: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id?: string | null
+          prompt: string
+          ratio: string
+          size: string
+          storage_path: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string | null
+          prompt?: string
+          ratio?: string
+          size?: string
+          storage_path?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ad_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       affiliate_links: {
         Row: {
           affiliate_program_id: string | null
