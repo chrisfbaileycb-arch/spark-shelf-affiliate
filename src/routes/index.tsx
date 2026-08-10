@@ -3,6 +3,7 @@ import { ArrowRight, Sparkles, Link2, Video, BadgeDollarSign } from "lucide-reac
 import { PublicNav } from "@/components/PublicNav";
 import { PublicFooter } from "@/components/PublicFooter";
 import { AssetShowcase } from "@/components/AssetShowcase";
+import { INDUSTRIES } from "@/lib/industries";
 
 
 export const Route = createFileRoute("/")({
