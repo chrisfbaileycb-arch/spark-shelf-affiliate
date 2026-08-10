@@ -15,7 +15,7 @@ export const Route = createFileRoute("/how-it-works")({
       { property: "og:title", content: "How Influencer Echo works" },
       {
         property: "og:description",
-        content: "From product URL to postable affiliate video in under a minute.",
+        content: "From product URL to a postable affiliate video — no camera, no editing.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/how-it-works" },
