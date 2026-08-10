@@ -112,8 +112,8 @@ function VideoDetail() {
             <div className="h-full w-1/3 animate-pulse bg-primary" />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
-            Status: <strong>{video.status}</strong>… polling every 3s. MiniMax renders typically
-            finish in 30–90s.
+            Status: <strong>{video.status}</strong>… polling every 3s. Avatar renders finish in
+            30–90s; cinematic b-roll clips can take 1–3 minutes.
           </p>
         </Card>
       )}
@@ -197,7 +197,7 @@ function VideoDetail() {
 
             <Card className="p-6 text-sm text-muted-foreground">
               <p>
-                Provider: <strong className="text-foreground">{video.provider || "minimax"}</strong>
+                Provider: <strong className="text-foreground">{video.provider || "heygen"}</strong>
               </p>
               {video.heygen_video_id && (
                 <p className="mt-1">

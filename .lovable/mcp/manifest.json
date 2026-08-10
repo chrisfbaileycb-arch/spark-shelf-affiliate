@@ -197,7 +197,7 @@
       {
         "name": "create_video_draft",
         "title": "Create video draft",
-        "description": "Generate a script and save a video draft record. The actual HeyGen render must be triggered from the Influencer Echo web app because rendering takes several minutes.",
+        "description": "Generate a script and save an avatar video draft record. The actual HeyGen render must be triggered from the Influencer Echo web app because rendering takes several minutes.",
         "annotations": {
           "readOnlyHint": false,
           "idempotentHint": false,

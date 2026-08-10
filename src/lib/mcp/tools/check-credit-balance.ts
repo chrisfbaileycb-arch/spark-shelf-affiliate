@@ -21,21 +21,24 @@ export default defineTool({
 
     const { data: usage, error: usageErr } = await supabase
       .from("usage_counters")
-      .select("videos_used, videos_limit")
+      .select("videos_used, broll_used, images_used")
       .eq("user_id", ctx.getUserId())
       .maybeSingle();
     if (usageErr) throw new ToolError(`Database error: ${usageErr.message}`);
 
     return {
       content: [
-        { type: "text", text: "Video provider: MiniMax (Hailuo)" },
+        {
+          type: "text",
+          text: "Engines: HeyGen (avatar talking-head video) + MiniMax Hailuo (silent b-roll motion clips)",
+        },
         {
           type: "text",
           text: `Subscription: ${sub?.status ?? "unknown"} (${sub?.tier ?? "trial"})`,
         },
         {
           type: "text",
-          text: `Monthly videos: ${usage?.videos_used ?? 0} / ${usage?.videos_limit ?? 0}`,
+          text: `Used this month — avatar videos: ${usage?.videos_used ?? 0}, b-roll clips: ${usage?.broll_used ?? 0}, images: ${usage?.images_used ?? 0}`,
         },
       ],
     };

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Image as ImageIcon, Video } from "lucide-react";
+import { Check, Film, Image as ImageIcon, Video } from "lucide-react";
 import { PublicFooter } from "@/components/PublicFooter";
 import { PublicNav } from "@/components/PublicNav";
 import { PLANS } from "@/lib/plans";
@@ -11,13 +11,13 @@ export const Route = createFileRoute("/pricing")({
       {
         name: "description",
         content:
-          "Starter Test Pass $29.95/mo for 5 video shorts (15–30s) and 30 fluid ad images, Pro Creator $49 for 15 and 150, Agency $99 for 30 and 500. Cancel anytime.",
+          "Starter $29.95/mo: 5 avatar videos, 10 b-roll motion clips, 30 fluid ad images. Pro Creator $49 and Agency $99 scale all three. Cancel anytime.",
       },
       { property: "og:title", content: "Influencer Echo Pricing — Starter, Pro Creator & Agency" },
       {
         property: "og:description",
         content:
-          "AI video shorts plus fluid ad images and app/web mockups every month. Cancel anytime.",
+          "AI avatar videos, cinematic b-roll motion clips, and fluid ad images every month. Cancel anytime.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/pricing" },
@@ -37,8 +37,8 @@ function PublicPricing() {
             Pricing that scales with your posts.
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Every plan generates both AI video shorts and a full set of ad images and app/web
-            mockups — sized for feed, stories, and landscape.
+            Every plan includes all three engines: AI influencer avatar videos, silent cinematic
+            b-roll motion clips, and a full set of ad images and app/web mockups.
           </p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -58,16 +58,21 @@ function PublicPricing() {
                 {p.price}
                 <span className="font-sans text-base text-muted-foreground">/mo</span>
               </p>
-              <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="mt-4 grid grid-cols-3 gap-2">
                 <div className="rounded-xl border border-border/70 bg-background/60 p-3">
                   <Video className="h-4 w-4 text-primary" />
                   <p className="mt-1 font-mono text-xl tabular-nums">{p.videos}</p>
-                  <p className="text-xs text-muted-foreground">video shorts / mo</p>
+                  <p className="text-xs text-muted-foreground">avatar videos / mo</p>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-background/60 p-3">
+                  <Film className="h-4 w-4 text-primary" />
+                  <p className="mt-1 font-mono text-xl tabular-nums">{p.broll}</p>
+                  <p className="text-xs text-muted-foreground">b-roll clips / mo</p>
                 </div>
                 <div className="rounded-xl border border-border/70 bg-background/60 p-3">
                   <ImageIcon className="h-4 w-4 text-primary" />
                   <p className="mt-1 font-mono text-xl tabular-nums">{p.images}</p>
-                  <p className="text-xs text-muted-foreground">images &amp; mockups / mo</p>
+                  <p className="text-xs text-muted-foreground">fluid images / mo</p>
                 </div>
               </div>
               <ul className="mt-6 space-y-3 text-sm">
