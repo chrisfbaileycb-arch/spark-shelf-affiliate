@@ -40,7 +40,33 @@ import {
   Plus,
   Sparkles,
   Trash2,
+  Video,
 } from "lucide-react";
+
+const ENGINE_STEP: Record<
+  string,
+  { label: string; href: string; cta: string; note: string }
+> = {
+  avatar: {
+    label: "HeyGen — avatar video",
+    href: "https://app.heygen.com/create-v3",
+    cta: "Open HeyGen with this script",
+    note: "Copies the script, then opens HeyGen. Paste it into the script box, pick your avatar and voice, render vertical 9:16.",
+  },
+  broll: {
+    label: "MiniMax — silent B-roll",
+    href: "https://hailuoai.video/create",
+    cta: "Open MiniMax with this prompt",
+    note: "Copies the video prompt, then opens MiniMax. B-roll renders silent — add your voiceover or on-screen text after.",
+  },
+  image: {
+    label: "Ad Image Engine",
+    href: "/studio",
+    cta: "Open the image studio",
+    note: "Generates the still in every ratio from the image prompt on this slot.",
+  },
+};
+
 
 
 export const Route = createFileRoute("/_authenticated/calendar/$date")({
@@ -556,7 +582,7 @@ function SlotCard({
 
                   <label className="mt-3 block space-y-1 text-sm">
                     <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                      Script for {platformLabel(p)}
+                      Step 1 — script for {platformLabel(p)}
                     </span>
                     <Textarea
                       rows={4}
@@ -598,7 +624,48 @@ function SlotCard({
                     <p className="mt-3 text-xs text-muted-foreground">{plan.posting_tip}</p>
                   )}
 
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  {(() => {
+                    const step = ENGINE_STEP[draft.engine] ?? ENGINE_STEP["avatar"]!;
+                    const payload =
+                      draft.engine === "broll"
+                        ? draft.video_prompt || plan.script
+                        : draft.engine === "image"
+                          ? draft.image_prompt || plan.script
+                          : plan.script;
+                    return (
+                      <div className="mt-4 rounded-lg border border-dashed bg-muted/40 p-3">
+                        <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                          Step 2 — make the video · {step.label}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">{step.note}</p>
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          className="mt-2"
+                          data-testid={`slot-lane-render-${p}`}
+                          asChild
+                        >
+                          <a
+                            href={step.href}
+                            target={step.href.startsWith("http") ? "_blank" : undefined}
+                            rel="noreferrer"
+                            onClick={() => {
+                              void navigator.clipboard.writeText(payload);
+                              toast.success("Script copied — paste it into the generator");
+                            }}
+                          >
+                            <Video className="mr-1.5 h-3.5 w-3.5" />
+                            {step.cta}
+                          </a>
+                        </Button>
+                      </div>
+                    );
+                  })()}
+
+                  <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    Step 3 — post it
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
                     <Button
                       size="sm"
                       variant="outline"
