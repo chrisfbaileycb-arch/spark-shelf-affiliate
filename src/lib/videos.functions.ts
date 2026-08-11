@@ -308,16 +308,10 @@ export const generateVideo = createServerFn({ method: "POST" })
 
     await assertRenderAllowed(supabaseAdmin, userId, "avatar");
 
-    const { data: quotaResult, error: qErr } = await supabaseAdmin.rpc("consume_video_quota", {
+    const { consumeQuotaUnlessOwner } = await import("@/lib/owner-override.server");
+    const { result: qr } = await consumeQuotaUnlessOwner(userId, "consume_video_quota", {
       _user_id: userId,
     });
-    if (qErr) throw new Error(qErr.message);
-    const qr = quotaResult as {
-      ok: boolean;
-      reason?: string;
-      used?: number;
-      limit?: number;
-    } | null;
     if (!qr?.ok) throw quotaError(qr, PLAN_REQUIRED_MESSAGE);
 
     // HeyGen balance check before spending anything.
@@ -441,16 +435,12 @@ export const generateBRollClip = createServerFn({ method: "POST" })
 
     await assertRenderAllowed(supabaseAdmin, userId, "broll");
 
-    const { data: quotaResult, error: qErr } = await supabaseAdmin.rpc("consume_broll_quota", {
-      _user_id: userId,
-    });
-    if (qErr) throw new Error(qErr.message);
-    const qr = quotaResult as {
-      ok: boolean;
-      reason?: string;
-      used?: number;
-      limit?: number;
-    } | null;
+    const { consumeQuotaUnlessOwner } = await import("@/lib/owner-override.server");
+    const { result: qr, bypassed: quotaBypassed } = await consumeQuotaUnlessOwner(
+      userId,
+      "consume_broll_quota",
+      { _user_id: userId },
+    );
     if (!qr?.ok) throw quotaError(qr, PLAN_REQUIRED_MESSAGE);
 
     const { data: video, error: ve } = await supabase
@@ -510,7 +500,7 @@ export const generateBRollClip = createServerFn({ method: "POST" })
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       await patch({ status: "failed", error: message });
-      await supabaseAdmin.rpc("release_broll_quota", { _user_id: userId });
+      if (!quotaBypassed) await supabaseAdmin.rpc("release_broll_quota", { _user_id: userId });
       throw err;
     }
   });

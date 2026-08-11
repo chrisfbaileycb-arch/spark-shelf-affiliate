@@ -124,7 +124,10 @@ export const getMySubscription = createServerFn({ method: "GET" })
         .maybeSingle(),
     ]);
 
-    const tier = (sub?.tier ?? "trial") as TierId;
+    const { isOwnerOverride, OWNER_TIER_LABEL } = await import("@/lib/owner-override.server");
+    const owner = await isOwnerOverride(userId);
+
+    const tier = (sub?.tier ?? (owner ? "agency" : "trial")) as TierId;
     const limits = PLAN_LIMITS[tier] ?? PLAN_LIMITS.trial;
     const used = usage?.videos_used ?? 0;
     const imagesUsed = usage?.images_used ?? 0;
@@ -132,12 +135,13 @@ export const getMySubscription = createServerFn({ method: "GET" })
     return {
       subscription: sub,
       tier,
-      tierLabel: TIER_LABEL[tier] ?? "No plan",
-      status: sub?.status ?? "trialing",
+      tierLabel: owner ? OWNER_TIER_LABEL : (TIER_LABEL[tier] ?? "No plan"),
+      status: sub?.status ?? (owner ? "active" : "trialing"),
+      ownerOverride: owner,
       used,
-      cap: limits.videos,
+      cap: owner ? Number.MAX_SAFE_INTEGER : limits.videos,
       imagesUsed,
-      imagesCap: limits.images,
+      imagesCap: owner ? Number.MAX_SAFE_INTEGER : limits.images,
     };
   });
 

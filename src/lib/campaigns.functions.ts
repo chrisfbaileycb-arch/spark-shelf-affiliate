@@ -106,11 +106,12 @@ export const generateCampaignImage = createServerFn({ method: "POST" })
     };
 
     // Charge the image quota before doing expensive work; refund on failure.
-    const { data: quota, error: qe } = await supabaseAdmin.rpc("consume_image_quota", {
-      _user_id: userId,
-      _count: 1,
-    });
-    if (qe) throw new Error(qe.message);
+    const { consumeQuotaUnlessOwner } = await import("@/lib/owner-override.server");
+    const { result: quota, bypassed: quotaBypassed } = await consumeQuotaUnlessOwner(
+      userId,
+      "consume_image_quota",
+      { _user_id: userId, _count: 1 },
+    );
     const q = quota as {
       ok: boolean;
       reason?: string;
@@ -174,7 +175,8 @@ export const generateCampaignImage = createServerFn({ method: "POST" })
 
       return { ...row, url: signed?.signedUrl ?? null };
     } catch (err) {
-      await supabaseAdmin.rpc("release_image_quota", { _user_id: userId, _count: 1 });
+      if (!quotaBypassed)
+        await supabaseAdmin.rpc("release_image_quota", { _user_id: userId, _count: 1 });
       throw err;
     }
   });
