@@ -30,14 +30,15 @@ export function PublicFooter() {
           <div className="max-w-xs">
             <Link to="/" className="flex items-center gap-2.5" aria-label="Echo Your Influence home">
               <BrandMark />
-              <span className="font-display text-xl font-semibold tracking-tight text-foreground">
+              <span className="font-display text-lg uppercase tracking-tight text-foreground">
                 Echo Your Influence
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Curate your influence. Turn any link into scroll-stopping AI video shorts and fluid ad
-              kits.
+              All we do is marketing for you. Plan it, create it, schedule it, and post it — from
+              one workspace.
             </p>
+
 
             {/* Social icons */}
             <div className="mt-5 flex items-center gap-3" aria-label="Follow us">

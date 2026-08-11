@@ -30,7 +30,7 @@ export function PublicNav() {
         {/* Logo lockup */}
         <Link to="/" className="flex items-center gap-2.5" aria-label="Echo Your Influence home">
           <BrandMark />
-          <span className="font-display text-xl font-semibold tracking-tight text-foreground">
+          <span className="font-display text-lg uppercase tracking-tight text-foreground">
             Echo Your Influence
           </span>
         </Link>
