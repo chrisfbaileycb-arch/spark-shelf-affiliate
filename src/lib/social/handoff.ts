@@ -100,7 +100,22 @@ export const CAPABILITY_LABEL: Record<ShareCapability, string> = {
   "download-only": "Download fallback",
 };
 
+/**
+ * Where each platform's own posting screen lives. On a phone the installed app
+ * usually intercepts these links; on desktop they open the web uploader.
+ * Nothing here posts for you — it just puts you on the right screen after the
+ * caption is copied and the video is on the device.
+ */
+export const PLATFORM_LAUNCH: Record<string, { label: string; url: string }> = {
+  tiktok: { label: "Open TikTok", url: "https://www.tiktok.com/upload" },
+  instagram: { label: "Open Instagram", url: "https://www.instagram.com/" },
+  youtube: { label: "Open YouTube Studio", url: "https://studio.youtube.com/" },
+  facebook: { label: "Open Facebook", url: "https://www.facebook.com/" },
+  linkedin: { label: "Open LinkedIn", url: "https://www.linkedin.com/feed/" },
+};
+
 export type CopyResult = { ok: true } | { ok: false; reason: string };
+
 
 /** Must be called synchronously from a user gesture. */
 export async function copyCaption(text: string): Promise<CopyResult> {
