@@ -1,8 +1,11 @@
 import { BrandMark } from "@/components/BrandMark";
 import { createFileRoute, Outlet, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getCustomerZeroState } from "@/lib/customer-zero.functions";
 import {
   LayoutDashboard,
   Package,
@@ -15,6 +18,7 @@ import {
   CreditCard,
   Send,
   Plug,
+  Route as RouteIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +28,7 @@ export const Route = createFileRoute("/_authenticated")({
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/campaigns", label: "Campaigns", icon: RouteIcon },
   { to: "/products", label: "Products", icon: Package },
   { to: "/personas", label: "Personas", icon: Users },
   { to: "/studio", label: "Studio", icon: Wand2 },
@@ -33,6 +38,7 @@ const NAV = [
   { to: "/settings/integrations", label: "Integrations", icon: Plug },
   { to: "/billing", label: "Billing", icon: CreditCard },
 ] as const;
+
 
 
 function AuthLayout() {
