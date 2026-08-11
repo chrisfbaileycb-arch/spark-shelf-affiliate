@@ -11,15 +11,24 @@ import listAffiliateProgramsTool from "./tools/list-affiliate-programs";
 import createAffiliateProgramTool from "./tools/create-affiliate-program";
 import createAffiliateLinkTool from "./tools/create-affiliate-link";
 import checkCreditBalanceTool from "./tools/check-credit-balance";
+import listCampaignsTool from "./tools/list-campaigns";
+import getCampaignTool from "./tools/get-campaign";
+import generateVideoScriptsTool from "./tools/generate-video-scripts";
+import listContentWaitingForApprovalTool from "./tools/list-content-waiting-for-approval";
+import searchApolloLeadsTool from "./tools/search-apollo-leads";
+import qualifyLeadsTool from "./tools/qualify-leads";
+import draftOutreachSequenceTool from "./tools/draft-outreach-sequence";
+import listPublishingQueueTool from "./tools/list-publishing-queue";
+import scheduleShareHandoffTool from "./tools/schedule-share-handoff";
 
 const projectRef = import.meta.env["VITE_SUPABASE_PROJECT_ID"] ?? "project-ref-unset";
 
 export default defineMcp({
   name: "influencer-echo",
   title: "Influencer Echo",
-  version: "0.1.0",
+  version: "0.2.0",
   instructions:
-    "Tools for Influencer Echo / Influencer Echo: ingest affiliate products, generate influencer scripts, create video drafts, manage personas, build tracked affiliate short links, and check rendering credits. All tools act on behalf of the signed-in user.",
+    "Tools for Influencer Echo: run the unified campaign spine (product brief → strategy → content pack → outbound → publishing), ingest affiliate products, generate influencer scripts and video drafts, manage personas, search and qualify Apollo leads, draft outreach sequences, queue Share-Sheet hand-offs, and build tracked affiliate links. Every tool acts only on the signed-in user's own organization data. Actions that spend credits, call the user's Apollo account, or write to their publishing calendar require an explicit confirm=true after asking the user. Never present a hand-off as published: only a user confirmation marks a post as posted, and no statistics or results may be invented.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
@@ -37,5 +46,14 @@ export default defineMcp({
     createAffiliateProgramTool,
     createAffiliateLinkTool,
     checkCreditBalanceTool,
+    listCampaignsTool,
+    getCampaignTool,
+    generateVideoScriptsTool,
+    listContentWaitingForApprovalTool,
+    searchApolloLeadsTool,
+    qualifyLeadsTool,
+    draftOutreachSequenceTool,
+    listPublishingQueueTool,
+    scheduleShareHandoffTool,
   ],
 });

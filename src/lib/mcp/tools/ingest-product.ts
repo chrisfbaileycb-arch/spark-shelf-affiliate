@@ -83,12 +83,17 @@ export default defineTool({
   name: "ingest_product",
   title: "Ingest product from URL",
   description:
-    "Scrape a product page, extract title/price/images with AI, and save it to the user's catalog.",
+    "Scrape a product page, extract title/price/images with AI, and save it to the user's catalog. Optionally attach it to a campaign, pre-filling that campaign's product brief.",
   inputSchema: {
     url: z.string().url().describe("Full product page URL (Amazon, AliExpress, Shopify, etc.)."),
+    campaign_id: z
+      .string()
+      .uuid()
+      .optional()
+      .describe("Optional campaign workflow UUID to attach this product to as the product brief."),
   },
   annotations: { readOnlyHint: false, idempotentHint: false, openWorldHint: true },
-  handler: async ({ url }, ctx) => {
+  handler: async ({ url, campaign_id }, ctx) => {
     if (!ctx.isAuthenticated()) throw new ToolError("You must be signed in to ingest a product.");
     const supabase = supabaseForUser(ctx);
     const domain = new URL(url).hostname.replace(/^www\./, "");
@@ -115,12 +120,40 @@ export default defineTool({
       .select()
       .single();
     if (error) throw new ToolError(`Database error: ${error.message}`);
+
+    let attached: string | null = null;
+    if (campaign_id) {
+      const { campaignCtx, requireWorkflow } = await import("../campaign.server");
+      const { orgId, db } = await campaignCtx(ctx);
+      await requireWorkflow(db, orgId, campaign_id);
+      await db.from("product_briefs").upsert(
+        {
+          workflow_id: campaign_id,
+          org_id: orgId,
+          source_url: url,
+          product_id: row.id,
+          offer: `${row.title}\n\n${row.description ?? ""}`.trim(),
+        },
+        { onConflict: "workflow_id" },
+      );
+      await db
+        .from("campaign_workflows")
+        .update({ product_id: row.id })
+        .eq("id", campaign_id)
+        .eq("org_id", orgId);
+      attached = campaign_id;
+    }
+
     return {
       content: [
         { type: "text", text: `Ingested product: ${row.title}` },
         {
           type: "text",
-          text: JSON.stringify({ product: row, suggested_network: network }, null, 2),
+          text: JSON.stringify(
+            { product: row, suggested_network: network, attached_to_campaign: attached },
+            null,
+            2,
+          ),
         },
       ],
     };

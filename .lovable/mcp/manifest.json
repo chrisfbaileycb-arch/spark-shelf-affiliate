@@ -12,7 +12,7 @@
   "mcp": {
     "server": {
       "name": "influencer-echo",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "title": "Influencer Echo"
     },
     "tools": [
@@ -68,7 +68,7 @@
       {
         "name": "ingest_product",
         "title": "Ingest product from URL",
-        "description": "Scrape a product page, extract title/price/images with AI, and save it to the user's catalog.",
+        "description": "Scrape a product page, extract title/price/images with AI, and save it to the user's catalog. Optionally attach it to a campaign, pre-filling that campaign's product brief.",
         "annotations": {
           "readOnlyHint": false,
           "idempotentHint": false,
@@ -82,6 +82,12 @@
               "type": "string",
               "format": "uri",
               "description": "Full product page URL (Amazon, AliExpress, Shopify, etc.)."
+            },
+            "campaign_id": {
+              "description": "Optional campaign workflow UUID to attach this product to as the product brief.",
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             }
           },
           "required": [
@@ -346,6 +352,323 @@
           "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_campaigns",
+        "title": "List campaigns",
+        "description": "List the signed-in user's unified campaigns (product brief → strategy → content → outbound → publishing), newest activity first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Maximum campaigns to return (default 50).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_campaign",
+        "title": "Get campaign details",
+        "description": "Fetch one campaign with its brief, strategy, content pack, outbound status, lead counts and step status badges.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "campaign_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "UUID of the campaign workflow."
+            }
+          },
+          "required": [
+            "campaign_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "generate_video_scripts",
+        "title": "Generate video scripts and captions",
+        "description": "Generate the campaign content pack: hooks, two 15-30s short-form scripts, captions with #ad disclosure, and two hashtags. Requires an existing brief and strategy. Saves over the previous pack for this campaign.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "campaign_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "UUID of the campaign workflow."
+            }
+          },
+          "required": [
+            "campaign_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_content_waiting_for_approval",
+        "title": "List content waiting for approval",
+        "description": "List staged campaign assets awaiting human review: unapproved briefs and strategies, generated content packs, and draft social post variants that have not been handed off yet.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "campaign_id": {
+              "description": "Optional campaign UUID to narrow results to one campaign.",
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "search_apollo_leads",
+        "title": "Search Apollo leads",
+        "description": "Search Apollo People (0 Apollo credits, never returns emails) using the account's stored Apollo key. Preview-only by default. Set save=true AND confirm=true to persist the results as leads on the campaign.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "campaign_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "UUID of the campaign workflow."
+            },
+            "titles": {
+              "description": "Job titles to match.",
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 120
+              }
+            },
+            "locations": {
+              "description": "Person locations.",
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 120
+              }
+            },
+            "industries": {
+              "description": "Industry keywords.",
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 120
+              }
+            },
+            "employee_ranges": {
+              "description": "Company size ranges, e.g. \"11,50\".",
+              "maxItems": 10,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 30
+              }
+            },
+            "keywords": {
+              "description": "Free-text keywords.",
+              "type": "string",
+              "maxLength": 300
+            },
+            "per_page": {
+              "description": "Results per page (default 10).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 25
+            },
+            "save": {
+              "description": "Persist results as leads instead of previewing.",
+              "type": "boolean"
+            },
+            "confirm": {
+              "description": "Required true alongside save=true. Confirms a write against the user's Apollo account data.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "campaign_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "qualify_leads",
+        "title": "Qualify leads against the brief",
+        "description": "Score the campaign's unscored leads 0-100 against the approved ICP and positioning, marking each qualified or rejected against the campaign threshold.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "campaign_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "UUID of the campaign workflow."
+            }
+          },
+          "required": [
+            "campaign_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "draft_outreach_sequence",
+        "title": "Draft outreach sequence",
+        "description": "Generate a 3-step cold email sequence from the campaign brief and strategy and save it as an inactive draft. Nothing is pushed to Apollo and no contact is ever enrolled by this tool.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "campaign_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "UUID of the campaign workflow."
+            },
+            "name": {
+              "description": "Sequence name (default: campaign name).",
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120
+            }
+          },
+          "required": [
+            "campaign_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_publishing_queue",
+        "title": "List publishing queue",
+        "description": "List Share-Sheet hand-off items: scheduled posts and their per-platform variants with real state (staged, caption copied, handed off, posted, skipped).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Maximum posts to return (default 25).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "schedule_share_handoff",
+        "title": "Schedule a Share-Sheet hand-off",
+        "description": "Queue a rendered Campaign Kit for Share-Sheet hand-off on the chosen platforms at a target time. Creates staged variants only — the user still posts from their device.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "kit_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "UUID of the Studio campaign kit (campaigns.id) whose rendered assets should be queued."
+            },
+            "platforms": {
+              "minItems": 1,
+              "maxItems": 4,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "tiktok",
+                  "instagram",
+                  "youtube",
+                  "linkedin"
+                ]
+              },
+              "description": "Target platforms for the hand-off."
+            },
+            "scheduled_at": {
+              "description": "ISO-8601 UTC target posting time. Omit to queue immediately.",
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+            },
+            "timezone": {
+              "description": "IANA timezone label, default \"UTC\".",
+              "type": "string",
+              "maxLength": 60
+            },
+            "confirm": {
+              "description": "Required true. Confirms creating queue items in the user's publishing calendar.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "kit_id",
+            "platforms"
+          ]
         },
         "outputSchema": null
       }
