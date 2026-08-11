@@ -153,6 +153,20 @@ export const updateCalendarSlot = createServerFn({ method: "POST" })
         notes: z.string().max(2000).optional(),
         status: STATUS.optional(),
         product_id: z.string().uuid().nullable().optional(),
+        platform_plans: z
+          .array(
+            z.object({
+              platform: z.string().max(30),
+              hook: z.string().max(300).default(""),
+              script: z.string().max(4000).default(""),
+              caption: z.string().max(2000).default(""),
+              hashtags: z.array(z.string().max(60)).max(6).default([]),
+              format_note: z.string().max(500).default(""),
+              posting_tip: z.string().max(500).default(""),
+            }),
+          )
+          .max(5)
+          .optional(),
       })
       .parse(d),
   )
