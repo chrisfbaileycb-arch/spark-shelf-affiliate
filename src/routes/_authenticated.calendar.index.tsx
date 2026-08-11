@@ -92,10 +92,13 @@ function CalendarPage() {
   }, [slotsQuery.data]);
 
   const setView = (v: CalendarView) =>
-    navigate({ search: (prev) => ({ ...prev, view: v }) });
+    navigate({ search: (prev: { view: string; date: string }) => ({ ...prev, view: v }) });
   const move = (dir: -1 | 1) =>
     navigate({
-      search: (prev) => ({ ...prev, date: toISODate(shiftAnchor(view, anchor, dir)) }),
+      search: (prev: { view: string; date: string }) => ({
+        ...prev,
+        date: toISODate(shiftAnchor(view, anchor, dir)),
+      }),
     });
 
   return (
@@ -145,7 +148,11 @@ function CalendarPage() {
             variant="ghost"
             size="sm"
             data-testid="calendar-today"
-            onClick={() => navigate({ search: (prev) => ({ ...prev, date: todayISO }) })}
+            onClick={() =>
+              navigate({
+                search: (prev: { view: string; date: string }) => ({ ...prev, date: todayISO }),
+              })
+            }
           >
             Today
           </Button>
