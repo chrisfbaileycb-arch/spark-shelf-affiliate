@@ -45,6 +45,15 @@ function AuthLayout() {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const gateFn = useServerFn(getCustomerZeroState);
+  const gate = useQuery({
+    queryKey: ["customer-zero"],
+    queryFn: () => gateFn({}),
+    enabled: Boolean(session),
+    staleTime: 5 * 60 * 1000,
+  });
+
+
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
