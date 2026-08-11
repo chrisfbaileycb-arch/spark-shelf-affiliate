@@ -554,7 +554,7 @@ export const generateChannelPlan = createServerFn({ method: "POST" })
     const { error } = await db
       .from("gtm_strategies")
       .update({
-        channel_plan: out as unknown as Record<string, unknown>,
+        channel_plan: JSON.parse(JSON.stringify(out)),
         weekly_budget: data.weekly_budget,
         channel_plan_generated_at: out.generated_at,
       })
