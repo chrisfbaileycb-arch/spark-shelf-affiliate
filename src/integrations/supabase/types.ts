@@ -584,6 +584,8 @@ export type Database = {
         Row: {
           angles: Json
           approved_at: string | null
+          channel_plan: Json | null
+          channel_plan_generated_at: string | null
           created_at: string
           cta: string
           generated_at: string | null
@@ -595,11 +597,14 @@ export type Database = {
           pillars: Json
           positioning: string
           updated_at: string
+          weekly_budget: number | null
           workflow_id: string
         }
         Insert: {
           angles?: Json
           approved_at?: string | null
+          channel_plan?: Json | null
+          channel_plan_generated_at?: string | null
           created_at?: string
           cta?: string
           generated_at?: string | null
@@ -611,11 +616,14 @@ export type Database = {
           pillars?: Json
           positioning?: string
           updated_at?: string
+          weekly_budget?: number | null
           workflow_id: string
         }
         Update: {
           angles?: Json
           approved_at?: string | null
+          channel_plan?: Json | null
+          channel_plan_generated_at?: string | null
           created_at?: string
           cta?: string
           generated_at?: string | null
@@ -627,6 +635,7 @@ export type Database = {
           pillars?: Json
           positioning?: string
           updated_at?: string
+          weekly_budget?: number | null
           workflow_id?: string
         }
         Relationships: [
