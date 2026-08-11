@@ -3,7 +3,23 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { suggestNetworkForDomain } from "./affiliate-networks";
 
-const UrlInput = z.object({ url: z.string().url() });
+/** Kept in sync with CAMPAIGN_MODES in src/lib/campaign-modes.ts (no icon imports on the server). */
+const CAMPAIGN_MODE = z.enum([
+  "affiliate",
+  "real_estate",
+  "home_services",
+  "restaurant",
+  "local_service",
+  "professional",
+  "saas_app",
+  "ecommerce_brand",
+]);
+
+const UrlInput = z.object({
+  url: z.string().url(),
+  campaign_mode: CAMPAIGN_MODE.default("affiliate"),
+});
+
 
 // --- Firecrawl scrape ---
 async function firecrawlScrape(url: string) {
@@ -96,6 +112,7 @@ export const ingestProduct = createServerFn({ method: "POST" })
         images: fields.image_urls ?? [],
         raw: { markdown: md.slice(0, 4000) },
         suggested_network: network.network,
+        campaign_mode: data.campaign_mode,
       })
       .select()
       .single();
@@ -103,12 +120,62 @@ export const ingestProduct = createServerFn({ method: "POST" })
     return { product: row, suggested: network };
   });
 
+/**
+ * Adds a subject by hand. A contractor's bathroom remodel, a Sunday special, or
+ * a service call has no public product page to scrape — the operator knows the
+ * details better than any scraper would.
+ */
+export const createManualSubject = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        title: z.string().trim().min(2).max(160),
+        description: z.string().trim().max(4000).default(""),
+        price: z.string().trim().max(60).default(""),
+        source_url: z.string().trim().max(2000).default(""),
+        campaign_mode: CAMPAIGN_MODE,
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    let domain = "";
+    if (data.source_url) {
+      try {
+        domain = new URL(data.source_url).hostname.replace(/^www\./, "");
+      } catch {
+        throw new Error("That link isn't a valid URL. Leave it blank if there isn't one.");
+      }
+    }
+    const { data: row, error } = await context.supabase
+      .from("products")
+      .insert({
+        user_id: context.userId,
+        source_url: data.source_url,
+        source_domain: domain || null,
+        title: data.title,
+        description: data.description,
+        price: data.price,
+        currency: "",
+        images: [],
+        campaign_mode: data.campaign_mode,
+      })
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return { product: row };
+  });
+
+
 export const listProducts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("products")
-      .select("id, title, source_domain, price, currency, images, created_at, suggested_network")
+      .select(
+        "id, title, source_domain, price, currency, images, created_at, suggested_network, campaign_mode",
+      )
+
       .order("created_at", { ascending: false })
       .limit(100);
     if (error) throw new Error(error.message);

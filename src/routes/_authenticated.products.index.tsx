@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { deleteProduct, listProducts } from "@/lib/products.functions";
+import { campaignMode } from "@/lib/campaign-modes";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
@@ -59,7 +61,10 @@ function ProductsList() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {q.data.map((p) => {
             const imgs = (p.images as string[] | null) ?? [];
+            const mode = campaignMode(p.campaign_mode);
+            const ModeIcon = mode.icon;
             return (
+
               <Card
                 key={p.id}
                 className="relative flex gap-4 p-4 transition-transform hover:-translate-y-0.5 hover:shadow-pop"
@@ -80,7 +85,14 @@ function ProductsList() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 pr-8 font-medium leading-snug">{p.title}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{p.source_domain}</p>
+                    <p className="mt-1.5 inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+                      <ModeIcon className="h-3 w-3" />
+                      {mode.label}
+                    </p>
+                    {p.source_domain ? (
+                      <p className="mt-1 text-xs text-muted-foreground">{p.source_domain}</p>
+                    ) : null}
+
                     {p.price ? (
                       <p className="mt-2 text-sm font-semibold text-primary">
                         {p.price} {p.currency}

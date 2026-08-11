@@ -23,6 +23,8 @@ import {
   statusLabel,
   toISODate,
 } from "@/lib/calendar-dates";
+import { campaignMode } from "@/lib/campaign-modes";
+
 import { PLATFORM_LAUNCH } from "@/lib/social/handoff";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -167,7 +169,7 @@ function SlotCard({
 }: {
   slot: CalendarSlot;
   date: string;
-  products: Array<{ id: string; title: string }>;
+  products: Array<{ id: string; title: string; campaign_mode: string | null }>;
 }) {
   const qc = useQueryClient();
   const updateFn = useServerFn(updateCalendarSlot);
@@ -176,6 +178,12 @@ function SlotCard({
 
   const [draft, setDraft] = useState(slot);
   useEffect(() => setDraft(slot), [slot]);
+
+  const linkedMode = campaignMode(
+    products.find((p) => p.id === draft.product_id)?.campaign_mode ?? "affiliate",
+  );
+  const affiliate = linkedMode.disclosureRule === "affiliate";
+
 
   const invalidate = () => {
     qc.invalidateQueries({ queryKey: ["calendar-day", date] });
@@ -446,14 +454,18 @@ function SlotCard({
             </label>
             <label className="space-y-1.5 text-sm">
               <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                Affiliate disclosure (required)
+                {affiliate
+                  ? "Affiliate disclosure (required)"
+                  : `Disclosure — not required for ${linkedMode.label.toLowerCase()}`}
               </span>
               <Input
                 value={draft.disclosure}
+                placeholder={affiliate ? "#ad — commissionable link" : "Leave blank"}
                 onChange={(e) => setDraft((d) => ({ ...d, disclosure: e.target.value }))}
                 data-testid="slot-disclosure"
               />
             </label>
+
           </div>
         </div>
       </div>
