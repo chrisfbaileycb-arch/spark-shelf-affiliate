@@ -24,11 +24,12 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "reset">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [refCode, setRefCode] = useState<string | null>(null);
+  const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => {
     // Capture ?ref=CODE on first paint, persist for the signup
@@ -65,11 +66,19 @@ function AuthPage() {
         if (error) throw error;
         if (refCode) localStorage.removeItem("rr_ref_code");
         toast.success("Account created. You're signed in.");
+        navigate({ to: "/dashboard" });
+      } else if (mode === "reset") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        setResetSent(true);
+        toast.success("Check your email for a reset link.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        navigate({ to: "/dashboard" });
       }
-      navigate({ to: "/dashboard" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Auth failed");
     } finally {
@@ -98,10 +107,18 @@ function AuthPage() {
       <div className="flex items-center justify-center px-6 py-12">
         <Card className="w-full max-w-sm p-8 shadow-pop">
           <h1 className="font-display text-3xl">
-            {mode === "signin" ? "Welcome back" : "Create your account"}
+            {mode === "signin"
+              ? "Welcome back"
+              : mode === "signup"
+                ? "Create your account"
+                : "Reset your password"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {mode === "signin" ? "Sign in to keep creating." : "Free. No card required."}
+            {mode === "signin"
+              ? "Sign in to keep creating."
+              : mode === "signup"
+                ? "Free. No card required."
+                : "We'll email you a secure link."}
           </p>
           {refCode && mode === "signup" && (
             <p className="mt-2 rounded-md bg-primary/10 px-3 py-2 text-xs text-primary">
@@ -110,39 +127,67 @@ function AuthPage() {
             </p>
           )}
 
-          <form onSubmit={submit} className="mt-6 space-y-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
-              />
+          {mode === "reset" && resetSent ? (
+            <div className="mt-6 rounded-md bg-primary/10 p-4 text-sm text-primary">
+              Check your inbox — if an account exists for <strong>{email}</strong>, you'll receive a
+              password reset link shortly.
             </div>
-            <div>
-              <Label htmlFor="pw">Password</Label>
-              <Input
-                id="pw"
-                type="password"
-                required
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            <Button type="submit" disabled={busy} className="w-full">
-              {busy ? "..." : mode === "signin" ? "Sign in" : "Create account"}
-            </Button>
-          </form>
+          ) : (
+            <form onSubmit={submit} className="mt-6 space-y-4">
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              {mode !== "reset" && (
+                <div>
+                  <Label htmlFor="pw">Password</Label>
+                  <Input
+                    id="pw"
+                    type="password"
+                    required
+                    minLength={8}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+              )}
+              <Button type="submit" disabled={busy} className="w-full">
+                {busy
+                  ? "..."
+                  : mode === "signin"
+                    ? "Sign in"
+                    : mode === "signup"
+                      ? "Create account"
+                      : "Send reset link"}
+              </Button>
+            </form>
+          )}
+
+          {mode === "signin" && (
+            <button
+              onClick={() => setMode("reset")}
+              className="mt-3 w-full text-center text-sm text-muted-foreground hover:text-foreground"
+            >
+              Forgot password?
+            </button>
+          )}
+
           <button
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            onClick={() => {
+              setMode(mode === "signin" ? "signup" : "signin");
+              setResetSent(false);
+            }}
             className="mt-4 w-full text-center text-sm text-muted-foreground hover:text-foreground"
           >
-            {mode === "signin" ? "No account? Create one" : "Have an account? Sign in"}
+            {mode === "signup" ? "Have an account? Sign in" : "No account? Create one"}
           </button>
         </Card>
       </div>
