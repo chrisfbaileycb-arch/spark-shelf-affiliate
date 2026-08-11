@@ -180,11 +180,17 @@ export const generateSlotPrompt = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!row) throw new Error("That calendar slot no longer exists.");
 
-    let product: { title: string; description: string | null; price: string | null; source_url: string } | null = null;
+    let product: {
+      title: string;
+      description: string | null;
+      price: string | null;
+      source_url: string;
+      campaign_mode: string | null;
+    } | null = null;
     if (row.product_id) {
       const { data: p } = await db
         .from("products")
-        .select("title, description, price, source_url")
+        .select("title, description, price, source_url, campaign_mode")
         .eq("id", row.product_id)
         .maybeSingle();
       product = p ?? null;
@@ -195,6 +201,9 @@ export const generateSlotPrompt = createServerFn({ method: "POST" })
       .select("influencer_style")
       .eq("id", context.userId)
       .maybeSingle();
+
+    const { campaignMode } = await import("@/lib/campaign-modes");
+    const mode = campaignMode(product?.campaign_mode);
 
     const out = await generateDayPrompt({
       plan_date: row.plan_date,
@@ -207,7 +216,12 @@ export const generateSlotPrompt = createServerFn({ method: "POST" })
       product_price: product?.price ?? null,
       product_url: product?.source_url ?? null,
       creator_tone: profile?.influencer_style ?? null,
+      campaign_mode: mode.id,
+      mode_label: mode.label,
+      mode_angle: mode.angle,
+      affiliate: mode.disclosureRule === "affiliate",
     });
+
 
     const { data: saved, error } = await db
       .from("calendar_slots")
