@@ -18,7 +18,16 @@ export interface DayPromptInput {
   product_url?: string | null;
   creator_niche?: string | null;
   creator_tone?: string | null;
+  /** Campaign mode id, e.g. "affiliate", "real_estate", "restaurant". */
+  campaign_mode?: string | null;
+  /** Human label for the mode, used verbatim in the prompt. */
+  mode_label?: string | null;
+  /** Mode-specific creative steer. */
+  mode_angle?: string | null;
+  /** Whether an FTC affiliate disclosure belongs on this post. */
+  affiliate?: boolean;
 }
+
 
 export interface DayPromptOutput {
   hook: string;
