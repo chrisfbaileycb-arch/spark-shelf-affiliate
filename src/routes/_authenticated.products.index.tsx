@@ -59,7 +59,10 @@ function ProductsList() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {q.data.map((p) => {
             const imgs = (p.images as string[] | null) ?? [];
+            const mode = campaignMode(p.campaign_mode);
+            const ModeIcon = mode.icon;
             return (
+
               <Card
                 key={p.id}
                 className="relative flex gap-4 p-4 transition-transform hover:-translate-y-0.5 hover:shadow-pop"
