@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { getCampaignKit, generateCampaignImage, updateCampaign } from "@/lib/campaigns.functions";
 import { generateVideo } from "@/lib/videos.functions";
+import { queueCampaignForPublishing } from "@/lib/publishing.functions";
 import { attachCampaignVideo } from "@/lib/campaigns.functions";
 import { buildUtmUrl, SLOT_LABEL } from "@/lib/utm";
 import { Copy, Download, Loader2, Video as VideoIcon, Check } from "lucide-react";
@@ -281,5 +282,89 @@ export function CampaignKitDrawer({
         )}
       </SheetContent>
     </Sheet>
+  );
+}
+
+const HANDOFF_PLATFORMS = [
+  { id: "tiktok" as const, label: "TikTok" },
+  { id: "instagram" as const, label: "Instagram Reel" },
+  { id: "youtube" as const, label: "YouTube Short" },
+  { id: "linkedin" as const, label: "LinkedIn" },
+];
+
+function SendToPublishing({ campaignId, hasVideo }: { campaignId: string; hasVideo: boolean }) {
+  const queueFn = useServerFn(queueCampaignForPublishing);
+  const [platforms, setPlatforms] = useState<string[]>(["tiktok", "instagram"]);
+  const [when, setWhen] = useState("");
+
+  const send = useMutation({
+    mutationFn: () =>
+      queueFn({
+        data: {
+          campaign_id: campaignId,
+          platforms: platforms as ("tiktok" | "instagram" | "youtube" | "linkedin")[],
+          scheduled_at: when ? new Date(when).toISOString() : null,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+        },
+      }),
+    onSuccess: () => toast.success("Queued in the publishing portal"),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <section className="space-y-3" data-testid="send-to-publishing">
+      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        Send to publishing
+      </h3>
+      <p className="text-xs text-muted-foreground">
+        Schedules the hand-off. At the due time you tap Post now and pick the app from your
+        device&apos;s share menu — Influencer Echo never posts for you.
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {HANDOFF_PLATFORMS.map((p) => {
+          const on = platforms.includes(p.id);
+          return (
+            <Button
+              key={p.id}
+              type="button"
+              size="sm"
+              variant={on ? "default" : "outline"}
+              data-testid={`platform-${p.id}`}
+              onClick={() =>
+                setPlatforms((cur) =>
+                  cur.includes(p.id) ? cur.filter((x) => x !== p.id) : [...cur, p.id],
+                )
+              }
+            >
+              {p.label}
+            </Button>
+          );
+        })}
+      </div>
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Input
+          type="datetime-local"
+          value={when}
+          onChange={(e) => setWhen(e.target.value)}
+          className="h-9 text-xs"
+          data-testid="handoff-schedule"
+        />
+        <Button
+          size="sm"
+          disabled={send.isPending || platforms.length === 0 || !hasVideo}
+          onClick={() => send.mutate()}
+          data-testid="queue-campaign"
+        >
+          {send.isPending ? <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" /> : null}
+          Add to queue
+        </Button>
+      </div>
+      {!hasVideo ? (
+        <p className="text-xs text-muted-foreground">
+          Render the video first — a variant is only &ldquo;Ready to post&rdquo; once the mp4
+          exists.
+        </p>
+      ) : null}
+    </section>
   );
 }
