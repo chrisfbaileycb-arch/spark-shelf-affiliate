@@ -29,6 +29,7 @@ import { Route as AuthenticatedAffiliateProgramsRouteImport } from './routes/_au
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated.billing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedPersonasRouteImport } from './routes/_authenticated.personas'
+import { Route as AuthenticatedPublishingRouteImport } from './routes/_authenticated.publishing'
 import { Route as AuthenticatedStudioRouteImport } from './routes/_authenticated.studio'
 import { Route as AuthenticatedUpgradeRouteImport } from './routes/_authenticated.upgrade'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
@@ -146,6 +147,11 @@ const AuthenticatedPersonasRoute = AuthenticatedPersonasRouteImport.update({
   path: '/personas',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPublishingRoute = AuthenticatedPublishingRouteImport.update({
+  id: '/publishing',
+  path: '/publishing',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedStudioRoute = AuthenticatedStudioRouteImport.update({
   id: '/studio',
   path: '/studio',
@@ -242,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/personas': typeof AuthenticatedPersonasRoute
+  '/publishing': typeof AuthenticatedPublishingRoute
   '/studio': typeof AuthenticatedStudioRoute
   '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -277,6 +284,7 @@ export interface FileRoutesByTo {
   '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/personas': typeof AuthenticatedPersonasRoute
+  '/publishing': typeof AuthenticatedPublishingRoute
   '/studio': typeof AuthenticatedStudioRoute
   '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -314,6 +322,7 @@ export interface FileRoutesById {
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/personas': typeof AuthenticatedPersonasRoute
+  '/_authenticated/publishing': typeof AuthenticatedPublishingRoute
   '/_authenticated/studio': typeof AuthenticatedStudioRoute
   '/_authenticated/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -351,6 +360,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/dashboard'
     | '/personas'
+    | '/publishing'
     | '/studio'
     | '/upgrade'
     | '/checkout/return'
@@ -386,6 +396,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/dashboard'
     | '/personas'
+    | '/publishing'
     | '/studio'
     | '/upgrade'
     | '/checkout/return'
@@ -422,6 +433,7 @@ export interface FileRouteTypes {
     | '/_authenticated/billing'
     | '/_authenticated/dashboard'
     | '/_authenticated/personas'
+    | '/_authenticated/publishing'
     | '/_authenticated/studio'
     | '/_authenticated/upgrade'
     | '/checkout/return'
@@ -604,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPersonasRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/publishing': {
+      id: '/_authenticated/publishing'
+      path: '/publishing'
+      fullPath: '/publishing'
+      preLoaderRoute: typeof AuthenticatedPublishingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/studio': {
       id: '/_authenticated/studio'
       path: '/studio'
@@ -710,6 +729,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedPersonasRoute: typeof AuthenticatedPersonasRoute
+  AuthenticatedPublishingRoute: typeof AuthenticatedPublishingRoute
   AuthenticatedStudioRoute: typeof AuthenticatedStudioRoute
   AuthenticatedUpgradeRoute: typeof AuthenticatedUpgradeRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
@@ -725,6 +745,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedPersonasRoute: AuthenticatedPersonasRoute,
+  AuthenticatedPublishingRoute: AuthenticatedPublishingRoute,
   AuthenticatedStudioRoute: AuthenticatedStudioRoute,
   AuthenticatedUpgradeRoute: AuthenticatedUpgradeRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
