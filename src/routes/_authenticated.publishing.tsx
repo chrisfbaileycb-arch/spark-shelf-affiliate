@@ -23,6 +23,7 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   CAPABILITY_LABEL,
   HANDOFF_NOTICE,
+  PLATFORM_LAUNCH,
   WORKFLOW_LABEL,
   copyCaption,
   deriveWorkflowState,
@@ -37,12 +38,14 @@ import {
   Check,
   Copy,
   Download,
+  ExternalLink,
   Inbox,
   Info,
   Share2,
   SkipForward,
   Undo2,
 } from "lucide-react";
+
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/publishing")({
