@@ -37,6 +37,8 @@ import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as AuthenticatedCalendarIndexRouteImport } from './routes/_authenticated.calendar.index'
+import { Route as AuthenticatedCalendarDateRouteImport } from './routes/_authenticated.calendar.$date'
 import { Route as AuthenticatedCampaignsIndexRouteImport } from './routes/_authenticated.campaigns.index'
 import { Route as AuthenticatedCampaignsIdRouteImport } from './routes/_authenticated.campaigns.$id'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated.products.index'
@@ -191,6 +193,18 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedCalendarIndexRoute =
+  AuthenticatedCalendarIndexRouteImport.update({
+    id: '/calendar/',
+    path: '/calendar/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedCalendarDateRoute =
+  AuthenticatedCalendarDateRouteImport.update({
+    id: '/calendar/$date',
+    path: '/calendar/$date',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedCampaignsIndexRoute =
   AuthenticatedCampaignsIndexRouteImport.update({
     id: '/campaigns/',
@@ -276,12 +290,14 @@ export interface FileRoutesByFullPath {
   '/r/$code': typeof RCodeRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/calendar/$date': typeof AuthenticatedCalendarDateRoute
   '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/api/media/$variantId': typeof ApiMediaVariantIdRoute
+  '/calendar/': typeof AuthenticatedCalendarIndexRoute
   '/campaigns/': typeof AuthenticatedCampaignsIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/videos/': typeof AuthenticatedVideosIndexRoute
@@ -315,12 +331,14 @@ export interface FileRoutesByTo {
   '/r/$code': typeof RCodeRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/calendar/$date': typeof AuthenticatedCalendarDateRoute
   '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/api/media/$variantId': typeof ApiMediaVariantIdRoute
+  '/calendar': typeof AuthenticatedCalendarIndexRoute
   '/campaigns': typeof AuthenticatedCampaignsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/videos': typeof AuthenticatedVideosIndexRoute
@@ -356,12 +374,14 @@ export interface FileRoutesById {
   '/r/$code': typeof RCodeRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/_authenticated/calendar/$date': typeof AuthenticatedCalendarDateRoute
   '/_authenticated/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
   '/_authenticated/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/_authenticated/videos/$id': typeof AuthenticatedVideosIdRoute
   '/api/media/$variantId': typeof ApiMediaVariantIdRoute
+  '/_authenticated/calendar/': typeof AuthenticatedCalendarIndexRoute
   '/_authenticated/campaigns/': typeof AuthenticatedCampaignsIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/videos/': typeof AuthenticatedVideosIndexRoute
@@ -397,12 +417,14 @@ export interface FileRouteTypes {
     | '/r/$code'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/calendar/$date'
     | '/campaigns/$id'
     | '/products/$id'
     | '/products/new'
     | '/settings/integrations'
     | '/videos/$id'
     | '/api/media/$variantId'
+    | '/calendar/'
     | '/campaigns/'
     | '/products/'
     | '/videos/'
@@ -436,12 +458,14 @@ export interface FileRouteTypes {
     | '/r/$code'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/calendar/$date'
     | '/campaigns/$id'
     | '/products/$id'
     | '/products/new'
     | '/settings/integrations'
     | '/videos/$id'
     | '/api/media/$variantId'
+    | '/calendar'
     | '/campaigns'
     | '/products'
     | '/videos'
@@ -476,12 +500,14 @@ export interface FileRouteTypes {
     | '/r/$code'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/_authenticated/calendar/$date'
     | '/_authenticated/campaigns/$id'
     | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
     | '/_authenticated/settings/integrations'
     | '/_authenticated/videos/$id'
     | '/api/media/$variantId'
+    | '/_authenticated/calendar/'
     | '/_authenticated/campaigns/'
     | '/_authenticated/products/'
     | '/_authenticated/videos/'
@@ -711,6 +737,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/calendar/': {
+      id: '/_authenticated/calendar/'
+      path: '/calendar'
+      fullPath: '/calendar/'
+      preLoaderRoute: typeof AuthenticatedCalendarIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/calendar/$date': {
+      id: '/_authenticated/calendar/$date'
+      path: '/calendar/$date'
+      fullPath: '/calendar/$date'
+      preLoaderRoute: typeof AuthenticatedCalendarDateRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/campaigns/': {
       id: '/_authenticated/campaigns/'
       path: '/campaigns'
@@ -792,11 +832,13 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPublishingRoute: typeof AuthenticatedPublishingRoute
   AuthenticatedStudioRoute: typeof AuthenticatedStudioRoute
   AuthenticatedUpgradeRoute: typeof AuthenticatedUpgradeRoute
+  AuthenticatedCalendarDateRoute: typeof AuthenticatedCalendarDateRoute
   AuthenticatedCampaignsIdRoute: typeof AuthenticatedCampaignsIdRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
   AuthenticatedSettingsIntegrationsRoute: typeof AuthenticatedSettingsIntegrationsRoute
   AuthenticatedVideosIdRoute: typeof AuthenticatedVideosIdRoute
+  AuthenticatedCalendarIndexRoute: typeof AuthenticatedCalendarIndexRoute
   AuthenticatedCampaignsIndexRoute: typeof AuthenticatedCampaignsIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedVideosIndexRoute: typeof AuthenticatedVideosIndexRoute
@@ -810,12 +852,14 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPublishingRoute: AuthenticatedPublishingRoute,
   AuthenticatedStudioRoute: AuthenticatedStudioRoute,
   AuthenticatedUpgradeRoute: AuthenticatedUpgradeRoute,
+  AuthenticatedCalendarDateRoute: AuthenticatedCalendarDateRoute,
   AuthenticatedCampaignsIdRoute: AuthenticatedCampaignsIdRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
   AuthenticatedSettingsIntegrationsRoute:
     AuthenticatedSettingsIntegrationsRoute,
   AuthenticatedVideosIdRoute: AuthenticatedVideosIdRoute,
+  AuthenticatedCalendarIndexRoute: AuthenticatedCalendarIndexRoute,
   AuthenticatedCampaignsIndexRoute: AuthenticatedCampaignsIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedVideosIndexRoute: AuthenticatedVideosIndexRoute,

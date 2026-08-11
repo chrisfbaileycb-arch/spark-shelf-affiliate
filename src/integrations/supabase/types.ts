@@ -188,6 +188,116 @@ export type Database = {
         }
         Relationships: []
       }
+      calendar_slots: {
+        Row: {
+          campaign_id: string | null
+          caption: string
+          created_at: string
+          created_by: string
+          disclosure: string
+          engine: string
+          generated_at: string | null
+          hashtags: Json
+          hook: string
+          id: string
+          image_prompt: string
+          model: string | null
+          notes: string
+          org_id: string
+          plan_date: string
+          platforms: Json
+          post_id: string | null
+          product_id: string | null
+          script: string
+          slot_time: string
+          status: string
+          title: string
+          updated_at: string
+          video_prompt: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          caption?: string
+          created_at?: string
+          created_by: string
+          disclosure?: string
+          engine?: string
+          generated_at?: string | null
+          hashtags?: Json
+          hook?: string
+          id?: string
+          image_prompt?: string
+          model?: string | null
+          notes?: string
+          org_id: string
+          plan_date: string
+          platforms?: Json
+          post_id?: string | null
+          product_id?: string | null
+          script?: string
+          slot_time?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          video_prompt?: string
+        }
+        Update: {
+          campaign_id?: string | null
+          caption?: string
+          created_at?: string
+          created_by?: string
+          disclosure?: string
+          engine?: string
+          generated_at?: string | null
+          hashtags?: Json
+          hook?: string
+          id?: string
+          image_prompt?: string
+          model?: string | null
+          notes?: string
+          org_id?: string
+          plan_date?: string
+          platforms?: Json
+          post_id?: string | null
+          product_id?: string | null
+          script?: string
+          slot_time?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          video_prompt?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calendar_slots_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_slots_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_slots_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "social_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_slots_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaign_workflows: {
         Row: {
           campaign_id: string | null
