@@ -509,3 +509,57 @@ export const getCampaignAnalytics = createServerFn({ method: "POST" })
     const { orgId } = await ctx(context.userId);
     return buildAnalytics(orgId, data.workflow_id);
   });
+
+/** Analyses the brief + strategy and returns a per-platform media plan with a real budget split. */
+export const generateChannelPlan = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        workflow_id: z.string().uuid(),
+        weekly_budget: z.number().min(0).max(100000),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { orgId, db } = await ctx(context.userId);
+    const { generateChannelPlanOutput } = await import("@/lib/workflows.server");
+
+    const [{ data: brief }, { data: strategy }] = await Promise.all([
+      db.from("product_briefs").select("*").eq("workflow_id", data.workflow_id).eq("org_id", orgId).maybeSingle(),
+      db.from("gtm_strategies").select("*").eq("workflow_id", data.workflow_id).eq("org_id", orgId).maybeSingle(),
+    ]);
+    if (!brief) throw new Error("Save the product brief first.");
+    if (!strategy) throw new Error("Generate the strategy first.");
+
+    const out = await generateChannelPlanOutput(
+      {
+        offer: brief.offer,
+        audience: brief.audience,
+        proof_points: (brief.proof_points as string[]) ?? [],
+        constraints: brief.constraints,
+        source_url: brief.source_url,
+      },
+      {
+        icp: (strategy.icp ?? {}) as Record<string, string | string[]>,
+        positioning: strategy.positioning ?? "",
+        angles: (strategy.angles as string[]) ?? [],
+        pillars: (strategy.pillars as string[]) ?? [],
+        objections: (strategy.objections as string[]) ?? [],
+        cta: strategy.cta ?? "",
+      },
+      data.weekly_budget,
+    );
+
+    const { error } = await db
+      .from("gtm_strategies")
+      .update({
+        channel_plan: JSON.parse(JSON.stringify(out)),
+        weekly_budget: data.weekly_budget,
+        channel_plan_generated_at: out.generated_at,
+      })
+      .eq("workflow_id", data.workflow_id)
+      .eq("org_id", orgId);
+    if (error) throw new Error("Could not save the media plan.");
+    return out;
+  });

@@ -42,6 +42,7 @@ import { Route as AuthenticatedCalendarIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedCalendarDateRouteImport } from './routes/_authenticated.calendar.$date'
 import { Route as AuthenticatedCampaignsIndexRouteImport } from './routes/_authenticated.campaigns.index'
 import { Route as AuthenticatedCampaignsIdRouteImport } from './routes/_authenticated.campaigns.$id'
+import { Route as AuthenticatedMediaPlanIdRouteImport } from './routes/_authenticated.media-plan.$id'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated.products.index'
 import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated.products.$id'
 import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated.products.new'
@@ -223,6 +224,12 @@ const AuthenticatedCampaignsIdRoute =
     path: '/campaigns/$id',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedMediaPlanIdRoute =
+  AuthenticatedMediaPlanIdRouteImport.update({
+    id: '/media-plan/$id',
+    path: '/media-plan/$id',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedProductsIndexRoute =
   AuthenticatedProductsIndexRouteImport.update({
     id: '/products/',
@@ -299,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/calendar/$date': typeof AuthenticatedCalendarDateRoute
   '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
+  '/media-plan/$id': typeof AuthenticatedMediaPlanIdRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
@@ -341,6 +349,7 @@ export interface FileRoutesByTo {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/calendar/$date': typeof AuthenticatedCalendarDateRoute
   '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
+  '/media-plan/$id': typeof AuthenticatedMediaPlanIdRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
@@ -385,6 +394,7 @@ export interface FileRoutesById {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/calendar/$date': typeof AuthenticatedCalendarDateRoute
   '/_authenticated/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
+  '/_authenticated/media-plan/$id': typeof AuthenticatedMediaPlanIdRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
   '/_authenticated/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
@@ -429,6 +439,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/calendar/$date'
     | '/campaigns/$id'
+    | '/media-plan/$id'
     | '/products/$id'
     | '/products/new'
     | '/settings/integrations'
@@ -471,6 +482,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/calendar/$date'
     | '/campaigns/$id'
+    | '/media-plan/$id'
     | '/products/$id'
     | '/products/new'
     | '/settings/integrations'
@@ -514,6 +526,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/calendar/$date'
     | '/_authenticated/campaigns/$id'
+    | '/_authenticated/media-plan/$id'
     | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
     | '/_authenticated/settings/integrations'
@@ -785,6 +798,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCampaignsIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/media-plan/$id': {
+      id: '/_authenticated/media-plan/$id'
+      path: '/media-plan/$id'
+      fullPath: '/media-plan/$id'
+      preLoaderRoute: typeof AuthenticatedMediaPlanIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/products/': {
       id: '/_authenticated/products/'
       path: '/products'
@@ -854,6 +874,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedUpgradeRoute: typeof AuthenticatedUpgradeRoute
   AuthenticatedCalendarDateRoute: typeof AuthenticatedCalendarDateRoute
   AuthenticatedCampaignsIdRoute: typeof AuthenticatedCampaignsIdRoute
+  AuthenticatedMediaPlanIdRoute: typeof AuthenticatedMediaPlanIdRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
   AuthenticatedSettingsIntegrationsRoute: typeof AuthenticatedSettingsIntegrationsRoute
@@ -874,6 +895,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedUpgradeRoute: AuthenticatedUpgradeRoute,
   AuthenticatedCalendarDateRoute: AuthenticatedCalendarDateRoute,
   AuthenticatedCampaignsIdRoute: AuthenticatedCampaignsIdRoute,
+  AuthenticatedMediaPlanIdRoute: AuthenticatedMediaPlanIdRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
   AuthenticatedSettingsIntegrationsRoute:

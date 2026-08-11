@@ -110,7 +110,16 @@ function CampaignWizard() {
             {i + 1}. {label}
           </button>
         ))}
+        <Link
+          to="/media-plan/$id"
+          params={{ id }}
+          data-testid="open-media-plan"
+          className="rounded-full border border-primary/50 px-3 py-1.5 text-xs font-medium transition-colors hover:bg-primary/10"
+        >
+          Media plan &amp; budget split →
+        </Link>
       </nav>
+
 
       {step === 1 && <BriefStep id={id} data={data} refresh={refresh} />}
       {step === 2 && <StrategyStep id={id} data={data} refresh={refresh} />}
