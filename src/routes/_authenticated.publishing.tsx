@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -121,6 +121,21 @@ function PublishingPage() {
     },
     { prepared: 0, due: 0, handed_off: 0, posted: 0, skipped: 0 },
   );
+
+  // In-app due reminder. Fires only while this tab is open; background push
+  // (browser closed) stays Staged until real push delivery is configured.
+  const notified = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (!data?.notificationPreferences.due_reminders_enabled) return;
+    if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+    for (const v of allVariants) {
+      if (deriveWorkflowState(v) !== "ready_to_post" || notified.current.has(v.id)) continue;
+      notified.current.add(v.id);
+      new Notification(
+        `Your ${PLATFORM_LABEL[v.platform] ?? v.platform} campaign video is ready to publish!`,
+      );
+    }
+  }, [data, allVariants]);
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6 pb-24">
