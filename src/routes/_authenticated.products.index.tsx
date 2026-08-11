@@ -85,7 +85,14 @@ function ProductsList() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 pr-8 font-medium leading-snug">{p.title}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{p.source_domain}</p>
+                    <p className="mt-1.5 inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+                      <ModeIcon className="h-3 w-3" />
+                      {mode.label}
+                    </p>
+                    {p.source_domain ? (
+                      <p className="mt-1 text-xs text-muted-foreground">{p.source_domain}</p>
+                    ) : null}
+
                     {p.price ? (
                       <p className="mt-2 text-sm font-semibold text-primary">
                         {p.price} {p.currency}
