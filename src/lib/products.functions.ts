@@ -112,12 +112,60 @@ export const ingestProduct = createServerFn({ method: "POST" })
         images: fields.image_urls ?? [],
         raw: { markdown: md.slice(0, 4000) },
         suggested_network: network.network,
+        campaign_mode: data.campaign_mode,
       })
       .select()
       .single();
     if (error) throw new Error(error.message);
     return { product: row, suggested: network };
   });
+
+/**
+ * Adds a subject by hand. A contractor's bathroom remodel, a Sunday special, or
+ * a service call has no public product page to scrape — the operator knows the
+ * details better than any scraper would.
+ */
+export const createManualSubject = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        title: z.string().trim().min(2).max(160),
+        description: z.string().trim().max(4000).default(""),
+        price: z.string().trim().max(60).default(""),
+        source_url: z.string().trim().max(2000).default(""),
+        campaign_mode: CAMPAIGN_MODE,
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    let domain = "";
+    if (data.source_url) {
+      try {
+        domain = new URL(data.source_url).hostname.replace(/^www\./, "");
+      } catch {
+        throw new Error("That link isn't a valid URL. Leave it blank if there isn't one.");
+      }
+    }
+    const { data: row, error } = await context.supabase
+      .from("products")
+      .insert({
+        user_id: context.userId,
+        source_url: data.source_url,
+        source_domain: domain || null,
+        title: data.title,
+        description: data.description,
+        price: data.price,
+        currency: "",
+        images: [],
+        campaign_mode: data.campaign_mode,
+      })
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return { product: row };
+  });
+
 
 export const listProducts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
