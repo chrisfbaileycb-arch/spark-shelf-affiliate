@@ -1,8 +1,14 @@
-# Influencer Echo — Autonomous Go-To-Market Engine ("Outbound")
+# Influencer Echo — Two Execution Engines (Outbound + Social Publishing)
 
-Goal: Influencer Echo keeps everything it has today (brand, public pages, auth, billing, affiliate discovery, product ingestion, campaign kits, images, personas, 15–30s video) and gains one new pillar: an autonomous outbound engine that turns a product brief into strategy, content packs, sourced leads, qualified contacts, per-lead sequences, and weekly reporting — running on a server-side schedule.
+Goal: Influencer Echo keeps everything it has today (brand, public pages, auth, billing, affiliate discovery, product ingestion, campaign kits, images, personas, 15–30s video) and gains **two coordinated execution engines** on top of the same creative core:
+
+1. **Outbound (Apollo)** — brief → strategy → content pack → sourced leads → qualification → sequences → pipeline → weekly reporting. Detailed in sections A–G below.
+2. **Social Publishing** — scripts → content calendar → approval → scheduled publishing → status/retry monitoring → cross-platform analytics. Detailed in section H.
+
+They are separate engines with separate job kinds, credentials, quotas, and failure surfaces. They share one shell: one tenancy/org model, one job queue infrastructure, one creative library (products, campaign kits, images, videos, personas, UTM links), and one reporting frame. A customer may buy either or both.
 
 One important architecture note up front: this project is TanStack Start, and its backend runtime is TanStack server routes and server functions, not Supabase Edge Functions. The plan uses server routes under `src/routes/api/public/jobs/*` driven by `pg_cron` + `pg_net`. That is the same "scheduled server-side execution with service-role access" contract you asked for; only the hosting primitive differs. Everything below assumes that.
+
 
 ---
 
