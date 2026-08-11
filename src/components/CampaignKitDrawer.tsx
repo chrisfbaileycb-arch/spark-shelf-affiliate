@@ -274,7 +274,10 @@ export function CampaignKitDrawer({
                 </div>
               )}
             </section>
+
+            <SendToPublishing campaignId={campaign.id} hasVideo={!!campaign.videos?.video_url} />
           </div>
+
         )}
       </SheetContent>
     </Sheet>
