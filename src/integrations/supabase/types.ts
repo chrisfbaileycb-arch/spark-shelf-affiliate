@@ -480,6 +480,30 @@ export type Database = {
           },
         ]
       }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          due_reminders_enabled: boolean
+          lead_minutes: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_reminders_enabled?: boolean
+          lead_minutes?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          due_reminders_enabled?: boolean
+          lead_minutes?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       org_settings: {
         Row: {
           active_outbound_provider: string
@@ -732,6 +756,39 @@ export type Database = {
           },
         ]
       }
+      push_subscriptions: {
+        Row: {
+          auth_key: string
+          created_at: string
+          endpoint: string
+          id: string
+          p256dh: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          auth_key: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          auth_key?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       referral_conversions: {
         Row: {
           created_at: string
@@ -884,11 +941,16 @@ export type Database = {
           account_id: string | null
           attempts: number
           caption: string
+          caption_copied_at: string | null
+          confirmation_method: string | null
           created_at: string
           external_post_id: string | null
+          external_post_url: string | null
+          handed_off_at: string | null
           id: string
           idempotency_key: string
           last_error: string | null
+          last_share_error: string | null
           media_url: string | null
           options: Json
           org_id: string
@@ -896,7 +958,11 @@ export type Database = {
           platform: Database["public"]["Enums"]["social_platform"]
           platform_title: string | null
           post_id: string
+          posted_at: string | null
+          posted_by: string | null
           privacy: string
+          ready_at: string | null
+          skipped_at: string | null
           state: Database["public"]["Enums"]["post_state"]
           thumbnail_url: string | null
           updated_at: string
@@ -905,11 +971,16 @@ export type Database = {
           account_id?: string | null
           attempts?: number
           caption?: string
+          caption_copied_at?: string | null
+          confirmation_method?: string | null
           created_at?: string
           external_post_id?: string | null
+          external_post_url?: string | null
+          handed_off_at?: string | null
           id?: string
           idempotency_key: string
           last_error?: string | null
+          last_share_error?: string | null
           media_url?: string | null
           options?: Json
           org_id: string
@@ -917,7 +988,11 @@ export type Database = {
           platform: Database["public"]["Enums"]["social_platform"]
           platform_title?: string | null
           post_id: string
+          posted_at?: string | null
+          posted_by?: string | null
           privacy?: string
+          ready_at?: string | null
+          skipped_at?: string | null
           state?: Database["public"]["Enums"]["post_state"]
           thumbnail_url?: string | null
           updated_at?: string
@@ -926,11 +1001,16 @@ export type Database = {
           account_id?: string | null
           attempts?: number
           caption?: string
+          caption_copied_at?: string | null
+          confirmation_method?: string | null
           created_at?: string
           external_post_id?: string | null
+          external_post_url?: string | null
+          handed_off_at?: string | null
           id?: string
           idempotency_key?: string
           last_error?: string | null
+          last_share_error?: string | null
           media_url?: string | null
           options?: Json
           org_id?: string
@@ -938,7 +1018,11 @@ export type Database = {
           platform?: Database["public"]["Enums"]["social_platform"]
           platform_title?: string | null
           post_id?: string
+          posted_at?: string | null
+          posted_by?: string | null
           privacy?: string
+          ready_at?: string | null
+          skipped_at?: string | null
           state?: Database["public"]["Enums"]["post_state"]
           thumbnail_url?: string | null
           updated_at?: string

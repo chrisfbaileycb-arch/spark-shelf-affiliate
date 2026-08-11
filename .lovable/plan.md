@@ -223,7 +223,7 @@ Missing: any concept of a connected social account; any publish action at all (t
 
 ## H2. Provider strategy and adapter interface
 
-First implementation targets a unified social API provider (Ayrshare is the working assumption). The domain model must not encode that choice.
+**PIVOT (cost-driven, approved):** the default social execution engine is the **Share Sheet Hand-Off Engine** — zero aggregator cost, no customer account linking. Ayrshare / direct platform APIs remain dormant behind the optional `SocialAdapter` interface and are a later-stage Beta adapter, **not** required for initial customers. `AYRSHARE_API_KEY` is no longer a blocker anywhere in the publishing flow.
 
 - The platform owner holds **one business credential** server-side (`SOCIAL_PROVIDER_API_KEY` secret). It is never sent to the browser, never logged, never returned from a server function.
 - Each org gets a **provider profile identifier** (Ayrshare "profile key" or equivalent), stored encrypted with the same AES-256-GCM helper and `INTEGRATION_ENCRYPTION_KEY` described in section E. Profile keys are credentials; they follow the exact same non-exposure rules as the Apollo key.
@@ -371,3 +371,43 @@ Accept: raw platform payloads stored verbatim; normalized view labels each metri
 5. **Autopublish policy** — confirm you want opt-in autopublish at all, and whether it should be per-org or per-campaign.
 6. **Publishing tier pricing** — the social subscription price/limits are not defined yet; the plan spec's the separation but not the numbers.
 7. **Publish required** — provider webhooks and cron both need the stable published URL, same as Outbound.
+
+
+---
+
+# K. Share Sheet Hand-Off Engine (default social execution)
+
+## Truth of the mode
+Influencer Echo renders assets, prepares captions, schedules, and reminds. It
+hands the mp4 to the device's native share sheet on an explicit tap. It does
+**not** publish to any network, cannot guarantee which installed app appears,
+and cannot verify a platform post succeeded. The user picks the target and
+later confirms "Mark as posted".
+
+Portal notice (verbatim):
+"Hands-Free Assistance Mode: Content and video assets are rendered automatically. Touch 'Post Now' to send them to your device's share menu, then choose your social app."
+
+## State model (no enum rewrite)
+`post_state` is unchanged. Workflow state is derived from real columns on
+`social_post_variants`: `ready_at`, `caption_copied_at`, `handed_off_at`,
+`posted_at`, `posted_by`, `external_post_url`, `confirmation_method`,
+`skipped_at`, `last_share_error`.
+Draft → Approved → Scheduled → Ready to post → Handed off → Posted (manual) /
+Skipped / Failed preparation.
+
+- **Scheduled** only when a DB row (and job_queue row) exists.
+- **Ready to post** only when the mp4 is reachable and caption text exists.
+- **Handed off** only after `navigator.share()` resolves. Cancel records nothing.
+- **Posted** only after explicit human confirmation (`confirmation_method='manual'`),
+  reversible with an audited "Undo confirmation".
+
+## Analytics truth
+Workflow metrics only — prepared, due, handed off, user-confirmed posted,
+skipped, plus an optional user-entered post URL. No views/likes/reach until a
+validated provider supplies them.
+
+## Remaining blocker
+True background Push (notification with the browser closed) requires VAPID keys
+plus server-side push delivery. Until configured, remote background push is
+labelled **Staged**; only in-app / on-device reminders while a tab is open are
+claimed.
