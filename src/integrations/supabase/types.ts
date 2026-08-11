@@ -272,6 +272,179 @@ export type Database = {
           },
         ]
       }
+      integration_credentials: {
+        Row: {
+          category: Database["public"]["Enums"]["integration_category"]
+          ciphertext: string
+          created_at: string
+          id: string
+          key_version: number
+          last_error: string | null
+          last_validated_at: string | null
+          masked_hint: string | null
+          metadata: Json
+          org_id: string
+          provider: string
+          status: Database["public"]["Enums"]["integration_state"]
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["integration_category"]
+          ciphertext: string
+          created_at?: string
+          id?: string
+          key_version?: number
+          last_error?: string | null
+          last_validated_at?: string | null
+          masked_hint?: string | null
+          metadata?: Json
+          org_id: string
+          provider: string
+          status?: Database["public"]["Enums"]["integration_state"]
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["integration_category"]
+          ciphertext?: string
+          created_at?: string
+          id?: string
+          key_version?: number
+          last_error?: string | null
+          last_validated_at?: string | null
+          masked_hint?: string | null
+          metadata?: Json
+          org_id?: string
+          provider?: string
+          status?: Database["public"]["Enums"]["integration_state"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_credentials_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_queue: {
+        Row: {
+          attempts: number
+          created_at: string
+          engine: string
+          id: string
+          kind: string
+          last_error: string | null
+          locked_at: string | null
+          locked_by: string | null
+          max_attempts: number
+          next_run_at: string
+          org_id: string
+          payload: Json
+          run_key: string
+          status: Database["public"]["Enums"]["job_state"]
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          engine: string
+          id?: string
+          kind: string
+          last_error?: string | null
+          locked_at?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          next_run_at?: string
+          org_id: string
+          payload?: Json
+          run_key: string
+          status?: Database["public"]["Enums"]["job_state"]
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          engine?: string
+          id?: string
+          kind?: string
+          last_error?: string | null
+          locked_at?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          next_run_at?: string
+          org_id?: string
+          payload?: Json
+          run_key?: string
+          status?: Database["public"]["Enums"]["job_state"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_queue_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_runs: {
+        Row: {
+          error: string | null
+          finished_at: string | null
+          id: number
+          items_processed: number
+          job_id: string
+          org_id: string
+          outcome: string | null
+          started_at: string
+        }
+        Insert: {
+          error?: string | null
+          finished_at?: string | null
+          id?: number
+          items_processed?: number
+          job_id: string
+          org_id: string
+          outcome?: string | null
+          started_at?: string
+        }
+        Update: {
+          error?: string | null
+          finished_at?: string | null
+          id?: number
+          items_processed?: number
+          job_id?: string
+          org_id?: string
+          outcome?: string | null
+          started_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_runs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_queue"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_runs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_runs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       link_clicks: {
         Row: {
           affiliate_link_id: string
@@ -306,6 +479,109 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      org_settings: {
+        Row: {
+          active_outbound_provider: string
+          autopublish_enabled: boolean
+          created_at: string
+          daily_post_cap: number
+          org_id: string
+          social_adapter: string
+          social_dry_run: boolean
+          test_post_passed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          active_outbound_provider?: string
+          autopublish_enabled?: boolean
+          created_at?: string
+          daily_post_cap?: number
+          org_id: string
+          social_adapter?: string
+          social_dry_run?: boolean
+          test_post_passed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active_outbound_provider?: string
+          autopublish_enabled?: boolean
+          created_at?: string
+          daily_post_cap?: number
+          org_id?: string
+          social_adapter?: string
+          social_dry_run?: boolean
+          test_post_passed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "org_settings_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_members: {
+        Row: {
+          created_at: string
+          id: string
+          org_id: string
+          role: Database["public"]["Enums"]["org_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          org_id: string
+          role?: Database["public"]["Enums"]["org_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          org_id?: string
+          role?: Database["public"]["Enums"]["org_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          id: string
+          is_personal: boolean
+          name: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_personal?: boolean
+          name?: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_personal?: boolean
+          name?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       personas: {
         Row: {
@@ -488,6 +764,328 @@ export type Database = {
           stripe_balance_txn_id?: string | null
         }
         Relationships: []
+      }
+      social_accounts: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          external_account_id: string
+          handle: string | null
+          id: string
+          last_checked_at: string | null
+          org_id: string
+          platform: Database["public"]["Enums"]["social_platform"]
+          scopes: Json
+          status: Database["public"]["Enums"]["integration_state"]
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          external_account_id: string
+          handle?: string | null
+          id?: string
+          last_checked_at?: string | null
+          org_id: string
+          platform: Database["public"]["Enums"]["social_platform"]
+          scopes?: Json
+          status?: Database["public"]["Enums"]["integration_state"]
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          external_account_id?: string
+          handle?: string | null
+          id?: string
+          last_checked_at?: string | null
+          org_id?: string
+          platform?: Database["public"]["Enums"]["social_platform"]
+          scopes?: Json
+          status?: Database["public"]["Enums"]["integration_state"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_accounts_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_post_events: {
+        Row: {
+          actor: string
+          from_state: Database["public"]["Enums"]["post_state"] | null
+          id: number
+          occurred_at: string
+          org_id: string
+          payload: Json
+          post_id: string | null
+          to_state: Database["public"]["Enums"]["post_state"] | null
+          type: string
+          variant_id: string | null
+        }
+        Insert: {
+          actor?: string
+          from_state?: Database["public"]["Enums"]["post_state"] | null
+          id?: number
+          occurred_at?: string
+          org_id: string
+          payload?: Json
+          post_id?: string | null
+          to_state?: Database["public"]["Enums"]["post_state"] | null
+          type: string
+          variant_id?: string | null
+        }
+        Update: {
+          actor?: string
+          from_state?: Database["public"]["Enums"]["post_state"] | null
+          id?: number
+          occurred_at?: string
+          org_id?: string
+          payload?: Json
+          post_id?: string | null
+          to_state?: Database["public"]["Enums"]["post_state"] | null
+          type?: string
+          variant_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_post_events_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_post_events_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "social_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_post_events_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "social_post_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_post_variants: {
+        Row: {
+          account_id: string | null
+          attempts: number
+          caption: string
+          created_at: string
+          external_post_id: string | null
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          media_url: string | null
+          options: Json
+          org_id: string
+          permalink: string | null
+          platform: Database["public"]["Enums"]["social_platform"]
+          platform_title: string | null
+          post_id: string
+          privacy: string
+          state: Database["public"]["Enums"]["post_state"]
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          account_id?: string | null
+          attempts?: number
+          caption?: string
+          created_at?: string
+          external_post_id?: string | null
+          id?: string
+          idempotency_key: string
+          last_error?: string | null
+          media_url?: string | null
+          options?: Json
+          org_id: string
+          permalink?: string | null
+          platform: Database["public"]["Enums"]["social_platform"]
+          platform_title?: string | null
+          post_id: string
+          privacy?: string
+          state?: Database["public"]["Enums"]["post_state"]
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          account_id?: string | null
+          attempts?: number
+          caption?: string
+          created_at?: string
+          external_post_id?: string | null
+          id?: string
+          idempotency_key?: string
+          last_error?: string | null
+          media_url?: string | null
+          options?: Json
+          org_id?: string
+          permalink?: string | null
+          platform?: Database["public"]["Enums"]["social_platform"]
+          platform_title?: string | null
+          post_id?: string
+          privacy?: string
+          state?: Database["public"]["Enums"]["post_state"]
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_post_variants_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "social_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_post_variants_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_post_variants_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "social_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_posts: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          campaign_id: string | null
+          created_at: string
+          created_by: string
+          id: string
+          master_caption: string
+          org_id: string
+          scheduled_at: string | null
+          state: Database["public"]["Enums"]["post_state"]
+          timezone: string
+          title: string
+          updated_at: string
+          video_id: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          campaign_id?: string | null
+          created_at?: string
+          created_by: string
+          id?: string
+          master_caption?: string
+          org_id: string
+          scheduled_at?: string | null
+          state?: Database["public"]["Enums"]["post_state"]
+          timezone?: string
+          title?: string
+          updated_at?: string
+          video_id?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          campaign_id?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          master_caption?: string
+          org_id?: string
+          scheduled_at?: string | null
+          state?: Database["public"]["Enums"]["post_state"]
+          timezone?: string
+          title?: string
+          updated_at?: string
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_posts_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_posts_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_posts_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_provider_profiles: {
+        Row: {
+          adapter: string
+          created_at: string
+          external_profile_title: string | null
+          id: string
+          key_version: number
+          last_error: string | null
+          org_id: string
+          profile_ref_ciphertext: string | null
+          status: Database["public"]["Enums"]["integration_state"]
+          updated_at: string
+        }
+        Insert: {
+          adapter?: string
+          created_at?: string
+          external_profile_title?: string | null
+          id?: string
+          key_version?: number
+          last_error?: string | null
+          org_id: string
+          profile_ref_ciphertext?: string | null
+          status?: Database["public"]["Enums"]["integration_state"]
+          updated_at?: string
+        }
+        Update: {
+          adapter?: string
+          created_at?: string
+          external_profile_title?: string | null
+          id?: string
+          key_version?: number
+          last_error?: string | null
+          org_id?: string
+          profile_ref_ciphertext?: string | null
+          status?: Database["public"]["Enums"]["integration_state"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_provider_profiles_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscriptions: {
         Row: {
@@ -672,7 +1270,129 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      integration_status: {
+        Row: {
+          category: Database["public"]["Enums"]["integration_category"] | null
+          created_at: string | null
+          last_validated_at: string | null
+          masked_hint: string | null
+          org_id: string | null
+          provider: string | null
+          status: Database["public"]["Enums"]["integration_state"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["integration_category"] | null
+          created_at?: string | null
+          last_validated_at?: string | null
+          masked_hint?: string | null
+          org_id?: string | null
+          provider?: string | null
+          status?: Database["public"]["Enums"]["integration_state"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["integration_category"] | null
+          created_at?: string | null
+          last_validated_at?: string | null
+          masked_hint?: string | null
+          org_id?: string | null
+          provider?: string | null
+          status?: Database["public"]["Enums"]["integration_state"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_credentials_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_status: {
+        Row: {
+          attempts: number | null
+          created_at: string | null
+          engine: string | null
+          id: string | null
+          kind: string | null
+          max_attempts: number | null
+          next_run_at: string | null
+          org_id: string | null
+          status: Database["public"]["Enums"]["job_state"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          attempts?: number | null
+          created_at?: string | null
+          engine?: string | null
+          id?: string | null
+          kind?: string | null
+          max_attempts?: number | null
+          next_run_at?: string | null
+          org_id?: string | null
+          status?: Database["public"]["Enums"]["job_state"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          attempts?: number | null
+          created_at?: string | null
+          engine?: string | null
+          id?: string | null
+          kind?: string | null
+          max_attempts?: number | null
+          next_run_at?: string | null
+          org_id?: string | null
+          status?: Database["public"]["Enums"]["job_state"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_queue_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_profile_status: {
+        Row: {
+          adapter: string | null
+          external_profile_title: string | null
+          has_profile: boolean | null
+          org_id: string | null
+          status: Database["public"]["Enums"]["integration_state"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          adapter?: string | null
+          external_profile_title?: string | null
+          has_profile?: never
+          org_id?: string | null
+          status?: Database["public"]["Enums"]["integration_state"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          adapter?: string | null
+          external_profile_title?: string | null
+          has_profile?: never
+          org_id?: string | null
+          status?: Database["public"]["Enums"]["integration_state"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_provider_profiles_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       consume_broll_quota: { Args: { _user_id: string }; Returns: Json }
@@ -689,9 +1409,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_org_admin: { Args: { _org: string; _user: string }; Returns: boolean }
+      is_org_member: { Args: { _org: string; _user: string }; Returns: boolean }
       plan_limits: {
         Args: { _tier: Database["public"]["Enums"]["sub_tier"] }
         Returns: Json
+      }
+      provision_personal_org: {
+        Args: { _name: string; _user_id: string }
+        Returns: string
       }
       release_broll_quota: { Args: { _user_id: string }; Returns: undefined }
       release_image_quota: {
@@ -706,6 +1432,31 @@ export type Database = {
     Enums: {
       app_role: "admin" | "user"
       asset_kind: "ecommerce" | "mobile_app" | "saas"
+      integration_category: "outbound" | "social"
+      integration_state:
+        | "not_connected"
+        | "staged"
+        | "connected"
+        | "expired"
+        | "revoked"
+        | "error"
+      job_state: "queued" | "running" | "succeeded" | "failed" | "dead"
+      org_role: "owner" | "admin" | "member"
+      post_state:
+        | "draft"
+        | "awaiting_approval"
+        | "scheduled"
+        | "publishing"
+        | "published"
+        | "failed"
+        | "canceled"
+      social_platform:
+        | "tiktok"
+        | "instagram"
+        | "youtube"
+        | "linkedin"
+        | "x"
+        | "facebook"
       sub_status: "active" | "past_due" | "canceled" | "trialing"
       sub_tier: "trial" | "starter" | "pro" | "test" | "agency"
       video_status:
@@ -846,6 +1597,34 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "user"],
       asset_kind: ["ecommerce", "mobile_app", "saas"],
+      integration_category: ["outbound", "social"],
+      integration_state: [
+        "not_connected",
+        "staged",
+        "connected",
+        "expired",
+        "revoked",
+        "error",
+      ],
+      job_state: ["queued", "running", "succeeded", "failed", "dead"],
+      org_role: ["owner", "admin", "member"],
+      post_state: [
+        "draft",
+        "awaiting_approval",
+        "scheduled",
+        "publishing",
+        "published",
+        "failed",
+        "canceled",
+      ],
+      social_platform: [
+        "tiktok",
+        "instagram",
+        "youtube",
+        "linkedin",
+        "x",
+        "facebook",
+      ],
       sub_status: ["active", "past_due", "canceled", "trialing"],
       sub_tier: ["trial", "starter", "pro", "test", "agency"],
       video_status: [
