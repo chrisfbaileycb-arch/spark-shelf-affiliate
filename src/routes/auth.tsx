@@ -11,10 +11,10 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Influencer Echo" },
+      { title: "Sign in — Echo Your Influence" },
       {
         name: "description",
-        content: "Sign in to Influencer Echo to generate AI affiliate videos.",
+        content: "Sign in to Echo Your Influence to generate AI affiliate videos.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],
@@ -84,7 +84,7 @@ function AuthPage() {
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-brand">
             <Sparkles className="h-5 w-5" />
           </div>
-          <span className="font-display text-xl">Influencer Echo</span>
+          <span className="font-display text-xl">Echo Your Influence</span>
         </Link>
         <div>
           <p className="font-display text-5xl leading-tight">
@@ -92,7 +92,7 @@ function AuthPage() {
           </p>
           <p className="mt-4 text-sm opacity-70">— Future you, probably</p>
         </div>
-        <div className="text-xs opacity-60">© Influencer Echo</div>
+        <div className="text-xs opacity-60">© Echo Your Influence</div>
       </div>
 
       <div className="flex items-center justify-center px-6 py-12">

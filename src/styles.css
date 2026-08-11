@@ -5,14 +5,16 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * REELRIPPER — AI Affiliate Video Generator
- * Vibe: bold creator-economy. Warm coral primary, deep plum surface, electric lime accent.
- * Editorial typography (Fraunces display) + crisp body (Inter).
+ * ECHO YOUR INFLUENCE — personal marketing agency in a box.
+ * Vibe: warm sand field, espresso ink, clay CTA.
+ * Display: Archivo Black. Body: Hind. Numbers: mono w/ tabular figures.
  */
 
 @theme inline {
-  --font-display: "Fraunces", "Georgia", serif;
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Hind", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -51,82 +53,83 @@
 }
 
 :root {
-  --radius: 0.875rem;
+  --radius: 0.75rem;
 
-  /* base: cream-tinted off-white */
-  --background: oklch(0.985 0.012 75);
-  --foreground: oklch(0.18 0.035 320);
+  /* Warm Sand field */
+  --background: oklch(0.978 0.006 75);
+  --foreground: oklch(0.22 0.018 60);
 
-  --surface: oklch(0.97 0.018 70);
-  --surface-muted: oklch(0.94 0.022 70);
+  --surface: oklch(0.947 0.014 78);
+  --surface-muted: oklch(0.915 0.02 78);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.035 320);
+  --card-foreground: oklch(0.22 0.018 60);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.035 320);
+  --popover-foreground: oklch(0.22 0.018 60);
 
-  /* coral primary */
-  --primary: oklch(0.66 0.198 27);
-  --primary-foreground: oklch(0.99 0.005 75);
-  --brand: oklch(0.66 0.198 27);
-  --brand-foreground: oklch(0.99 0.005 75);
+  /* clay primary */
+  --primary: oklch(0.5 0.055 62);
+  --primary-foreground: oklch(0.985 0.006 78);
+  --brand: oklch(0.5 0.055 62);
+  --brand-foreground: oklch(0.985 0.006 78);
 
-  /* deep plum secondary */
-  --secondary: oklch(0.28 0.06 320);
-  --secondary-foreground: oklch(0.98 0.01 75);
-  --plum: oklch(0.28 0.06 320);
+  /* espresso secondary */
+  --secondary: oklch(0.3 0.03 60);
+  --secondary-foreground: oklch(0.97 0.008 78);
+  --plum: oklch(0.3 0.03 60);
 
-  --muted: oklch(0.94 0.018 70);
-  --muted-foreground: oklch(0.45 0.025 320);
+  --muted: oklch(0.93 0.016 78);
+  --muted-foreground: oklch(0.48 0.022 65);
 
-  /* electric lime accent */
-  --accent: oklch(0.86 0.17 120);
-  --accent-foreground: oklch(0.2 0.05 320);
-  --lime: oklch(0.86 0.17 120);
+  /* sand accent */
+  --accent: oklch(0.79 0.04 85);
+  --accent-foreground: oklch(0.24 0.02 60);
+  --lime: oklch(0.79 0.04 85);
 
-  --destructive: oklch(0.58 0.22 27);
-  --destructive-foreground: oklch(0.99 0.005 75);
+  --destructive: oklch(0.52 0.16 28);
+  --destructive-foreground: oklch(0.985 0.006 78);
 
-  --border: oklch(0.9 0.018 70);
-  --input: oklch(0.92 0.018 70);
-  --ring: oklch(0.66 0.198 27);
+  --border: oklch(0.885 0.018 80);
+  --input: oklch(0.905 0.018 80);
+  --ring: oklch(0.5 0.055 62);
 }
 
 .dark {
-  --background: oklch(0.16 0.035 320);
-  --foreground: oklch(0.97 0.012 75);
+  --background: oklch(0.19 0.014 60);
+  --foreground: oklch(0.96 0.008 78);
 
-  --surface: oklch(0.21 0.045 320);
-  --surface-muted: oklch(0.25 0.05 320);
+  --surface: oklch(0.235 0.018 62);
+  --surface-muted: oklch(0.28 0.02 62);
 
-  --card: oklch(0.21 0.045 320);
-  --card-foreground: oklch(0.97 0.012 75);
-  --popover: oklch(0.21 0.045 320);
-  --popover-foreground: oklch(0.97 0.012 75);
+  --card: oklch(0.235 0.018 62);
+  --card-foreground: oklch(0.96 0.008 78);
+  --popover: oklch(0.235 0.018 62);
+  --popover-foreground: oklch(0.96 0.008 78);
 
-  --primary: oklch(0.72 0.2 27);
-  --primary-foreground: oklch(0.16 0.035 320);
-  --brand: oklch(0.72 0.2 27);
-  --brand-foreground: oklch(0.16 0.035 320);
+  --primary: oklch(0.74 0.055 78);
+  --primary-foreground: oklch(0.2 0.016 60);
+  --brand: oklch(0.74 0.055 78);
+  --brand-foreground: oklch(0.2 0.016 60);
 
-  --secondary: oklch(0.3 0.06 320);
-  --secondary-foreground: oklch(0.97 0.012 75);
-  --plum: oklch(0.3 0.06 320);
+  --secondary: oklch(0.32 0.024 62);
+  --secondary-foreground: oklch(0.96 0.008 78);
+  --plum: oklch(0.32 0.024 62);
 
-  --muted: oklch(0.26 0.045 320);
-  --muted-foreground: oklch(0.72 0.025 75);
+  --muted: oklch(0.28 0.02 62);
+  --muted-foreground: oklch(0.75 0.018 78);
 
-  --accent: oklch(0.86 0.17 120);
-  --accent-foreground: oklch(0.18 0.05 320);
-  --lime: oklch(0.86 0.17 120);
+  --accent: oklch(0.79 0.04 85);
+  --accent-foreground: oklch(0.22 0.02 60);
+  --lime: oklch(0.79 0.04 85);
 
-  --destructive: oklch(0.65 0.22 27);
-  --destructive-foreground: oklch(0.99 0.005 75);
+  --destructive: oklch(0.6 0.17 28);
+  --destructive-foreground: oklch(0.985 0.006 78);
 
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.72 0.2 27);
+  --ring: oklch(0.74 0.055 78);
 }
+
 
 @layer base {
   * {
@@ -144,18 +147,24 @@
   h3,
   .font-display {
     font-family: var(--font-display);
+    font-weight: 400;
     letter-spacing: -0.02em;
+  }
+  .font-mono,
+  code,
+  kbd {
+    font-variant-numeric: tabular-nums;
   }
 }
 
 @layer utilities {
-  /* ===== Existing ReelRipper utilities + bright redesign additions ===== */
+  /* ===== Echo Your Influence — warm sand utilities ===== */
   .bg-gradient-brand {
     background-image: linear-gradient(
       135deg,
-      oklch(0.70 0.19 45) 0%,
-      oklch(0.62 0.21 30) 60%,
-      oklch(0.55 0.16 20) 100%
+      oklch(0.56 0.05 72) 0%,
+      oklch(0.5 0.055 62) 55%,
+      oklch(0.42 0.05 52) 100%
     );
   }
 
@@ -176,17 +185,17 @@
 
   .shadow-pop {
     box-shadow:
-      0 1px 0 oklch(0.18 0.035 320 / 0.06),
-      0 12px 32px -8px oklch(0.18 0.035 320 / 0.18);
+      0 1px 0 oklch(0.22 0.018 60 / 0.06),
+      0 12px 32px -8px oklch(0.22 0.018 60 / 0.18);
   }
 
-  /* ===== Bright aurora background (cream base + drifting pastel blooms) ===== */
+  /* ===== Warm sand field (sand base + soft clay blooms) ===== */
   .bg-aurora-light {
-    background-color: oklch(0.99 0.008 75);
+    background-color: oklch(0.978 0.006 75);
     background-image:
-      radial-gradient(55vw 55vw at 8% 10%, oklch(0.88 0.10 0 / 0.30), transparent 60%),
-      radial-gradient(50vw 50vw at 92% 18%, oklch(0.90 0.13 145 / 0.22), transparent 60%),
-      radial-gradient(48vw 48vw at 75% 88%, oklch(0.90 0.08 240 / 0.22), transparent 60%);
+      radial-gradient(55vw 55vw at 8% 10%, oklch(0.86 0.035 85 / 0.55), transparent 62%),
+      radial-gradient(50vw 50vw at 92% 18%, oklch(0.9 0.02 60 / 0.5), transparent 62%),
+      radial-gradient(48vw 48vw at 75% 88%, oklch(0.88 0.03 95 / 0.45), transparent 62%);
     background-attachment: fixed;
   }
   .bg-aurora-light::before {
@@ -196,8 +205,8 @@
     z-index: 0;
     pointer-events: none;
     background-image:
-      radial-gradient(38vw 38vw at 30% 80%, oklch(0.68 0.19 42 / 0.10), transparent 60%),
-      radial-gradient(34vw 34vw at 78% 30%, oklch(0.95 0.16 95 / 0.18), transparent 60%);
+      radial-gradient(38vw 38vw at 30% 80%, oklch(0.5 0.055 62 / 0.07), transparent 60%),
+      radial-gradient(34vw 34vw at 78% 30%, oklch(0.79 0.04 85 / 0.28), transparent 60%);
     animation: drift 20s ease-in-out infinite alternate;
   }
   @keyframes drift {
@@ -225,24 +234,24 @@
       0 12px 40px -14px oklch(0.18 0.025 320 / 0.14);
   }
 
-  /* ===== Glow halos ===== */
-  .glow-orange { box-shadow: 0 0 60px -16px oklch(0.68 0.19 42 / 0.45); }
-  .glow-pink   { box-shadow: 0 0 60px -16px oklch(0.88 0.10 0 / 0.45); }
-  .glow-green  { box-shadow: 0 0 60px -16px oklch(0.90 0.13 145 / 0.45); }
-  .glow-blue   { box-shadow: 0 0 60px -16px oklch(0.90 0.08 240 / 0.45); }
+  /* ===== Glow halos (warm sand family) ===== */
+  .glow-orange { box-shadow: 0 0 60px -16px oklch(0.5 0.055 62 / 0.4); }
+  .glow-pink   { box-shadow: 0 0 60px -16px oklch(0.79 0.04 85 / 0.5); }
+  .glow-green  { box-shadow: 0 0 60px -16px oklch(0.72 0.045 110 / 0.4); }
+  .glow-blue   { box-shadow: 0 0 60px -16px oklch(0.68 0.035 45 / 0.4); }
 
-  /* ===== Fyxer-style colored highlight squares ===== */
-  .hl-pink   { background: oklch(0.88 0.10 0); }
-  .hl-green  { background: oklch(0.90 0.13 145); }
-  .hl-blue   { background: oklch(0.90 0.08 240); }
-  .hl-yellow { background: oklch(0.95 0.16 95); }
-  .hl-orange { background: oklch(0.68 0.19 42); }
+  /* ===== Sand highlight blocks (tonal, not rainbow) ===== */
+  .hl-pink   { background: oklch(0.86 0.035 60); }
+  .hl-green  { background: oklch(0.83 0.045 110); }
+  .hl-blue   { background: oklch(0.8 0.03 45); }
+  .hl-yellow { background: oklch(0.87 0.06 92); }
+  .hl-orange { background: oklch(0.62 0.06 62); color: oklch(0.985 0.006 78); }
 
   /* ===== Shadows ===== */
   .shadow-soft {
     box-shadow:
-      0 1px 0 oklch(0.18 0.025 320 / 0.03),
-      0 8px 24px -10px oklch(0.18 0.025 320 / 0.12);
+      0 1px 0 oklch(0.22 0.018 60 / 0.04),
+      0 8px 24px -10px oklch(0.22 0.018 60 / 0.14);
   }
 
   /* ===== Motif animations ===== */
@@ -282,23 +291,4 @@
     100% { transform: translateX(-50%); }
   }
   .animate-marquee { animation: marquee 24s linear infinite; }
-}
-
-/* ===== Token refresh for the bright marketing surface =====
- * These update the public-marketing palette to the Fyxer-inspired warm/orange
- * scheme. They sit after the existing :root / .dark blocks so they win on
- * specificity for the landing route only (the landing root div sets
- * `bg-aurora-light`, which re-bases the background locally).
- * If you'd rather keep the existing coral primary brand-wide, delete this
- * block and just keep the utilities above — the page will render with the
- * original coral accent on a cream base instead of orange.
- */
-:root {
-  --primary: oklch(0.68 0.19 42);
-  --primary-foreground: oklch(0.99 0.008 75);
-  --brand: oklch(0.68 0.19 42);
-  --brand-foreground: oklch(0.99 0.008 75);
-  --accent: oklch(0.88 0.10 0);
-  --accent-foreground: oklch(0.18 0.025 320);
-  --ring: oklch(0.68 0.19 42);
 }

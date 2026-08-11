@@ -1,7 +1,7 @@
 /**
  * Campaign modes — what kind of business the content is being made for.
  *
- * Influencer Echo started as an affiliate-only engine. The modes below open the
+ * Echo Your Influence started as an affiliate-only engine. The modes below open the
  * same pipeline (brief → script → video/image prompts → caption → share-sheet
  * hand-off) to any operator marketing their own work: a listing, a remodel, a
  * dish, a service call, a launch.

@@ -37,7 +37,7 @@ export const Route = createFileRoute("/_authenticated/calendar/")({
   component: CalendarPage,
   head: () => ({
     meta: [
-      { title: "Content calendar — Influencer Echo" },
+      { title: "Content calendar — Echo Your Influence" },
       {
         name: "description",
         content:

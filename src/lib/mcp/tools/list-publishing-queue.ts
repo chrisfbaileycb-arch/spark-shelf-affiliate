@@ -40,7 +40,7 @@ export default defineTool({
 
     return json(`Found ${posts.length} queued post(s).`, {
       posts,
-      note: "Influencer Echo hands content to the device share sheet. 'Handed off' never means published; only a user confirmation marks a post as posted.",
+      note: "Echo Your Influence hands content to the device share sheet. 'Handed off' never means published; only a user confirmation marks a post as posted.",
     });
   },
 });

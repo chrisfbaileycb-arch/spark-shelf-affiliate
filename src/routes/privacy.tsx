@@ -6,13 +6,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — Influencer Echo" },
+      { title: "Privacy Policy — Echo Your Influence" },
       {
         name: "description",
         content:
-          "How Influencer Echo collects, uses, and protects your data, operated as an independent sole proprietorship.",
+          "How Echo Your Influence collects, uses, and protects your data, operated as an independent sole proprietorship.",
       },
-      { property: "og:title", content: "Influencer Echo Privacy Policy" },
+      { property: "og:title", content: "Echo Your Influence Privacy Policy" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/privacy" },
     ],
@@ -30,7 +30,7 @@ function Privacy() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          This page describes the personal information Influencer Echo ("we", operated by {OPERATOR}
+          This page describes the personal information Echo Your Influence ("we", operated by {OPERATOR}
           ) collects, why we collect it, and the choices you have. This policy is maintained by the
           app owner and describes current practices.
         </p>
@@ -80,7 +80,7 @@ function Privacy() {
         <h2>5. Your rights</h2>
         <p>
           You can access, export, or delete your data at any time by emailing
-          support@influencerecho.app. If you are in the EEA, UK, or California, you have additional
+          support@echoyourinfluence.app. If you are in the EEA, UK, or California, you have additional
           rights under GDPR/CCPA including the right to object, restrict processing, and lodge a
           complaint with your local regulator.
         </p>
@@ -96,7 +96,7 @@ function Privacy() {
           Data is encrypted in transit (HTTPS) and at rest by our infrastructure providers.
           Row-level security policies enforce that users can only access their own records. No
           system is perfectly secure — report suspected vulnerabilities to
-          security@influencerecho.app.
+          security@echoyourinfluence.app.
         </p>
 
         <h2>8. Children</h2>

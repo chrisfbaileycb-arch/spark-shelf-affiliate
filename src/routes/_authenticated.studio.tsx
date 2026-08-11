@@ -16,7 +16,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/studio")({
   head: () => ({
     meta: [
-      { title: "Creative Studio — Influencer Echo" },
+      { title: "Creative Studio — Echo Your Influence" },
       {
         name: "description",
         content:

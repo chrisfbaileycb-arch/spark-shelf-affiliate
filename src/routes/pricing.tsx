@@ -7,13 +7,13 @@ import { PLANS } from "@/lib/plans";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — Influencer Echo" },
+      { title: "Pricing — Echo Your Influence" },
       {
         name: "description",
         content:
           "Starter $29.95/mo: 5 avatar videos, 10 b-roll motion clips, 30 fluid ad images. Pro Creator $49 and Agency $99 scale all three. Cancel anytime.",
       },
-      { property: "og:title", content: "Influencer Echo Pricing — Starter, Pro Creator & Agency" },
+      { property: "og:title", content: "Echo Your Influence Pricing — Starter, Pro Creator & Agency" },
       {
         property: "og:description",
         content:

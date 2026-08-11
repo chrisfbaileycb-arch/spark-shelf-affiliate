@@ -14,7 +14,7 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 export const Route = createFileRoute("/industries")({
   head: () => ({
     meta: [
-      { title: "Industries — AI Ad & Video Campaigns | Influencer Echo" },
+      { title: "Industries — AI Ad & Video Campaigns | Echo Your Influence" },
       {
         name: "description",
         content:
@@ -63,7 +63,7 @@ function IndustriesPage() {
           AI campaign engine for every industry.
         </h1>
         <p className="mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
-          Paste any URL. Influencer Echo generates multi-ratio fluid ad cards and vertical video
+          Paste any URL. Echo Your Influence generates multi-ratio fluid ad cards and vertical video
           shorts tailored to your specific niche.
         </p>
 

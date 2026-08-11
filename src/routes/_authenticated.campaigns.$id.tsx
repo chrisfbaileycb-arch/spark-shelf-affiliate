@@ -44,7 +44,7 @@ export const Route = createFileRoute("/_authenticated/campaigns/$id")({
   component: CampaignWizard,
   head: () => ({
     meta: [
-      { title: "Campaign workspace — Influencer Echo" },
+      { title: "Campaign workspace — Echo Your Influence" },
       {
         name: "description",
         content: "Resumable campaign: brief, strategy, content, outbound pipeline, publishing and a fact-based report.",

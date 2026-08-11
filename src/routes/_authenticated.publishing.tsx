@@ -52,7 +52,7 @@ export const Route = createFileRoute("/_authenticated/publishing")({
   component: PublishingPage,
   head: () => ({
     meta: [
-      { title: "Publishing portal — Influencer Echo" },
+      { title: "Publishing portal — Echo Your Influence" },
       {
         name: "description",
         content:
@@ -156,7 +156,7 @@ function PublishingPage() {
         <Share2 className="h-4 w-4" />
         <AlertTitle className="text-sm leading-snug">{HANDOFF_NOTICE}</AlertTitle>
         <AlertDescription className="mt-2 text-xs">
-          Influencer Echo does not post to a social network for you and cannot verify a post
+          Echo Your Influence does not post to a social network for you and cannot verify a post
           succeeded. Direct API publishing is a future option, not required here.
         </AlertDescription>
       </Alert>
@@ -193,7 +193,7 @@ function PublishingPage() {
             <p className="mt-1 text-xs text-muted-foreground">
               {data?.backgroundPushConfigured
                 ? "Background push is configured."
-                : "In-app and on-device reminders while Influencer Echo is open. Background push (browser closed) is Staged — it needs push delivery keys before we can promise it."}
+                : "In-app and on-device reminders while Echo Your Influence is open. Background push (browser closed) is Staged — it needs push delivery keys before we can promise it."}
             </p>
           </div>
           <Button
@@ -360,7 +360,7 @@ function VariantCard({
       const outcome = await shareVideoToDeviceSheet({
         mediaUrl: proxyUrl,
         filename: `influencer-echo-${variant.platform}.mp4`,
-        title: variant.platform_title ?? "Influencer Echo",
+        title: variant.platform_title ?? "Echo Your Influence",
         text: variant.caption,
         headers: await authHeaders(),
       });

@@ -13,11 +13,11 @@ import { Plus, ArrowRight, Video as VideoIcon, Package } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — Influencer Echo" },
+      { title: "Dashboard — Echo Your Influence" },
       {
         name: "description",
         content:
-          "Your Influencer Echo command center: recent videos, quota usage, and one-tap product ingestion.",
+          "Your Echo Your Influence command center: recent videos, quota usage, and one-tap product ingestion.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

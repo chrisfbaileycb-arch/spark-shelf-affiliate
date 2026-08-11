@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 export const Route = createFileRoute("/_authenticated/videos/")({
   head: () => ({
     meta: [
-      { title: "Videos — Influencer Echo" },
+      { title: "Videos — Echo Your Influence" },
       {
         name: "description",
         content:

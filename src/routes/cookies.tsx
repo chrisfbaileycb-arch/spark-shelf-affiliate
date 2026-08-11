@@ -6,13 +6,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
-      { title: "Cookie Policy — Influencer Echo" },
+      { title: "Cookie Policy — Echo Your Influence" },
       {
         name: "description",
         content:
-          "The cookies and local storage Influencer Echo uses, why we use them, and how to control them.",
+          "The cookies and local storage Echo Your Influence uses, why we use them, and how to control them.",
       },
-      { property: "og:title", content: "Influencer Echo Cookie Policy" },
+      { property: "og:title", content: "Echo Your Influence Cookie Policy" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/cookies" },
     ],
@@ -30,7 +30,7 @@ function Cookies() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          Influencer Echo (operated by {OPERATOR}) uses a small set of first-party cookies and
+          Echo Your Influence (operated by {OPERATOR}) uses a small set of first-party cookies and
           browser storage to keep you signed in and to make the product work. We do{" "}
           <strong>not</strong> use third-party advertising cookies, cross-site tracking pixels, or
           behavioral ad networks.
@@ -116,7 +116,7 @@ function Cookies() {
         </p>
 
         <h2>Contact</h2>
-        <p>Questions? Email support@influencerecho.app.</p>
+        <p>Questions? Email support@echoyourinfluence.app.</p>
       </article>
       <PublicFooter />
     </div>

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/products/new")({
   head: () => ({
     meta: [
-      { title: "Add a campaign subject — Influencer Echo" },
+      { title: "Add a campaign subject — Echo Your Influence" },
       {
         name: "description",
         content:
