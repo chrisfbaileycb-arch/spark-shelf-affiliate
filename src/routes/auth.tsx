@@ -66,11 +66,19 @@ function AuthPage() {
         if (error) throw error;
         if (refCode) localStorage.removeItem("rr_ref_code");
         toast.success("Account created. You're signed in.");
+        navigate({ to: "/dashboard" });
+      } else if (mode === "reset") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        setResetSent(true);
+        toast.success("Check your email for a reset link.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        navigate({ to: "/dashboard" });
       }
-      navigate({ to: "/dashboard" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Auth failed");
     } finally {
