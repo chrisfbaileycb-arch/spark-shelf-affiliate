@@ -1,0 +1,1 @@
+ALTER TABLE public.calendar_slots ADD COLUMN IF NOT EXISTS platform_plans jsonb NOT NULL DEFAULT '[]'::jsonb;

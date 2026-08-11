@@ -2,6 +2,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+export interface PlatformPlanRow {
+  platform: string;
+  hook: string;
+  script: string;
+  caption: string;
+  hashtags: string[];
+  format_note: string;
+  posting_tip: string;
+}
+
 export interface CalendarSlot {
   id: string;
   plan_date: string;
@@ -23,10 +33,11 @@ export interface CalendarSlot {
   post_id: string | null;
   generated_at: string | null;
   model: string | null;
+  platform_plans: PlatformPlanRow[];
 }
 
 const SELECT =
-  "id, plan_date, slot_time, title, engine, platforms, hook, script, video_prompt, image_prompt, caption, hashtags, disclosure, notes, status, product_id, campaign_id, post_id, generated_at, model";
+  "id, plan_date, slot_time, title, engine, platforms, hook, script, video_prompt, image_prompt, caption, hashtags, disclosure, notes, status, product_id, campaign_id, post_id, generated_at, model, platform_plans";
 
 const ISO_DATE = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const ENGINE = z.enum(["avatar", "broll", "image"]);
@@ -47,6 +58,9 @@ function normalize(row: Record<string, unknown>): CalendarSlot {
     ...(row as unknown as CalendarSlot),
     platforms: Array.isArray(row["platforms"]) ? (row["platforms"] as string[]) : [],
     hashtags: Array.isArray(row["hashtags"]) ? (row["hashtags"] as string[]) : [],
+    platform_plans: Array.isArray(row["platform_plans"])
+      ? (row["platform_plans"] as PlatformPlanRow[])
+      : [],
     slot_time: String(row["slot_time"] ?? "09:00").slice(0, 5),
   };
 }
@@ -139,6 +153,20 @@ export const updateCalendarSlot = createServerFn({ method: "POST" })
         notes: z.string().max(2000).optional(),
         status: STATUS.optional(),
         product_id: z.string().uuid().nullable().optional(),
+        platform_plans: z
+          .array(
+            z.object({
+              platform: z.string().max(30),
+              hook: z.string().max(300).default(""),
+              script: z.string().max(4000).default(""),
+              caption: z.string().max(2000).default(""),
+              hashtags: z.array(z.string().max(60)).max(6).default([]),
+              format_note: z.string().max(500).default(""),
+              posting_tip: z.string().max(500).default(""),
+            }),
+          )
+          .max(5)
+          .optional(),
       })
       .parse(d),
   )
@@ -233,6 +261,7 @@ export const generateSlotPrompt = createServerFn({ method: "POST" })
         caption: out.caption,
         hashtags: out.hashtags,
         disclosure: out.disclosure,
+        platform_plans: JSON.parse(JSON.stringify(out.platform_plans)),
         status: row.status === "planned" ? "prompted" : row.status,
         generated_at: new Date().toISOString(),
         model: CALENDAR_PROMPT_MODEL,

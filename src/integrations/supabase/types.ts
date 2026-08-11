@@ -205,6 +205,7 @@ export type Database = {
           notes: string
           org_id: string
           plan_date: string
+          platform_plans: Json
           platforms: Json
           post_id: string | null
           product_id: string | null
@@ -231,6 +232,7 @@ export type Database = {
           notes?: string
           org_id: string
           plan_date: string
+          platform_plans?: Json
           platforms?: Json
           post_id?: string | null
           product_id?: string | null
@@ -257,6 +259,7 @@ export type Database = {
           notes?: string
           org_id?: string
           plan_date?: string
+          platform_plans?: Json
           platforms?: Json
           post_id?: string | null
           product_id?: string | null

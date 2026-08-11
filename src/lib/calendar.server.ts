@@ -29,6 +29,16 @@ export interface DayPromptInput {
 }
 
 
+export interface PlatformPlan {
+  platform: string;
+  hook: string;
+  script: string;
+  caption: string;
+  hashtags: string[];
+  format_note: string;
+  posting_tip: string;
+}
+
 export interface DayPromptOutput {
   hook: string;
   script: string;
@@ -37,6 +47,7 @@ export interface DayPromptOutput {
   caption: string;
   hashtags: string[];
   disclosure: string;
+  platform_plans: PlatformPlan[];
 }
 
 function str(v: unknown, fallback = ""): string {
@@ -70,8 +81,9 @@ export async function generateDayPrompt(input: DayPromptInput): Promise<DayPromp
     "image_prompt (one still-creative prompt usable across 9:16, 1:1 and 16:9),",
     "caption (platform-ready, under 150 characters), hashtags (exactly 2: one broad, one specific, with #),",
     affiliate
-      ? "disclosure (a short FTC affiliate disclosure line)."
-      : "disclosure (empty string — this business is marketing its own offering, so no affiliate disclosure applies).",
+      ? "disclosure (a short FTC affiliate disclosure line),"
+      : "disclosure (empty string — this business is marketing its own offering, so no affiliate disclosure applies),",
+    `platform_plans: an array with exactly one object per platform in the supplied platforms list, in that order. Each object has platform (the exact platform id given), hook, script (that platform's own spoken script, rewritten for its audience and pacing — TikTok fastest and most casual, YouTube Short slightly more explanatory, Instagram visual-led, Facebook plainer and community-minded, LinkedIn professional and specific), caption (native to that platform's caption norms), hashtags (exactly 2 with #), format_note (aspect ratio, length and on-screen text guidance for that platform), posting_tip (one concrete, non-numeric tip about how to post it there — never invent engagement statistics or best-time data).`,
   ]
     .filter(Boolean)
     .join(" ");
@@ -122,13 +134,42 @@ export async function generateDayPrompt(input: DayPromptInput): Promise<DayPromp
 
   const hashtags = strArray(raw["hashtags"], 2).map((h) => (h.startsWith("#") ? h : `#${h}`));
 
+  const baseScript = str(raw["script"]);
+  const baseHook = str(raw["hook"]);
+  const baseCaption = str(raw["caption"]);
+
+  const rawPlans = Array.isArray(raw["platform_plans"]) ? (raw["platform_plans"] as unknown[]) : [];
+  const byPlatform = new Map<string, Record<string, unknown>>();
+  for (const p of rawPlans) {
+    if (p && typeof p === "object") {
+      const rec = p as Record<string, unknown>;
+      const id = str(rec["platform"]).toLowerCase();
+      if (id) byPlatform.set(id, rec);
+    }
+  }
+
+  const platform_plans: PlatformPlan[] = input.platforms.map((id, i) => {
+    const rec = byPlatform.get(id) ?? (rawPlans[i] as Record<string, unknown> | undefined) ?? {};
+    const tags = strArray(rec["hashtags"], 2).map((h) => (h.startsWith("#") ? h : `#${h}`));
+    return {
+      platform: id,
+      hook: str(rec["hook"], baseHook),
+      script: str(rec["script"], baseScript),
+      caption: str(rec["caption"], baseCaption),
+      hashtags: tags.length ? tags : hashtags,
+      format_note: str(rec["format_note"]),
+      posting_tip: str(rec["posting_tip"]),
+    };
+  });
+
   return {
-    hook: str(raw["hook"]),
-    script: str(raw["script"]),
+    hook: baseHook,
+    script: baseScript,
     video_prompt: str(raw["video_prompt"]),
     image_prompt: str(raw["image_prompt"]),
-    caption: str(raw["caption"]),
+    caption: baseCaption,
     hashtags,
     disclosure: affiliate ? str(raw["disclosure"], "#ad — commissionable link") : "",
+    platform_plans,
   };
 }
