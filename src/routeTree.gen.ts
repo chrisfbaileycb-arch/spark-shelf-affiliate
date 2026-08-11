@@ -29,6 +29,7 @@ import { Route as AuthenticatedAffiliateProgramsRouteImport } from './routes/_au
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated.billing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedPersonasRouteImport } from './routes/_authenticated.personas'
+import { Route as AuthenticatedPublishingRouteImport } from './routes/_authenticated.publishing'
 import { Route as AuthenticatedStudioRouteImport } from './routes/_authenticated.studio'
 import { Route as AuthenticatedUpgradeRouteImport } from './routes/_authenticated.upgrade'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
@@ -39,6 +40,7 @@ import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated.products.index'
 import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated.products.$id'
 import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated.products.new'
+import { Route as AuthenticatedSettingsIntegrationsRouteImport } from './routes/_authenticated.settings.integrations'
 import { Route as AuthenticatedVideosIndexRouteImport } from './routes/_authenticated.videos.index'
 import { Route as AuthenticatedVideosIdRouteImport } from './routes/_authenticated.videos.$id'
 import { Route as ApiPublicWebhooksStripeRouteImport } from './routes/api/public/webhooks.stripe'
@@ -145,6 +147,11 @@ const AuthenticatedPersonasRoute = AuthenticatedPersonasRouteImport.update({
   path: '/personas',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPublishingRoute = AuthenticatedPublishingRouteImport.update({
+  id: '/publishing',
+  path: '/publishing',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedStudioRoute = AuthenticatedStudioRouteImport.update({
   id: '/studio',
   path: '/studio',
@@ -198,6 +205,12 @@ const AuthenticatedProductsNewRoute =
     path: '/products/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedSettingsIntegrationsRoute =
+  AuthenticatedSettingsIntegrationsRouteImport.update({
+    id: '/settings/integrations',
+    path: '/settings/integrations',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedVideosIndexRoute =
   AuthenticatedVideosIndexRouteImport.update({
     id: '/videos/',
@@ -235,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/personas': typeof AuthenticatedPersonasRoute
+  '/publishing': typeof AuthenticatedPublishingRoute
   '/studio': typeof AuthenticatedStudioRoute
   '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -244,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
+  '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/videos/': typeof AuthenticatedVideosIndexRoute
@@ -269,6 +284,7 @@ export interface FileRoutesByTo {
   '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/personas': typeof AuthenticatedPersonasRoute
+  '/publishing': typeof AuthenticatedPublishingRoute
   '/studio': typeof AuthenticatedStudioRoute
   '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -278,6 +294,7 @@ export interface FileRoutesByTo {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
+  '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/videos': typeof AuthenticatedVideosIndexRoute
@@ -305,6 +322,7 @@ export interface FileRoutesById {
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/personas': typeof AuthenticatedPersonasRoute
+  '/_authenticated/publishing': typeof AuthenticatedPublishingRoute
   '/_authenticated/studio': typeof AuthenticatedStudioRoute
   '/_authenticated/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -314,6 +332,7 @@ export interface FileRoutesById {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
+  '/_authenticated/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/_authenticated/videos/$id': typeof AuthenticatedVideosIdRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/videos/': typeof AuthenticatedVideosIndexRoute
@@ -341,6 +360,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/dashboard'
     | '/personas'
+    | '/publishing'
     | '/studio'
     | '/upgrade'
     | '/checkout/return'
@@ -350,6 +370,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/products/$id'
     | '/products/new'
+    | '/settings/integrations'
     | '/videos/$id'
     | '/products/'
     | '/videos/'
@@ -375,6 +396,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/dashboard'
     | '/personas'
+    | '/publishing'
     | '/studio'
     | '/upgrade'
     | '/checkout/return'
@@ -384,6 +406,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/products/$id'
     | '/products/new'
+    | '/settings/integrations'
     | '/videos/$id'
     | '/products'
     | '/videos'
@@ -410,6 +433,7 @@ export interface FileRouteTypes {
     | '/_authenticated/billing'
     | '/_authenticated/dashboard'
     | '/_authenticated/personas'
+    | '/_authenticated/publishing'
     | '/_authenticated/studio'
     | '/_authenticated/upgrade'
     | '/checkout/return'
@@ -419,6 +443,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
+    | '/_authenticated/settings/integrations'
     | '/_authenticated/videos/$id'
     | '/_authenticated/products/'
     | '/_authenticated/videos/'
@@ -591,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPersonasRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/publishing': {
+      id: '/_authenticated/publishing'
+      path: '/publishing'
+      fullPath: '/publishing'
+      preLoaderRoute: typeof AuthenticatedPublishingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/studio': {
       id: '/_authenticated/studio'
       path: '/studio'
@@ -661,6 +693,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings/integrations': {
+      id: '/_authenticated/settings/integrations'
+      path: '/settings/integrations'
+      fullPath: '/settings/integrations'
+      preLoaderRoute: typeof AuthenticatedSettingsIntegrationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/videos/': {
       id: '/_authenticated/videos/'
       path: '/videos'
@@ -690,10 +729,12 @@ interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedPersonasRoute: typeof AuthenticatedPersonasRoute
+  AuthenticatedPublishingRoute: typeof AuthenticatedPublishingRoute
   AuthenticatedStudioRoute: typeof AuthenticatedStudioRoute
   AuthenticatedUpgradeRoute: typeof AuthenticatedUpgradeRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
+  AuthenticatedSettingsIntegrationsRoute: typeof AuthenticatedSettingsIntegrationsRoute
   AuthenticatedVideosIdRoute: typeof AuthenticatedVideosIdRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedVideosIndexRoute: typeof AuthenticatedVideosIndexRoute
@@ -704,10 +745,13 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedPersonasRoute: AuthenticatedPersonasRoute,
+  AuthenticatedPublishingRoute: AuthenticatedPublishingRoute,
   AuthenticatedStudioRoute: AuthenticatedStudioRoute,
   AuthenticatedUpgradeRoute: AuthenticatedUpgradeRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
+  AuthenticatedSettingsIntegrationsRoute:
+    AuthenticatedSettingsIntegrationsRoute,
   AuthenticatedVideosIdRoute: AuthenticatedVideosIdRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedVideosIndexRoute: AuthenticatedVideosIndexRoute,
