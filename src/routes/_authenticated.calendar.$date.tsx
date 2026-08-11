@@ -496,36 +496,138 @@ function SlotCard({
       </div>
 
       {draft.platforms.length > 0 && (
-        <div className="mt-4 rounded-lg border border-dashed p-3">
-          <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-            Go post it
-          </p>
-          <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-6 space-y-3">
+          <div>
+            <p className="text-sm font-medium">Per-platform hand-off</p>
+            <p className="text-xs text-muted-foreground">
+              One lane per platform: its own script, its own caption, then the hand-off. Tapping a
+              platform copies that lane’s caption and opens the upload screen — nothing posts on its
+              own.
+            </p>
+          </div>
+
+          <div className="grid gap-3 lg:grid-cols-2">
             {draft.platforms.map((p) => {
               const target = PLATFORM_LAUNCH[p];
-              if (!target) return null;
+              const plan =
+                draft.platform_plans.find((x) => x.platform === p) ?? {
+                  platform: p,
+                  hook: draft.hook,
+                  script: draft.script,
+                  caption: draft.caption,
+                  hashtags: draft.hashtags,
+                  format_note: "",
+                  posting_tip: "",
+                };
+              const laneCaption = [plan.caption, plan.hashtags.join(" "), draft.disclosure]
+                .filter(Boolean)
+                .join("\n\n");
+
+              const patchPlan = (patch: Partial<PlatformPlanRow>) =>
+                setDraft((d) => {
+                  const exists = d.platform_plans.some((x) => x.platform === p);
+                  const plans = exists
+                    ? d.platform_plans.map((x) => (x.platform === p ? { ...x, ...patch } : x))
+                    : [...d.platform_plans, { ...plan, ...patch }];
+                  return { ...d, platform_plans: plans };
+                });
+
               return (
-                <Button key={p} size="sm" variant="outline" asChild data-testid={`slot-open-${p}`}>
-                  <a
-                    href={target.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => {
-                      void navigator.clipboard.writeText(fullCaption);
-                      toast.success("Caption copied — paste it after you upload");
-                    }}
-                  >
-                    <ExternalLink className="mr-1.5 h-3.5 w-3.5" />
-                    {target.label}
-                  </a>
-                </Button>
+                <div
+                  key={p}
+                  data-testid={`slot-lane-${p}`}
+                  className="rounded-xl border bg-background p-4 transition-transform hover:-translate-y-0.5"
+                >
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+                    <p className="truncate text-sm font-semibold">{platformLabel(p)}</p>
+                    <span className="shrink-0 rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {plan.script ? "Script ready" : "No script yet"}
+                    </span>
+                  </div>
+
+                  {plan.format_note && (
+                    <p className="mt-2 font-mono text-xs text-muted-foreground">
+                      {plan.format_note}
+                    </p>
+                  )}
+
+                  <label className="mt-3 block space-y-1 text-sm">
+                    <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                      Script for {platformLabel(p)}
+                    </span>
+                    <Textarea
+                      rows={4}
+                      value={plan.script}
+                      onChange={(e) => patchPlan({ script: e.target.value })}
+                      data-testid={`slot-lane-script-${p}`}
+                    />
+                  </label>
+
+                  <label className="mt-3 block space-y-1 text-sm">
+                    <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                      Caption
+                    </span>
+                    <Textarea
+                      rows={2}
+                      value={plan.caption}
+                      onChange={(e) => patchPlan({ caption: e.target.value })}
+                      data-testid={`slot-lane-caption-${p}`}
+                    />
+                  </label>
+
+                  <label className="mt-3 block space-y-1 text-sm">
+                    <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                      Hashtags
+                    </span>
+                    <Input
+                      value={plan.hashtags.join(" ")}
+                      placeholder="#broadtag #specifictag"
+                      onChange={(e) =>
+                        patchPlan({
+                          hashtags: e.target.value.split(/\s+/).filter(Boolean).slice(0, 6),
+                        })
+                      }
+                      data-testid={`slot-lane-hashtags-${p}`}
+                    />
+                  </label>
+
+                  {plan.posting_tip && (
+                    <p className="mt-3 text-xs text-muted-foreground">{plan.posting_tip}</p>
+                  )}
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      data-testid={`slot-lane-copy-${p}`}
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(laneCaption);
+                        toast.success(`${platformLabel(p)} caption copied`);
+                      }}
+                    >
+                      <Copy className="mr-1.5 h-3.5 w-3.5" /> Copy caption
+                    </Button>
+                    {target && (
+                      <Button size="sm" asChild data-testid={`slot-open-${p}`}>
+                        <a
+                          href={target.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={() => {
+                            void navigator.clipboard.writeText(laneCaption);
+                            toast.success("Caption copied — paste it after you upload");
+                          }}
+                        >
+                          <ExternalLink className="mr-1.5 h-3.5 w-3.5" />
+                          Open {target.label}
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
               );
             })}
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Tapping a platform copies this caption and opens that app’s upload screen. Nothing posts
-            automatically — you attach the rendered video and hit post.
-          </p>
         </div>
       )}
 
