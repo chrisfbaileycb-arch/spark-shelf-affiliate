@@ -23,6 +23,7 @@ import {
   statusLabel,
   toISODate,
 } from "@/lib/calendar-dates";
+import { PLATFORM_LAUNCH } from "@/lib/social/handoff";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,10 +32,12 @@ import {
   ChevronLeft,
   ChevronRight,
   Copy,
+  ExternalLink,
   Plus,
   Sparkles,
   Trash2,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/_authenticated/calendar/$date")({
   beforeLoad: ({ params }) => {
