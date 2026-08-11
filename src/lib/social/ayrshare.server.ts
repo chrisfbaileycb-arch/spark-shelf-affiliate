@@ -3,7 +3,7 @@
  *
  * Architecture (per Ayrshare's official multi-user design):
  *  - The platform owner's Business/Launch API key is server-only (AYRSHARE_API_KEY).
- *  - Each Influencer Echo organization maps to one Ayrshare user sub-profile.
+ *  - Each Echo Your Influence organization maps to one Ayrshare user sub-profile.
  *  - The sub-profile's Profile Key is a credential: encrypted at rest, never
  *    returned to the browser.
  *  - Social linking uses a short-lived JWT linking URL generated server-side for
@@ -82,7 +82,7 @@ export const ayrshareAdapter: SocialAdapter = {
 
   async ensureProfile(orgId) {
     if (!ayrshareConfigured()) return blocked();
-    const title = `Influencer Echo ${orgId.slice(0, 8)}`;
+    const title = `Echo Your Influence ${orgId.slice(0, 8)}`;
     const res = await call<{ profileKey?: string; refId?: string }>("/profiles/profile", {
       method: "POST",
       body: { title },

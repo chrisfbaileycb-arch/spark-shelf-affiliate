@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_authenticated/settings/integrations")({
   component: IntegrationsPage,
   head: () => ({
     meta: [
-      { title: "Integrations — Influencer Echo" },
+      { title: "Integrations — Echo Your Influence" },
       {
         name: "description",
         content:
@@ -65,7 +65,7 @@ function IntegrationsPage() {
         </p>
         <h1 className="font-display text-3xl font-semibold md:text-4xl">Integrations</h1>
         <p className="max-w-2xl text-muted-foreground">
-          Bring your own sending provider and your own social accounts. Influencer Echo runs the
+          Bring your own sending provider and your own social accounts. Echo Your Influence runs the
           strategy, copy, and scheduling — your accounts carry the data and the sends.
         </p>
       </header>

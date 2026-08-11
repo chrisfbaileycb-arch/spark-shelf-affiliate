@@ -24,13 +24,13 @@ import { INDUSTRIES } from "@/lib/industries";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Influencer Echo — AI ad kits & video shorts from any URL" },
+      { title: "Echo Your Influence — AI ad kits & video shorts from any URL" },
       {
         name: "description",
         content:
           "Paste any product, app, or website URL. Get 15–30s vertical AI video shorts plus fluid 1:1, 9:16, and 16:9 ad image kits for TikTok, Instagram, and Facebook.",
       },
-      { property: "og:title", content: "Influencer Echo — AI ad kits & video shorts from any URL" },
+      { property: "og:title", content: "Echo Your Influence — AI ad kits & video shorts from any URL" },
       {
         property: "og:description",
         content: "One URL in. Multi-ratio ad cards and AI video shorts out — for every industry.",
@@ -47,20 +47,20 @@ export const Route = createFileRoute("/")({
           "@graph": [
             {
               "@type": "Organization",
-              name: "Influencer Echo",
+              name: "Echo Your Influence",
               description: "AI-generated 15-second influencer videos for affiliate marketing.",
               url: "/",
             },
             {
               "@type": "WebSite",
-              name: "Influencer Echo",
+              name: "Echo Your Influence",
               url: "/",
               description:
                 "Turn any product URL into a scroll-stopping 15-second AI affiliate video.",
             },
             {
               "@type": "SoftwareApplication",
-              name: "Influencer Echo",
+              name: "Echo Your Influence",
               applicationCategory: "MultimediaApplication",
               operatingSystem: "Web",
               offers: [
@@ -210,7 +210,7 @@ function Landing() {
           </h1>
 
           <p className="mx-auto mt-7 max-w-2xl text-balance text-lg text-foreground/80 sm:text-xl">
-            Paste any product, app, or website URL. Influencer Echo writes the hook, renders
+            Paste any product, app, or website URL. Echo Your Influence writes the hook, renders
             15–30&nbsp;second vertical video shorts, and builds complete multi-ratio ad image kits
             for TikTok, Instagram, and Facebook.
           </p>
@@ -425,7 +425,7 @@ function Landing() {
             <Play className="h-7 w-7" fill="currentColor" />
           </div>
           <h2 className="mt-5 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-            Put Influencer Echo to work on your feed.
+            Put Echo Your Influence to work on your feed.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-foreground/80">
             Start the Test Pass at $29.95/mo for 5 video shorts and 30 fluid ad images, or scale to

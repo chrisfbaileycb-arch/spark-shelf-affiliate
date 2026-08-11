@@ -6,13 +6,13 @@ import { GUIDES } from "@/lib/guides.data";
 export const Route = createFileRoute("/guides")({
   head: () => ({
     meta: [
-      { title: "Guides & Playbooks for AI campaign creators — Influencer Echo" },
+      { title: "Guides & Playbooks for AI campaign creators — Echo Your Influence" },
       {
         name: "description",
         content:
           "Playbooks for creators, agencies, and real estate pros: AI spokesperson videos, cinematic b-roll, and multi-ratio ad kits for TikTok, Shorts, Reels, and Meta Ads.",
       },
-      { property: "og:title", content: "Guides & Playbooks — Influencer Echo" },
+      { property: "og:title", content: "Guides & Playbooks — Echo Your Influence" },
       {
         property: "og:description",
         content: "Playbooks for creators and agencies building AI-first media operations.",

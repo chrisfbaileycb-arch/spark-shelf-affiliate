@@ -48,7 +48,7 @@ export default defineTool({
       });
       return json(`Queued ${input.platforms.length} hand-off variant(s).`, {
         ...result,
-        note: "Queued for hand-off only. Influencer Echo does not auto-publish; the user posts from the share sheet and confirms afterwards.",
+        note: "Queued for hand-off only. Echo Your Influence does not auto-publish; the user posts from the share sheet and confirms afterwards.",
       });
     } catch (err) {
       throw new ToolError(`Could not queue the hand-off: ${describeError(err)}`);

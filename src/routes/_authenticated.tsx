@@ -93,7 +93,7 @@ function AuthLayout() {
           <Link to="/dashboard" className="mb-8 flex items-center gap-2 px-2">
             <BrandMark className="h-8 w-8 rounded-lg" />
 
-            <span className="font-display text-lg font-semibold">Influencer Echo</span>
+            <span className="font-display text-lg font-semibold">Echo Your Influence</span>
           </Link>
           <nav className="space-y-1">
             {NAV.map((item) => {

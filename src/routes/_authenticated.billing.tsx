@@ -12,11 +12,11 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/billing")({
   head: () => ({
     meta: [
-      { title: "Billing & referrals — Influencer Echo" },
+      { title: "Billing & referrals — Echo Your Influence" },
       {
         name: "description",
         content:
-          "Manage your Influencer Echo subscription, video quota, and refer-and-earn credits.",
+          "Manage your Echo Your Influence subscription, video quota, and refer-and-earn credits.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

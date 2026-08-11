@@ -56,7 +56,7 @@ export const Route = createFileRoute("/_authenticated/calendar/$date")({
   ),
   head: ({ params }) => ({
     meta: [
-      { title: `Plan for ${params.date} — Influencer Echo` },
+      { title: `Plan for ${params.date} — Echo Your Influence` },
       {
         name: "description",
         content:

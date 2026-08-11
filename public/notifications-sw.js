@@ -1,4 +1,4 @@
-/* Influencer Echo — notification worker for due-post reminders.
+/* Echo Your Influence — notification worker for due-post reminders.
  * This worker only displays notifications the app hands it while a tab is
  * open, plus real Push events IF push delivery keys are ever configured.
  * It does not cache the app and is not an offline service worker.

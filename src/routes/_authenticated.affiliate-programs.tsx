@@ -14,11 +14,11 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/affiliate-programs")({
   head: () => ({
     meta: [
-      { title: "Affiliate programs — Influencer Echo" },
+      { title: "Affiliate programs — Echo Your Influence" },
       {
         name: "description",
         content:
-          "Manage your affiliate program IDs and tracking templates so every Influencer Echo video points to your own payout links.",
+          "Manage your affiliate program IDs and tracking templates so every Echo Your Influence video points to your own payout links.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

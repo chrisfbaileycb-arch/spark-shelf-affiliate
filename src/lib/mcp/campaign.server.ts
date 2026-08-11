@@ -12,7 +12,7 @@ import type { ToolContext } from "@lovable.dev/mcp-js";
 
 export async function campaignCtx(ctx: ToolContext) {
   if (!ctx.isAuthenticated()) {
-    throw new ToolError("You must be signed in to Influencer Echo to use this tool.");
+    throw new ToolError("You must be signed in to Echo Your Influence to use this tool.");
   }
   const userId = ctx.getUserId();
   if (!userId) throw new ToolError("No user id on the verified token.");

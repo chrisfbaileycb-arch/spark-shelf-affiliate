@@ -6,13 +6,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/affiliate-disclosure")({
   head: () => ({
     meta: [
-      { title: "Affiliate Disclosure — Influencer Echo" },
+      { title: "Affiliate Disclosure — Echo Your Influence" },
       {
         name: "description",
         content:
-          "How Influencer Echo and its users participate in affiliate marketing programs, and how commissions are earned and disclosed.",
+          "How Echo Your Influence and its users participate in affiliate marketing programs, and how commissions are earned and disclosed.",
       },
-      { property: "og:title", content: "Influencer Echo Affiliate Disclosure" },
+      { property: "og:title", content: "Echo Your Influence Affiliate Disclosure" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/affiliate-disclosure" },
     ],
@@ -30,23 +30,23 @@ function Disclosure() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          Influencer Echo is a tool that helps creators produce affiliate marketing videos. This
+          Echo Your Influence is a tool that helps creators produce affiliate marketing videos. This
           page explains both how <strong>we</strong> use affiliate relationships and what{" "}
-          <strong>you</strong> as a Influencer Echo user are responsible for when publishing videos
+          <strong>you</strong> as a Echo Your Influence user are responsible for when publishing videos
           generated with our service.
         </p>
 
-        <h2>1. Influencer Echo's own affiliate relationships</h2>
+        <h2>1. Echo Your Influence's own affiliate relationships</h2>
         <p>
-          {OPERATOR} (the operator of Influencer Echo) may earn referral or affiliate compensation
+          {OPERATOR} (the operator of Echo Your Influence) may earn referral or affiliate compensation
           from third-party services we recommend inside the product or on this site — for example,
           Stripe, HeyGen, ElevenLabs, or affiliate networks. This never changes the price you pay,
-          and we only recommend tools we actually use to build Influencer Echo.
+          and we only recommend tools we actually use to build Echo Your Influence.
         </p>
 
-        <h2>2. Your responsibility as a Influencer Echo user</h2>
+        <h2>2. Your responsibility as a Echo Your Influence user</h2>
         <p>
-          When you use Influencer Echo to generate a video for a product you promote via an
+          When you use Echo Your Influence to generate a video for a product you promote via an
           affiliate network (Amazon Associates, TikTok Shop, ShareASale, Impact, CJ, etc.),{" "}
           <strong>you are the advertiser</strong>. You are legally required to:
         </p>
@@ -65,7 +65,7 @@ function Disclosure() {
           <li>
             <strong>Disclose the use of AI</strong> where required. TikTok, Meta, and YouTube each
             require creators to label AI-generated or AI-modified content that depicts
-            realistic-looking people or scenes. Influencer Echo videos meet that bar — always toggle
+            realistic-looking people or scenes. Echo Your Influence videos meet that bar — always toggle
             the platform's AI content label on.
           </li>
           <li>
@@ -90,21 +90,21 @@ function Disclosure() {
 
         <h2>4. AI-generated persona notice</h2>
         <p>
-          The creators who appear in Influencer Echo videos are AI avatars, not real endorsers. You
+          The creators who appear in Echo Your Influence videos are AI avatars, not real endorsers. You
           may not present them as real customers or real professionals (doctors, dentists, lawyers,
           financial advisors, etc.) making claims about a product.
         </p>
 
         <h2>5. Prohibited product categories</h2>
         <p>
-          You may not use Influencer Echo to promote products in categories where AI-generated
+          You may not use Echo Your Influence to promote products in categories where AI-generated
           endorsements pose disproportionate consumer harm, including prescription drugs, medical
           devices making health claims, unregistered financial or investment products, weapons, or
           content targeted at minors.
         </p>
 
         <h2>6. Questions</h2>
-        <p>Email support@influencerecho.app.</p>
+        <p>Email support@echoyourinfluence.app.</p>
       </article>
       <PublicFooter />
     </div>

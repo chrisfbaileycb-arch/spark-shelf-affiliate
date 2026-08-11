@@ -318,7 +318,7 @@ function SendToPublishing({ campaignId, hasVideo }: { campaignId: string; hasVid
       </h3>
       <p className="text-xs text-muted-foreground">
         Schedules the hand-off. At the due time you tap Post now and pick the app from your
-        device&apos;s share menu — Influencer Echo never posts for you.
+        device&apos;s share menu — Echo Your Influence never posts for you.
       </p>
       <div className="flex flex-wrap gap-2">
         {HANDOFF_PLATFORMS.map((p) => {

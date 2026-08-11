@@ -29,7 +29,7 @@ export const OUTBOUND_PROVIDERS: OutboundProvider[] = [
     group: "Active providers",
     tagline: "Sourcing, enrichment, and sending on your own Apollo account.",
     description:
-      "Default provider. Influencer Echo sources and qualifies leads, writes the sequences, and orchestrates the schedule. Data credits and mailbox sending stay on your Apollo plan.",
+      "Default provider. Echo Your Influence sources and qualifies leads, writes the sequences, and orchestrates the schedule. Data credits and mailbox sending stay on your Apollo plan.",
     requirements: [
       "An active Apollo.io plan with API access.",
       "An API key with search and sequence permissions (some endpoints require a master key).",
@@ -46,7 +46,7 @@ export const OUTBOUND_PROVIDERS: OutboundProvider[] = [
     group: "Active providers",
     tagline: "High-volume sending with your own warmed mailboxes.",
     description:
-      "Use Instantly as the sending and sequencing layer. Influencer Echo supplies the strategy, copy, and schedule; deliverability and mailbox rotation run on your Instantly workspace.",
+      "Use Instantly as the sending and sequencing layer. Echo Your Influence supplies the strategy, copy, and schedule; deliverability and mailbox rotation run on your Instantly workspace.",
     requirements: [
       "An Instantly.ai plan that includes API access.",
       "At least one warmed sending mailbox connected in Instantly.",

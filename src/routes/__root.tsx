@@ -74,13 +74,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Influencer Echo — AI affiliate videos in one click" },
+      { title: "Echo Your Influence — AI affiliate videos in one click" },
       {
         name: "description",
         content:
           "Turn any product link into a 15-second influencer-style video with AI voiceover, captions, and a tracked affiliate link.",
       },
-      { property: "og:title", content: "Influencer Echo — AI affiliate videos in one click" },
+      { property: "og:title", content: "Echo Your Influence — AI affiliate videos in one click" },
       {
         property: "og:description",
         content: "Paste a product URL, get an AI influencer video ready to post.",

@@ -6,13 +6,13 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service — Influencer Echo" },
+      { title: "Terms of Service — Echo Your Influence" },
       {
         name: "description",
         content:
-          "The terms governing your use of Influencer Echo, an AI affiliate video generation service.",
+          "The terms governing your use of Echo Your Influence, an AI affiliate video generation service.",
       },
-      { property: "og:title", content: "Influencer Echo Terms of Service" },
+      { property: "og:title", content: "Echo Your Influence Terms of Service" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/terms" },
     ],
@@ -30,14 +30,14 @@ function Terms() {
         <p className="text-sm text-muted-foreground">Last updated: October 2025</p>
 
         <p>
-          These Terms of Service ("Terms") govern your access to and use of Influencer Echo (the
+          These Terms of Service ("Terms") govern your access to and use of Echo Your Influence (the
           "Service"), operated by {OPERATOR} ("we", "us"). By creating an account or using the
           Service you agree to these Terms.
         </p>
 
         <h2>1. The Service</h2>
         <p>
-          Influencer Echo lets you ingest publicly-available product URLs and generate short
+          Echo Your Influence lets you ingest publicly-available product URLs and generate short
           AI-produced videos incorporating a synthetic voice, avatar, and script for use in
           affiliate marketing. You are solely responsible for how you use the generated videos.
         </p>
@@ -60,7 +60,7 @@ function Terms() {
 
         <h2>4. Affiliate programs and disclosure</h2>
         <p>
-          Influencer Echo does not enroll you in any affiliate program. You are responsible for
+          Echo Your Influence does not enroll you in any affiliate program. You are responsible for
           signing up with each network (Amazon Associates, TikTok Shop, ShareASale, etc.), complying
           with their rules, paying any applicable taxes on commissions, and making all disclosures
           required by law and by the platforms where you publish. See our{" "}
@@ -116,7 +116,7 @@ function Terms() {
         </p>
 
         <h2>12. Contact</h2>
-        <p>Questions? Email support@influencerecho.app.</p>
+        <p>Questions? Email support@echoyourinfluence.app.</p>
       </article>
       <PublicFooter />
     </div>

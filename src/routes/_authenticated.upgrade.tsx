@@ -16,11 +16,11 @@ import { PLANS } from "@/lib/plans";
 export const Route = createFileRoute("/_authenticated/upgrade")({
   head: () => ({
     meta: [
-      { title: "Pricing — Influencer Echo" },
+      { title: "Pricing — Echo Your Influence" },
       {
         name: "description",
         content:
-          "Starter, Pro Creator and Agency plans for Influencer Echo — AI video shorts plus ad images and app/web mockups every month.",
+          "Starter, Pro Creator and Agency plans for Echo Your Influence — AI video shorts plus ad images and app/web mockups every month.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

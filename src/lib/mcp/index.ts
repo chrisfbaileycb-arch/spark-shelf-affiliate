@@ -25,10 +25,10 @@ const projectRef = import.meta.env["VITE_SUPABASE_PROJECT_ID"] ?? "project-ref-u
 
 export default defineMcp({
   name: "influencer-echo",
-  title: "Influencer Echo",
+  title: "Echo Your Influence",
   version: "0.2.0",
   instructions:
-    "Tools for Influencer Echo: run the unified campaign spine (product brief → strategy → content pack → outbound → publishing), ingest affiliate products, generate influencer scripts and video drafts, manage personas, search and qualify Apollo leads, draft outreach sequences, queue Share-Sheet hand-offs, and build tracked affiliate links. Every tool acts only on the signed-in user's own organization data. Actions that spend credits, call the user's Apollo account, or write to their publishing calendar require an explicit confirm=true after asking the user. Never present a hand-off as published: only a user confirmation marks a post as posted, and no statistics or results may be invented.",
+    "Tools for Echo Your Influence: run the unified campaign spine (product brief → strategy → content pack → outbound → publishing), ingest affiliate products, generate influencer scripts and video drafts, manage personas, search and qualify Apollo leads, draft outreach sequences, queue Share-Sheet hand-offs, and build tracked affiliate links. Every tool acts only on the signed-in user's own organization data. Actions that spend credits, call the user's Apollo account, or write to their publishing calendar require an explicit confirm=true after asking the user. Never present a hand-off as published: only a user confirmation marks a post as posted, and no statistics or results may be invented.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",

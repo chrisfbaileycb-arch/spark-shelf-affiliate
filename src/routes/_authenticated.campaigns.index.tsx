@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/campaigns/")({
   component: CampaignsIndex,
   head: () => ({
     meta: [
-      { title: "Campaigns — Influencer Echo" },
+      { title: "Campaigns — Echo Your Influence" },
       {
         name: "description",
         content:

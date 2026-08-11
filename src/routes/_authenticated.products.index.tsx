@@ -13,11 +13,11 @@ import { Plus, Trash2 } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/products/")({
   head: () => ({
     meta: [
-      { title: "Products — Influencer Echo" },
+      { title: "Products — Echo Your Influence" },
       {
         name: "description",
         content:
-          "Every product you've added to Influencer Echo, ready to turn into a 15-second affiliate video.",
+          "Every product you've added to Echo Your Influence, ready to turn into a 15-second affiliate video.",
       },
       { name: "robots", content: "noindex, nofollow" },
     ],

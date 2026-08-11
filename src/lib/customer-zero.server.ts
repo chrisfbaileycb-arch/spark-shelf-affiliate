@@ -57,7 +57,7 @@ export class PrivateBetaError extends Error {
   readonly code = "private_beta";
   constructor() {
     super(
-      "Influencer Echo is in a closed private beta (Customer Zero). This account is not on the allowlist, so campaign and integration actions are disabled.",
+      "Echo Your Influence is in a closed private beta (Customer Zero). This account is not on the allowlist, so campaign and integration actions are disabled.",
     );
     this.name = "PrivateBetaError";
   }

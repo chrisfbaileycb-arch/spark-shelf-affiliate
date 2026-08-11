@@ -22,7 +22,7 @@ export const GUIDES: Record<string, Guide> = {
         </p>
         <p>
           The traditional bottleneck has always been production time. This playbook details how
-          Influencer Echo's multi-engine creative studio shortens that bottleneck by turning a
+          Echo Your Influence's multi-engine creative studio shortens that bottleneck by turning a
           single URL into a full media kit without a camera, a studio, or an editor.
         </p>
 
@@ -49,16 +49,16 @@ export const GUIDES: Record<string, Guide> = {
         </ul>
 
 
-        <h2>2. Paste the URL into Influencer Echo</h2>
+        <h2>2. Paste the URL into Echo Your Influence</h2>
         <p>
           Copy the product, app, or website link directly from Amazon, Shopify, Zillow, or any URL.
-          Paste it into Influencer Echo. Our extraction engine automatically pulls the title, key
+          Paste it into Echo Your Influence. Our extraction engine automatically pulls the title, key
           value propositions, price, and high-res media assets into a unified creative brief.
         </p>
 
         <h2>3. Choose your media pipeline &amp; engines</h2>
         <p>
-          Influencer Echo gives you a multi-engine studio to generate both video and static assets
+          Echo Your Influence gives you a multi-engine studio to generate both video and static assets
           in one pass:
         </p>
         <ul>
@@ -101,30 +101,30 @@ export const GUIDES: Record<string, Guide> = {
           </li>
         </ul>
         <p>
-          Attach your click-tracked affiliate or campaign link from Influencer Echo's Link Manager
+          Attach your click-tracked affiliate or campaign link from Echo Your Influence's Link Manager
           and post. A steady daily posting habit beats one big batch — pick a cadence you can keep.
         </p>
 
         <h2>6. FTC compliance &amp; disclosures</h2>
         <p>
           FTC guidelines require clear disclosures on paid, commissioned, or affiliate content. Add
-          #ad or toggle the platform's "Paid Partnership" setting on every post. Influencer Echo
+          #ad or toggle the platform's "Paid Partnership" setting on every post. Echo Your Influence
           appends your tracking tags automatically — keep those intact and append required
           compliance hashtags.
         </p>
 
         <h2>7. Measure clicks &amp; scale what works</h2>
         <p>
-          Every link generated in Influencer Echo is click-tracked, and the click count for each
+          Every link generated in Echo Your Influence is click-tracked, and the click count for each
           link shows on its product page. Check in weekly to see which persona × product × media
           format combinations pull the most clicks, then put more of your output behind the hooks
           that earn attention. Conversions and payouts are reported by your affiliate network, not
-          by Influencer Echo.
+          by Echo Your Influence.
         </p>
 
 
         <h2>8. Tiered studio expansion &amp; referral growth</h2>
-        <p>As your volume grows, upgrade through Influencer Echo's flexible plans:</p>
+        <p>As your volume grows, upgrade through Echo Your Influence's flexible plans:</p>
         <ul>
           <li>
             <strong>Starter ($29.95/mo):</strong> 5 HeyGen avatar shorts + 10 MiniMax motion clips +

@@ -2,7 +2,7 @@ interface Props {
   className?: string;
 }
 
-/** Influencer Echo mark: a play head with two echo ripples. */
+/** Echo Your Influence mark: a play head with two echo ripples. */
 export function BrandMark({ className = "h-9 w-9" }: Props) {
   return (
     <span

@@ -5,12 +5,12 @@ import { PublicNav } from "@/components/PublicNav";
 export const Route = createFileRoute("/refunds")({
   head: () => ({
     meta: [
-      { title: "Refund Policy — Influencer Echo" },
+      { title: "Refund Policy — Echo Your Influence" },
       {
         name: "description",
-        content: "Influencer Echo's refund policy for subscription plans and video credits.",
+        content: "Echo Your Influence's refund policy for subscription plans and video credits.",
       },
-      { property: "og:title", content: "Influencer Echo Refund Policy" },
+      { property: "og:title", content: "Echo Your Influence Refund Policy" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/refunds" },
     ],
@@ -29,7 +29,7 @@ function Refunds() {
 
         <h2>Starting small</h2>
         <p>
-          The Starter Test Pass ($29.95/mo, 5 videos and 30 images) exists so you can evaluate Influencer Echo
+          The Starter Test Pass ($29.95/mo, 5 videos and 30 images) exists so you can evaluate Echo Your Influence
           at low cost before committing to a larger plan. You can upgrade, downgrade, or cancel at
           any time.
         </p>
@@ -60,7 +60,7 @@ function Refunds() {
 
         <h2>How to request</h2>
         <p>
-          Email support@influencerecho.app from the address on your account with your Stripe
+          Email support@echoyourinfluence.app from the address on your account with your Stripe
           receipt. We respond within 3 business days.
         </p>
 

@@ -14,9 +14,9 @@ export function PublicFooter() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Affiliate disclosure (kept verbatim from the original PublicFooter) */}
         <p className="mb-8 rounded-xl glass px-4 py-3 text-xs text-muted-foreground">
-          <strong className="text-foreground">Disclosure:</strong> Influencer Echo produces
+          <strong className="text-foreground">Disclosure:</strong> Echo Your Influence produces
           AI-generated videos featuring synthetic avatars — not real endorsers. When you publish an
-          Influencer Echo video that promotes a product for commission, you must disclose the paid
+          Echo Your Influence video that promotes a product for commission, you must disclose the paid
           relationship (e.g. <code>#ad</code>) and toggle each platform&apos;s AI-content label. See
           our{" "}
           <Link to="/affiliate-disclosure" className="underline hover:text-primary">
@@ -28,10 +28,10 @@ export function PublicFooter() {
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           {/* Brand column */}
           <div className="max-w-xs">
-            <Link to="/" className="flex items-center gap-2.5" aria-label="Influencer Echo home">
+            <Link to="/" className="flex items-center gap-2.5" aria-label="Echo Your Influence home">
               <BrandMark />
               <span className="font-display text-xl font-semibold tracking-tight text-foreground">
-                Influencer Echo
+                Echo Your Influence
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
