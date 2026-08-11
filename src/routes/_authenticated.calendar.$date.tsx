@@ -11,6 +11,7 @@ import {
   generateSlotPrompt,
   listCalendarProducts,
   type CalendarSlot,
+  type PlatformPlanRow,
 } from "@/lib/calendar.functions";
 import {
   ENGINES,
@@ -20,6 +21,7 @@ import {
   dayLabel,
   isValidISODate,
   parseISODate,
+  platformLabel,
   statusLabel,
   toISODate,
 } from "@/lib/calendar-dates";
