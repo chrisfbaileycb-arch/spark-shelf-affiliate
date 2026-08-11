@@ -37,11 +37,10 @@ async function resolveOrCreateCustomer(
 }
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator(
     (d: {
       priceId: string;
-      customerEmail?: string;
-      userId?: string;
       returnUrl: string;
       environment: StripeEnv;
     }) => {
@@ -49,32 +48,34 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       return d;
     },
   )
-  .handler(async ({ data }): Promise<CheckoutResult> => {
+  .handler(async ({ data, context }): Promise<CheckoutResult> => {
     try {
+      // Identity always comes from the verified session, never the client payload.
+      const userId = context.userId;
+      const customerEmail =
+        typeof context.claims?.["email"] === "string"
+          ? (context.claims["email"] as string)
+          : undefined;
+
       const stripe = createStripeClient(data.environment);
       const prices = await stripe.prices.list({ lookup_keys: [data.priceId] });
       if (!prices.data.length) throw new Error("Price not found");
       const stripePrice = prices.data[0];
 
-      const customerId =
-        data.customerEmail || data.userId
-          ? await resolveOrCreateCustomer(stripe, {
-              email: data.customerEmail,
-              userId: data.userId,
-            })
-          : undefined;
+      const customerId = await resolveOrCreateCustomer(stripe, {
+        ...(customerEmail && { email: customerEmail }),
+        userId,
+      });
 
       const session = await stripe.checkout.sessions.create({
         line_items: [{ price: stripePrice.id, quantity: 1 }],
         mode: "subscription",
         ui_mode: "embedded_page",
         return_url: data.returnUrl,
-        ...(customerId && { customer: customerId }),
+        customer: customerId,
         automatic_tax: { enabled: true },
-        ...(data.userId && {
-          metadata: { userId: data.userId },
-          subscription_data: { metadata: { userId: data.userId } },
-        }),
+        metadata: { userId },
+        subscription_data: { metadata: { userId } },
       });
 
       return { clientSecret: session.client_secret ?? "" };
@@ -82,6 +83,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       return { error: getStripeErrorMessage(error) };
     }
   });
+
 
 export const createPortalSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

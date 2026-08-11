@@ -4,22 +4,23 @@ import { createCheckoutSession } from "@/lib/billing.functions";
 
 interface Props {
   priceId: string;
+  /** @deprecated identity is derived from the signed-in session */
   customerEmail?: string;
+  /** @deprecated identity is derived from the signed-in session */
   userId?: string;
   returnUrl?: string;
 }
 
-export function StripeEmbeddedCheckout({ priceId, customerEmail, userId, returnUrl }: Props) {
+export function StripeEmbeddedCheckout({ priceId, returnUrl }: Props) {
   const fetchClientSecret = async (): Promise<string> => {
     const result = await createCheckoutSession({
       data: {
         priceId,
-        customerEmail,
-        userId,
         returnUrl: returnUrl || window.location.href,
         environment: getStripeEnvironment(),
       },
     });
+
     if ("error" in result) throw new Error(result.error);
     if (!result.clientSecret) throw new Error("Stripe did not return a client secret");
     return result.clientSecret;
