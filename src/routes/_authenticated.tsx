@@ -103,6 +103,14 @@ function AuthLayout() {
               );
             })}
           </nav>
+          {gate.data?.badge ? (
+            <p
+              data-testid="customer-zero-badge"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-[11px] font-medium text-foreground"
+            >
+              <Sparkles className="h-3 w-3" /> {gate.data.badge}
+            </p>
+          ) : null}
           <div className="mt-auto space-y-2 border-t border-border pt-4 text-xs">
             <p className="truncate px-2 text-muted-foreground">{session.user.email}</p>
             <button
@@ -118,8 +126,9 @@ function AuthLayout() {
         </aside>
 
         <main className="min-w-0 flex-1 px-4 py-6 md:px-10 md:py-10">
-          <Outlet />
+          {locked ? <PrivateBeta /> : <Outlet />}
         </main>
+
       </div>
     </div>
   );
