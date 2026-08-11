@@ -129,6 +129,6 @@ export async function generateDayPrompt(input: DayPromptInput): Promise<DayPromp
     image_prompt: str(raw["image_prompt"]),
     caption: str(raw["caption"]),
     hashtags,
-    disclosure: str(raw["disclosure"], "#ad — commissionable link"),
+    disclosure: affiliate ? str(raw["disclosure"], "#ad — commissionable link") : "",
   };
 }
