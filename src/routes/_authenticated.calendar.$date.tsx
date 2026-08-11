@@ -167,7 +167,7 @@ function SlotCard({
 }: {
   slot: CalendarSlot;
   date: string;
-  products: Array<{ id: string; title: string }>;
+  products: Array<{ id: string; title: string; campaign_mode: string | null }>;
 }) {
   const qc = useQueryClient();
   const updateFn = useServerFn(updateCalendarSlot);
@@ -176,6 +176,12 @@ function SlotCard({
 
   const [draft, setDraft] = useState(slot);
   useEffect(() => setDraft(slot), [slot]);
+
+  const linkedMode = campaignMode(
+    products.find((p) => p.id === draft.product_id)?.campaign_mode ?? "affiliate",
+  );
+  const affiliate = linkedMode.disclosureRule === "affiliate";
+
 
   const invalidate = () => {
     qc.invalidateQueries({ queryKey: ["calendar-day", date] });
