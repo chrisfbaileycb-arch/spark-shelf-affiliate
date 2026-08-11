@@ -58,6 +58,9 @@ function normalize(row: Record<string, unknown>): CalendarSlot {
     ...(row as unknown as CalendarSlot),
     platforms: Array.isArray(row["platforms"]) ? (row["platforms"] as string[]) : [],
     hashtags: Array.isArray(row["hashtags"]) ? (row["hashtags"] as string[]) : [],
+    platform_plans: Array.isArray(row["platform_plans"])
+      ? (row["platform_plans"] as PlatformPlanRow[])
+      : [],
     slot_time: String(row["slot_time"] ?? "09:00").slice(0, 5),
   };
 }
