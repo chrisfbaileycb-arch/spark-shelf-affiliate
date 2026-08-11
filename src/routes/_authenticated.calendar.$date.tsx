@@ -213,6 +213,7 @@ function SlotCard({
           notes: draft.notes,
           status: draft.status as "planned" | "prompted" | "generated" | "queued" | "posted",
           product_id: draft.product_id,
+          platform_plans: draft.platform_plans,
         },
       }),
     onSuccess: () => {
