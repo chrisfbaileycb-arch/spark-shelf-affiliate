@@ -157,13 +157,13 @@
 }
 
 @layer utilities {
-  /* ===== Existing Echo Your Influence utilities + bright redesign additions ===== */
+  /* ===== Echo Your Influence — warm sand utilities ===== */
   .bg-gradient-brand {
     background-image: linear-gradient(
       135deg,
-      oklch(0.70 0.19 45) 0%,
-      oklch(0.62 0.21 30) 60%,
-      oklch(0.55 0.16 20) 100%
+      oklch(0.56 0.05 72) 0%,
+      oklch(0.5 0.055 62) 55%,
+      oklch(0.42 0.05 52) 100%
     );
   }
 
@@ -184,17 +184,17 @@
 
   .shadow-pop {
     box-shadow:
-      0 1px 0 oklch(0.18 0.035 320 / 0.06),
-      0 12px 32px -8px oklch(0.18 0.035 320 / 0.18);
+      0 1px 0 oklch(0.22 0.018 60 / 0.06),
+      0 12px 32px -8px oklch(0.22 0.018 60 / 0.18);
   }
 
-  /* ===== Bright aurora background (cream base + drifting pastel blooms) ===== */
+  /* ===== Warm sand field (sand base + soft clay blooms) ===== */
   .bg-aurora-light {
-    background-color: oklch(0.99 0.008 75);
+    background-color: oklch(0.978 0.006 75);
     background-image:
-      radial-gradient(55vw 55vw at 8% 10%, oklch(0.88 0.10 0 / 0.30), transparent 60%),
-      radial-gradient(50vw 50vw at 92% 18%, oklch(0.90 0.13 145 / 0.22), transparent 60%),
-      radial-gradient(48vw 48vw at 75% 88%, oklch(0.90 0.08 240 / 0.22), transparent 60%);
+      radial-gradient(55vw 55vw at 8% 10%, oklch(0.86 0.035 85 / 0.55), transparent 62%),
+      radial-gradient(50vw 50vw at 92% 18%, oklch(0.9 0.02 60 / 0.5), transparent 62%),
+      radial-gradient(48vw 48vw at 75% 88%, oklch(0.88 0.03 95 / 0.45), transparent 62%);
     background-attachment: fixed;
   }
   .bg-aurora-light::before {
