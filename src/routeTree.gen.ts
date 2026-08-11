@@ -28,9 +28,13 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedAffiliateProgramsRouteImport } from './routes/_authenticated.affiliate-programs'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated.billing'
+import { Route as AuthenticatedContentRouteImport } from './routes/_authenticated.content'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedIntakeRouteImport } from './routes/_authenticated.intake'
 import { Route as AuthenticatedPersonasRouteImport } from './routes/_authenticated.personas'
+import { Route as AuthenticatedPlanRouteImport } from './routes/_authenticated.plan'
 import { Route as AuthenticatedPublishingRouteImport } from './routes/_authenticated.publishing'
+import { Route as AuthenticatedStrategyRouteImport } from './routes/_authenticated.strategy'
 import { Route as AuthenticatedStudioRouteImport } from './routes/_authenticated.studio'
 import { Route as AuthenticatedUpgradeRouteImport } from './routes/_authenticated.upgrade'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
@@ -149,9 +153,19 @@ const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
   path: '/billing',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedContentRoute = AuthenticatedContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedIntakeRoute = AuthenticatedIntakeRouteImport.update({
+  id: '/intake',
+  path: '/intake',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedPersonasRoute = AuthenticatedPersonasRouteImport.update({
@@ -159,9 +173,19 @@ const AuthenticatedPersonasRoute = AuthenticatedPersonasRouteImport.update({
   path: '/personas',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPlanRoute = AuthenticatedPlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedPublishingRoute = AuthenticatedPublishingRouteImport.update({
   id: '/publishing',
   path: '/publishing',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedStrategyRoute = AuthenticatedStrategyRouteImport.update({
+  id: '/strategy',
+  path: '/strategy',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedStudioRoute = AuthenticatedStudioRouteImport.update({
@@ -294,9 +318,13 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
   '/billing': typeof AuthenticatedBillingRoute
+  '/content': typeof AuthenticatedContentRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/intake': typeof AuthenticatedIntakeRoute
   '/personas': typeof AuthenticatedPersonasRoute
+  '/plan': typeof AuthenticatedPlanRoute
   '/publishing': typeof AuthenticatedPublishingRoute
+  '/strategy': typeof AuthenticatedStrategyRoute
   '/studio': typeof AuthenticatedStudioRoute
   '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -337,9 +365,13 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
   '/billing': typeof AuthenticatedBillingRoute
+  '/content': typeof AuthenticatedContentRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/intake': typeof AuthenticatedIntakeRoute
   '/personas': typeof AuthenticatedPersonasRoute
+  '/plan': typeof AuthenticatedPlanRoute
   '/publishing': typeof AuthenticatedPublishingRoute
+  '/strategy': typeof AuthenticatedStrategyRoute
   '/studio': typeof AuthenticatedStudioRoute
   '/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -382,9 +414,13 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/affiliate-programs': typeof AuthenticatedAffiliateProgramsRoute
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
+  '/_authenticated/content': typeof AuthenticatedContentRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/intake': typeof AuthenticatedIntakeRoute
   '/_authenticated/personas': typeof AuthenticatedPersonasRoute
+  '/_authenticated/plan': typeof AuthenticatedPlanRoute
   '/_authenticated/publishing': typeof AuthenticatedPublishingRoute
+  '/_authenticated/strategy': typeof AuthenticatedStrategyRoute
   '/_authenticated/studio': typeof AuthenticatedStudioRoute
   '/_authenticated/upgrade': typeof AuthenticatedUpgradeRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -427,9 +463,13 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/affiliate-programs'
     | '/billing'
+    | '/content'
     | '/dashboard'
+    | '/intake'
     | '/personas'
+    | '/plan'
     | '/publishing'
+    | '/strategy'
     | '/studio'
     | '/upgrade'
     | '/checkout/return'
@@ -470,9 +510,13 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/affiliate-programs'
     | '/billing'
+    | '/content'
     | '/dashboard'
+    | '/intake'
     | '/personas'
+    | '/plan'
     | '/publishing'
+    | '/strategy'
     | '/studio'
     | '/upgrade'
     | '/checkout/return'
@@ -514,9 +558,13 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/affiliate-programs'
     | '/_authenticated/billing'
+    | '/_authenticated/content'
     | '/_authenticated/dashboard'
+    | '/_authenticated/intake'
     | '/_authenticated/personas'
+    | '/_authenticated/plan'
     | '/_authenticated/publishing'
+    | '/_authenticated/strategy'
     | '/_authenticated/studio'
     | '/_authenticated/upgrade'
     | '/checkout/return'
@@ -700,11 +748,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBillingRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/content': {
+      id: '/_authenticated/content'
+      path: '/content'
+      fullPath: '/content'
+      preLoaderRoute: typeof AuthenticatedContentRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/intake': {
+      id: '/_authenticated/intake'
+      path: '/intake'
+      fullPath: '/intake'
+      preLoaderRoute: typeof AuthenticatedIntakeRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/personas': {
@@ -714,11 +776,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPersonasRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/plan': {
+      id: '/_authenticated/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof AuthenticatedPlanRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/publishing': {
       id: '/_authenticated/publishing'
       path: '/publishing'
       fullPath: '/publishing'
       preLoaderRoute: typeof AuthenticatedPublishingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/strategy': {
+      id: '/_authenticated/strategy'
+      path: '/strategy'
+      fullPath: '/strategy'
+      preLoaderRoute: typeof AuthenticatedStrategyRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/studio': {
@@ -867,9 +943,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedAffiliateProgramsRoute: typeof AuthenticatedAffiliateProgramsRoute
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
+  AuthenticatedContentRoute: typeof AuthenticatedContentRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedIntakeRoute: typeof AuthenticatedIntakeRoute
   AuthenticatedPersonasRoute: typeof AuthenticatedPersonasRoute
+  AuthenticatedPlanRoute: typeof AuthenticatedPlanRoute
   AuthenticatedPublishingRoute: typeof AuthenticatedPublishingRoute
+  AuthenticatedStrategyRoute: typeof AuthenticatedStrategyRoute
   AuthenticatedStudioRoute: typeof AuthenticatedStudioRoute
   AuthenticatedUpgradeRoute: typeof AuthenticatedUpgradeRoute
   AuthenticatedCalendarDateRoute: typeof AuthenticatedCalendarDateRoute
@@ -888,9 +968,13 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAffiliateProgramsRoute: AuthenticatedAffiliateProgramsRoute,
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
+  AuthenticatedContentRoute: AuthenticatedContentRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedIntakeRoute: AuthenticatedIntakeRoute,
   AuthenticatedPersonasRoute: AuthenticatedPersonasRoute,
+  AuthenticatedPlanRoute: AuthenticatedPlanRoute,
   AuthenticatedPublishingRoute: AuthenticatedPublishingRoute,
+  AuthenticatedStrategyRoute: AuthenticatedStrategyRoute,
   AuthenticatedStudioRoute: AuthenticatedStudioRoute,
   AuthenticatedUpgradeRoute: AuthenticatedUpgradeRoute,
   AuthenticatedCalendarDateRoute: AuthenticatedCalendarDateRoute,

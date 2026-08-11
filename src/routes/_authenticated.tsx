@@ -20,7 +20,10 @@ import {
   Plug,
   Route as RouteIcon,
   CalendarDays,
-
+  ClipboardList,
+  Target,
+  PieChart,
+  LayoutList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,14 +33,17 @@ export const Route = createFileRoute("/_authenticated")({
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/intake", label: "What you're selling", icon: ClipboardList },
+  { to: "/strategy", label: "Strategy", icon: Target },
+  { to: "/plan", label: "Budget & channels", icon: PieChart },
+  { to: "/content", label: "Content by platform", icon: LayoutList },
+  { to: "/publishing", label: "Publish", icon: Send },
   { to: "/campaigns", label: "Campaigns", icon: RouteIcon },
   { to: "/products", label: "Products", icon: Package },
   { to: "/personas", label: "Personas", icon: Users },
   { to: "/studio", label: "Studio", icon: Wand2 },
   { to: "/videos", label: "Videos", icon: Video },
   { to: "/calendar", label: "Calendar", icon: CalendarDays },
-  { to: "/publishing", label: "Publishing", icon: Send },
-
   { to: "/affiliate-programs", label: "Affiliate IDs", icon: BadgeDollarSign },
   { to: "/settings/integrations", label: "Integrations", icon: Plug },
   { to: "/billing", label: "Billing", icon: CreditCard },
