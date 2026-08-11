@@ -74,6 +74,14 @@ function AuthLayout() {
   }
   if (session === null) return null;
 
+  const restricted = ["/campaigns", "/settings/integrations", "/publishing"];
+  const locked =
+    gate.data?.enabled === true &&
+    gate.data.allowed === false &&
+    restricted.some((p) => pathname === p || pathname.startsWith(p + "/"));
+
+
+
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto flex max-w-[1400px]">
