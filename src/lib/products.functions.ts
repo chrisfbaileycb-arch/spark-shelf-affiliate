@@ -3,7 +3,23 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { suggestNetworkForDomain } from "./affiliate-networks";
 
-const UrlInput = z.object({ url: z.string().url() });
+/** Kept in sync with CAMPAIGN_MODES in src/lib/campaign-modes.ts (no icon imports on the server). */
+const CAMPAIGN_MODE = z.enum([
+  "affiliate",
+  "real_estate",
+  "home_services",
+  "restaurant",
+  "local_service",
+  "professional",
+  "saas_app",
+  "ecommerce_brand",
+]);
+
+const UrlInput = z.object({
+  url: z.string().url(),
+  campaign_mode: CAMPAIGN_MODE.default("affiliate"),
+});
+
 
 // --- Firecrawl scrape ---
 async function firecrawlScrape(url: string) {
