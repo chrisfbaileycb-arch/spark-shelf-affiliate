@@ -582,7 +582,7 @@ function SlotCard({
 
                   <label className="mt-3 block space-y-1 text-sm">
                     <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                      Script for {platformLabel(p)}
+                      Step 1 — script for {platformLabel(p)}
                     </span>
                     <Textarea
                       rows={4}
