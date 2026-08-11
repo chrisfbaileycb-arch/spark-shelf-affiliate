@@ -52,35 +52,46 @@ export async function generateDayPrompt(input: DayPromptInput): Promise<DayPromp
   const key = process.env["LOVABLE_API_KEY"];
   if (!key) throw new Error("LOVABLE_API_KEY is not configured.");
 
+  const affiliate = input.affiliate !== false;
+
   const system = [
-    "You write short-form affiliate content for one independent creator.",
+    affiliate
+      ? "You write short-form affiliate content for one independent creator."
+      : `You write short-form marketing content for one small business marketing its own ${input.mode_label ? input.mode_label.toLowerCase() : "work"}. The speaker owns or works at this business — never write it as a third-party endorsement.`,
+    input.mode_angle ? `Creative direction for this campaign type: ${input.mode_angle}` : "",
     "Return strict JSON only.",
     "Never invent statistics, review counts, ratings, testimonials, earnings, or results.",
     "Never reference a real influencer, celebrity, or brand-owned character.",
-    "Product claims must come only from the supplied product details.",
+    "Every factual claim must come only from the supplied subject details. If a detail is missing, leave it out rather than guessing.",
     "Meta and TikTok policy: no personal-attribute call-outs ('Do YOU struggle with...'), minimal on-screen text.",
     "Image prompts: if any text appears in the image, at most four words spelled exactly right; no logos, watermarks, or AI artifacts.",
     "Fields: hook (<=12 words), script (spoken words only, 15-30 seconds, no stage directions),",
     "video_prompt (one visual generation prompt describing scene, motion, lighting, framing for a 9:16 clip),",
     "image_prompt (one still-creative prompt usable across 9:16, 1:1 and 16:9),",
     "caption (platform-ready, under 150 characters), hashtags (exactly 2: one broad, one specific, with #),",
-    "disclosure (a short FTC affiliate disclosure line).",
-  ].join(" ");
+    affiliate
+      ? "disclosure (a short FTC affiliate disclosure line)."
+      : "disclosure (empty string — this business is marketing its own offering, so no affiliate disclosure applies).",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   const user = JSON.stringify({
     posting_date: input.plan_date,
+    campaign_type: input.mode_label ?? "Affiliate product",
     engine: input.engine,
     platforms: input.platforms,
     slot_title: input.title,
-    creator_notes: input.notes,
-    product: {
+    operator_notes: input.notes,
+    subject: {
       title: input.product_title ?? null,
       description: input.product_description ?? null,
       price: input.product_price ?? null,
       url: input.product_url ?? null,
     },
-    creator: { niche: input.creator_niche ?? null, tone: input.creator_tone ?? null },
+    voice: { niche: input.creator_niche ?? null, tone: input.creator_tone ?? null },
   });
+
 
   const res = await fetch(`${AI_GATEWAY}/chat/completions`, {
     method: "POST",
