@@ -479,6 +479,41 @@ function SlotCard({
           <Trash2 className="mr-2 h-4 w-4" /> Remove
         </Button>
       </div>
+
+      {draft.platforms.length > 0 && (
+        <div className="mt-4 rounded-lg border border-dashed p-3">
+          <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            Go post it
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {draft.platforms.map((p) => {
+              const target = PLATFORM_LAUNCH[p];
+              if (!target) return null;
+              return (
+                <Button key={p} size="sm" variant="outline" asChild data-testid={`slot-open-${p}`}>
+                  <a
+                    href={target.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => {
+                      void navigator.clipboard.writeText(fullCaption);
+                      toast.success("Caption copied — paste it after you upload");
+                    }}
+                  >
+                    <ExternalLink className="mr-1.5 h-3.5 w-3.5" />
+                    {target.label}
+                  </a>
+                </Button>
+              );
+            })}
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Tapping a platform copies this caption and opens that app’s upload screen. Nothing posts
+            automatically — you attach the rendered video and hit post.
+          </p>
+        </div>
+      )}
+
     </section>
   );
 }
