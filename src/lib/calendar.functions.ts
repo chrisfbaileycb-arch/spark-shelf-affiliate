@@ -247,13 +247,18 @@ export const generateSlotPrompt = createServerFn({ method: "POST" })
 
 export const listCalendarProducts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<Array<{ id: string; title: string }>> => {
-    const { db } = await ctx(context.userId);
-    const { data } = await db
-      .from("products")
-      .select("id, title")
-      .eq("user_id", context.userId)
-      .order("created_at", { ascending: false })
-      .limit(100);
-    return data ?? [];
-  });
+  .handler(
+    async ({
+      context,
+    }): Promise<Array<{ id: string; title: string; campaign_mode: string | null }>> => {
+      const { db } = await ctx(context.userId);
+      const { data } = await db
+        .from("products")
+        .select("id, title, campaign_mode")
+        .eq("user_id", context.userId)
+        .order("created_at", { ascending: false })
+        .limit(100);
+      return data ?? [];
+    },
+  );
+
