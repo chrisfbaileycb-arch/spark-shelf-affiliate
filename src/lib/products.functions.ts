@@ -172,7 +172,10 @@ export const listProducts = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("products")
-      .select("id, title, source_domain, price, currency, images, created_at, suggested_network")
+      .select(
+        "id, title, source_domain, price, currency, images, created_at, suggested_network, campaign_mode",
+      )
+
       .order("created_at", { ascending: false })
       .limit(100);
     if (error) throw new Error(error.message);
