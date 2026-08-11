@@ -29,6 +29,16 @@ export interface DayPromptInput {
 }
 
 
+export interface PlatformPlan {
+  platform: string;
+  hook: string;
+  script: string;
+  caption: string;
+  hashtags: string[];
+  format_note: string;
+  posting_tip: string;
+}
+
 export interface DayPromptOutput {
   hook: string;
   script: string;
@@ -37,6 +47,7 @@ export interface DayPromptOutput {
   caption: string;
   hashtags: string[];
   disclosure: string;
+  platform_plans: PlatformPlan[];
 }
 
 function str(v: unknown, fallback = ""): string {
