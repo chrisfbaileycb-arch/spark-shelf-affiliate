@@ -161,15 +161,48 @@ export function BriefStep({ id, data, refresh }: StepProps) {
   );
 }
 
+const ROLLOUT_PLATFORMS = [
+  "TikTok",
+  "YouTube",
+  "Instagram",
+  "Facebook",
+  "X",
+  "Reddit",
+] as const;
+
+function ResultBlock({ title, items }: { title: string; items: string[] }) {
+  if (!items.length) return null;
+  return (
+    <div className="space-y-2">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{title}</p>
+      <ul className="space-y-2">
+        {items.map((x, i) => (
+          <li key={i} className="rounded-xl border border-border bg-card px-3 py-2 text-sm">
+            {x}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * Echo writes the strategy — the customer only says what they're selling.
+ * This page generates automatically from the brief and shows the result;
+ * editing is opt-in, not homework.
+ */
 export function StrategyStep({ id, data, refresh }: StepProps) {
   const gen = useServerFn(generateStrategy);
   const save = useServerFn(saveStrategy);
   const s = data.strategy;
+  const hasBrief = Boolean(data.brief?.offer?.trim());
+  const [editing, setEditing] = useState(false);
   const [positioning, setPositioning] = useState(s?.positioning ?? "");
   const [angles, setAngles] = useState(((s?.angles as string[]) ?? []).join("\n"));
   const [pillars, setPillars] = useState(((s?.pillars as string[]) ?? []).join("\n"));
   const [objections, setObjections] = useState(((s?.objections as string[]) ?? []).join("\n"));
   const [cta, setCta] = useState(s?.cta ?? "");
+  const autoRan = useRef(false);
 
   const g = useMutation({
     mutationFn: () => gen({ data: { workflow_id: id } }),
@@ -180,14 +213,21 @@ export function StrategyStep({ id, data, refresh }: StepProps) {
       setObjections(r.objections.join("\n"));
       setCta(r.cta);
       refresh();
-      toast.success("Strategy generated");
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
+  // First visit with a brief and no strategy: just build it. No button hunt.
+  useEffect(() => {
+    if (autoRan.current) return;
+    if (!hasBrief || s || g.isPending) return;
+    autoRan.current = true;
+    g.mutate();
+  }, [hasBrief, s, g]);
+
   const lines = (v: string) => v.split("\n").map((x) => x.trim()).filter(Boolean);
   const m = useMutation({
-    mutationFn: (approve: boolean) =>
+    mutationFn: () =>
       save({
         data: {
           workflow_id: id,
@@ -196,60 +236,185 @@ export function StrategyStep({ id, data, refresh }: StepProps) {
           pillars: lines(pillars),
           objections: lines(objections),
           cta,
-          approve,
+          approve: true,
         },
       }),
     onSuccess: () => {
+      setEditing(false);
       refresh();
-      toast.success("Strategy saved");
+      toast.success("Your edits are saved");
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
+  if (!hasBrief) {
+    return (
+      <Card className="max-w-2xl space-y-3 p-6">
+        <p className="text-sm font-medium">Tell us what you're selling first.</p>
+        <p className="text-sm text-muted-foreground">
+          Paste your page or describe the product in one paragraph — we take it from there and write
+          the strategy for you.
+        </p>
+        <Button asChild data-testid="strategy-go-intake">
+          <Link to="/intake">Go to “What you're selling” →</Link>
+        </Button>
+      </Card>
+    );
+  }
+
+  if (g.isPending && !s) {
+    return (
+      <Card className="max-w-2xl space-y-2 p-6" data-testid="strategy-building">
+        <p className="flex items-center gap-2 text-sm font-medium">
+          <Loader2 className="h-4 w-4 animate-spin" /> Writing your strategy…
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Reading your brief, then drafting positioning, campaign angles and messaging pillars.
+        </p>
+      </Card>
+    );
+  }
+
+  if (!s) {
+    return (
+      <Card className="max-w-2xl space-y-3 p-6">
+        <p className="text-sm font-medium">We couldn't build the strategy yet.</p>
+        <Button data-testid="generate-strategy" onClick={() => g.mutate()} disabled={g.isPending}>
+          Try again
+        </Button>
+      </Card>
+    );
+  }
+
+  const icpEntries = Object.entries((s.icp as Record<string, string | string[]>) ?? {});
+
   return (
-    <Card className="max-w-3xl space-y-4 p-6">
-      <div className="flex items-center justify-between gap-3">
+    <div className="max-w-3xl space-y-4">
+      <Card className="space-y-5 p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-medium">Here's the strategy we wrote for you</p>
+            <p className="text-xs text-muted-foreground">
+              {s.generated_at ? `Built ${new Date(s.generated_at).toLocaleString()}` : null}
+              {" · Nothing here is required of you — edit only if you disagree."}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              data-testid="edit-strategy"
+              onClick={() => setEditing((v) => !v)}
+            >
+              {editing ? "Done editing" : "Edit"}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              data-testid="generate-strategy"
+              disabled={g.isPending}
+              onClick={() => g.mutate()}
+            >
+              {g.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              Rewrite
+            </Button>
+          </div>
+        </div>
+
+        {editing ? (
+          <div className="space-y-4">
+            <Field
+              label="Positioning"
+              value={positioning}
+              onChange={setPositioning}
+              rows={4}
+              testId="strategy-positioning"
+            />
+            <Field label="Campaign angles (one per line)" value={angles} onChange={setAngles} rows={4} />
+            <Field label="Messaging pillars" value={pillars} onChange={setPillars} rows={4} />
+            <Field label="Objections we'll answer" value={objections} onChange={setObjections} rows={3} />
+            <div>
+              <Label>Primary CTA</Label>
+              <Input className="mt-1" value={cta} onChange={(e) => setCta(e.target.value)} />
+            </div>
+            <Button data-testid="approve-strategy" disabled={m.isPending} onClick={() => m.mutate()}>
+              {m.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              Save changes
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-5">
+            {s.positioning ? (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Positioning
+                </p>
+                <p className="mt-1 text-sm">{s.positioning}</p>
+              </div>
+            ) : null}
+            {icpEntries.length ? (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Who we're selling to
+                </p>
+                <dl className="mt-2 grid gap-2 sm:grid-cols-2">
+                  {icpEntries.map(([k, v]) => (
+                    <div key={k} className="rounded-xl border border-border bg-card px-3 py-2">
+                      <dt className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                        {k.replace(/_/g, " ")}
+                      </dt>
+                      <dd className="text-sm">{Array.isArray(v) ? v.join(", ") : v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ) : null}
+            <ResultBlock title="Campaign angles" items={(s.angles as string[]) ?? []} />
+            <ResultBlock title="Messaging pillars" items={(s.pillars as string[]) ?? []} />
+            <ResultBlock title="Objections we'll answer" items={(s.objections as string[]) ?? []} />
+            {s.cta ? (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Primary call to action
+                </p>
+                <p className="mt-1 text-sm font-medium">{s.cta}</p>
+              </div>
+            ) : null}
+          </div>
+        )}
+      </Card>
+
+      <Card className="space-y-3 p-6">
         <div>
-          <p className="text-sm font-medium">ICP, positioning and angles</p>
-          <p className="text-xs text-muted-foreground">
-            {s?.generated_at
-              ? `Generated ${new Date(s.generated_at).toLocaleString()} · ${s.model ?? ""}`
-              : "Not generated yet"}
+          <p className="text-sm font-medium">Where this gets used</p>
+          <p className="text-sm text-muted-foreground">
+            These angles and pillars feed the scripts, captions and ad copy we write for each platform
+            you post to.
           </p>
         </div>
-        <Button variant="outline" data-testid="generate-strategy" disabled={g.isPending} onClick={() => g.mutate()}>
-          {g.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-          {s ? "Regenerate" : "Generate"}
-        </Button>
-      </div>
-      {s?.icp ? (
-        <pre className="max-h-56 overflow-auto rounded-xl bg-muted p-3 text-xs">
-          {JSON.stringify(s.icp, null, 2)}
-        </pre>
-      ) : null}
-      <Field label="Positioning" value={positioning} onChange={setPositioning} rows={4} testId="strategy-positioning" />
-      <Field label="Campaign angles (one per line)" value={angles} onChange={setAngles} rows={4} />
-      <Field label="Messaging pillars" value={pillars} onChange={setPillars} rows={4} />
-      <Field label="Objections" value={objections} onChange={setObjections} rows={3} />
-      <div>
-        <Label>Primary CTA</Label>
-        <Input className="mt-1" value={cta} onChange={(e) => setCta(e.target.value)} />
-      </div>
-      <div className="flex gap-3">
-        <Button variant="outline" disabled={m.isPending} onClick={() => m.mutate(false)}>
-          Save
-        </Button>
-        <Button
-          data-testid="approve-strategy"
-          disabled={m.isPending || !positioning.trim()}
-          onClick={() => m.mutate(true)}
-        >
-          Approve &amp; continue
-        </Button>
-      </div>
-    </Card>
+        <div className="flex flex-wrap gap-2">
+          {ROLLOUT_PLATFORMS.map((p) => (
+            <span
+              key={p}
+              className="rounded-full border border-border px-3 py-1 font-mono text-xs tracking-wide"
+            >
+              {p}
+            </span>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-2 pt-1">
+          <Button asChild size="sm" data-testid="strategy-to-plan">
+            <Link to="/plan">Budget &amp; channels →</Link>
+          </Button>
+          <Button asChild size="sm" variant="outline" data-testid="strategy-to-content">
+            <Link to="/content">Content by platform →</Link>
+          </Button>
+        </div>
+      </Card>
+    </div>
   );
 }
+
 
 export function ContentStep({ id, data, refresh }: StepProps) {
   const gen = useServerFn(generateContentPack);
