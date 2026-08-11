@@ -59,7 +59,8 @@ export async function patchVariant(
     actor: userId,
     from_state: variant.state,
     to_state: opts.toState ?? variant.state,
-    payload: opts.payload ?? {},
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload: (opts.payload ?? {}) as any,
   });
 
   return { ok: true as const };
