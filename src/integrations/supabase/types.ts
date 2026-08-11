@@ -188,6 +188,67 @@ export type Database = {
         }
         Relationships: []
       }
+      campaign_workflows: {
+        Row: {
+          campaign_id: string | null
+          created_at: string
+          created_by: string
+          current_step: number
+          id: string
+          name: string
+          org_id: string
+          product_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          created_at?: string
+          created_by: string
+          current_step?: number
+          id?: string
+          name: string
+          org_id: string
+          product_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          campaign_id?: string | null
+          created_at?: string
+          created_by?: string
+          current_step?: number
+          id?: string
+          name?: string
+          org_id?: string
+          product_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_workflows_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_workflows_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_workflows_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           ad_description: string | null
@@ -272,6 +333,206 @@ export type Database = {
           },
         ]
       }
+      content_packs: {
+        Row: {
+          approved_at: string | null
+          campaign_id: string | null
+          captions: Json
+          created_at: string
+          email_angle: string
+          generated_at: string | null
+          hashtags: Json
+          hooks: Json
+          id: string
+          model: string | null
+          org_id: string
+          scripts: Json
+          updated_at: string
+          workflow_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          campaign_id?: string | null
+          captions?: Json
+          created_at?: string
+          email_angle?: string
+          generated_at?: string | null
+          hashtags?: Json
+          hooks?: Json
+          id?: string
+          model?: string | null
+          org_id: string
+          scripts?: Json
+          updated_at?: string
+          workflow_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          campaign_id?: string | null
+          captions?: Json
+          created_at?: string
+          email_angle?: string
+          generated_at?: string | null
+          hashtags?: Json
+          hooks?: Json
+          id?: string
+          model?: string | null
+          org_id?: string
+          scripts?: Json
+          updated_at?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_packs_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_packs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_packs_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: true
+            referencedRelation: "campaign_workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enrollments: {
+        Row: {
+          created_at: string
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          lead_id: string
+          org_id: string
+          provider_enrollment_id: string | null
+          sequence_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          idempotency_key: string
+          last_error?: string | null
+          lead_id: string
+          org_id: string
+          provider_enrollment_id?: string | null
+          sequence_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          idempotency_key?: string
+          last_error?: string | null
+          lead_id?: string
+          org_id?: string
+          provider_enrollment_id?: string | null
+          sequence_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enrollments_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollments_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollments_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtm_strategies: {
+        Row: {
+          angles: Json
+          approved_at: string | null
+          created_at: string
+          cta: string
+          generated_at: string | null
+          icp: Json
+          id: string
+          model: string | null
+          objections: Json
+          org_id: string
+          pillars: Json
+          positioning: string
+          updated_at: string
+          workflow_id: string
+        }
+        Insert: {
+          angles?: Json
+          approved_at?: string | null
+          created_at?: string
+          cta?: string
+          generated_at?: string | null
+          icp?: Json
+          id?: string
+          model?: string | null
+          objections?: Json
+          org_id: string
+          pillars?: Json
+          positioning?: string
+          updated_at?: string
+          workflow_id: string
+        }
+        Update: {
+          angles?: Json
+          approved_at?: string | null
+          created_at?: string
+          cta?: string
+          generated_at?: string | null
+          icp?: Json
+          id?: string
+          model?: string | null
+          objections?: Json
+          org_id?: string
+          pillars?: Json
+          positioning?: string
+          updated_at?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtm_strategies_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gtm_strategies_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: true
+            referencedRelation: "campaign_workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       integration_credentials: {
         Row: {
           category: Database["public"]["Enums"]["integration_category"]
@@ -321,6 +582,44 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "integration_credentials_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_test_runs: {
+        Row: {
+          created_at: string
+          detail: string | null
+          id: string
+          org_id: string
+          provider: string
+          status: string
+          step: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: string | null
+          id?: string
+          org_id: string
+          provider: string
+          status: string
+          step: string
+        }
+        Update: {
+          created_at?: string
+          detail?: string | null
+          id?: string
+          org_id?: string
+          provider?: string
+          status?: string
+          step?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_test_runs_org_id_fkey"
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -441,6 +740,102 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          company: string | null
+          company_domain: string | null
+          created_at: string
+          dedupe_key: string
+          email: string | null
+          email_status: string | null
+          enriched_at: string | null
+          full_name: string | null
+          id: string
+          linkedin_url: string | null
+          location: string | null
+          org_id: string
+          outbound_campaign_id: string
+          provider: string
+          provider_contact_id: string | null
+          provider_person_id: string | null
+          qualification_model: string | null
+          qualification_reason: string | null
+          qualification_score: number | null
+          qualified_at: string | null
+          raw: Json
+          status: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          company_domain?: string | null
+          created_at?: string
+          dedupe_key: string
+          email?: string | null
+          email_status?: string | null
+          enriched_at?: string | null
+          full_name?: string | null
+          id?: string
+          linkedin_url?: string | null
+          location?: string | null
+          org_id: string
+          outbound_campaign_id: string
+          provider?: string
+          provider_contact_id?: string | null
+          provider_person_id?: string | null
+          qualification_model?: string | null
+          qualification_reason?: string | null
+          qualification_score?: number | null
+          qualified_at?: string | null
+          raw?: Json
+          status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          company_domain?: string | null
+          created_at?: string
+          dedupe_key?: string
+          email?: string | null
+          email_status?: string | null
+          enriched_at?: string | null
+          full_name?: string | null
+          id?: string
+          linkedin_url?: string | null
+          location?: string | null
+          org_id?: string
+          outbound_campaign_id?: string
+          provider?: string
+          provider_contact_id?: string | null
+          provider_person_id?: string | null
+          qualification_model?: string | null
+          qualification_reason?: string | null
+          qualification_score?: number | null
+          qualified_at?: string | null
+          raw?: Json
+          status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leads_outbound_campaign_id_fkey"
+            columns: ["outbound_campaign_id"]
+            isOneToOne: false
+            referencedRelation: "outbound_campaigns"
             referencedColumns: ["id"]
           },
         ]
@@ -607,6 +1002,124 @@ export type Database = {
         }
         Relationships: []
       }
+      outbound_campaigns: {
+        Row: {
+          created_at: string
+          email_account_id: string | null
+          icp_filters: Json
+          id: string
+          last_searched_at: string | null
+          org_id: string
+          provider: string
+          provider_sequence_id: string | null
+          qualification_threshold: number
+          sending_paused: boolean
+          status: string
+          updated_at: string
+          workflow_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_account_id?: string | null
+          icp_filters?: Json
+          id?: string
+          last_searched_at?: string | null
+          org_id: string
+          provider?: string
+          provider_sequence_id?: string | null
+          qualification_threshold?: number
+          sending_paused?: boolean
+          status?: string
+          updated_at?: string
+          workflow_id: string
+        }
+        Update: {
+          created_at?: string
+          email_account_id?: string | null
+          icp_filters?: Json
+          id?: string
+          last_searched_at?: string | null
+          org_id?: string
+          provider?: string
+          provider_sequence_id?: string | null
+          qualification_threshold?: number
+          sending_paused?: boolean
+          status?: string
+          updated_at?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outbound_campaigns_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outbound_campaigns_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: true
+            referencedRelation: "campaign_workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      outbound_events: {
+        Row: {
+          enrollment_id: string | null
+          id: number
+          lead_id: string | null
+          occurred_at: string
+          org_id: string
+          payload: Json
+          source: string
+          type: string
+        }
+        Insert: {
+          enrollment_id?: string | null
+          id?: number
+          lead_id?: string | null
+          occurred_at?: string
+          org_id: string
+          payload?: Json
+          source?: string
+          type: string
+        }
+        Update: {
+          enrollment_id?: string | null
+          id?: number
+          lead_id?: string | null
+          occurred_at?: string
+          org_id?: string
+          payload?: Json
+          source?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outbound_events_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: false
+            referencedRelation: "enrollments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outbound_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outbound_events_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       personas: {
         Row: {
           age_range: string
@@ -663,6 +1176,73 @@ export type Database = {
           voice_tone?: string
         }
         Relationships: []
+      }
+      product_briefs: {
+        Row: {
+          approved_at: string | null
+          audience: string
+          constraints: string
+          created_at: string
+          id: string
+          offer: string
+          org_id: string
+          product_id: string | null
+          proof_points: Json
+          source_url: string | null
+          updated_at: string
+          workflow_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          audience?: string
+          constraints?: string
+          created_at?: string
+          id?: string
+          offer?: string
+          org_id: string
+          product_id?: string | null
+          proof_points?: Json
+          source_url?: string | null
+          updated_at?: string
+          workflow_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          audience?: string
+          constraints?: string
+          created_at?: string
+          id?: string
+          offer?: string
+          org_id?: string
+          product_id?: string | null
+          proof_points?: Json
+          source_url?: string | null
+          updated_at?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_briefs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_briefs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_briefs_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: true
+            referencedRelation: "campaign_workflows"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
@@ -821,6 +1401,111 @@ export type Database = {
           stripe_balance_txn_id?: string | null
         }
         Relationships: []
+      }
+      sequence_steps: {
+        Row: {
+          body: string
+          created_at: string
+          delay_days: number
+          id: string
+          org_id: string
+          provider_step_id: string | null
+          sequence_id: string
+          step_number: number
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          delay_days?: number
+          id?: string
+          org_id: string
+          provider_step_id?: string | null
+          sequence_id: string
+          step_number: number
+          subject?: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          delay_days?: number
+          id?: string
+          org_id?: string
+          provider_step_id?: string | null
+          sequence_id?: string
+          step_number?: number
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sequence_steps_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sequence_steps_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sequences: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          org_id: string
+          outbound_campaign_id: string
+          provider: string
+          provider_sequence_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          org_id: string
+          outbound_campaign_id: string
+          provider?: string
+          provider_sequence_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          org_id?: string
+          outbound_campaign_id?: string
+          provider?: string
+          provider_sequence_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sequences_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sequences_outbound_campaign_id_fkey"
+            columns: ["outbound_campaign_id"]
+            isOneToOne: false
+            referencedRelation: "outbound_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       social_accounts: {
         Row: {

@@ -1,8 +1,11 @@
 import { BrandMark } from "@/components/BrandMark";
 import { createFileRoute, Outlet, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getCustomerZeroState } from "@/lib/customer-zero.functions";
 import {
   LayoutDashboard,
   Package,
@@ -15,6 +18,7 @@ import {
   CreditCard,
   Send,
   Plug,
+  Route as RouteIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +28,7 @@ export const Route = createFileRoute("/_authenticated")({
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/campaigns", label: "Campaigns", icon: RouteIcon },
   { to: "/products", label: "Products", icon: Package },
   { to: "/personas", label: "Personas", icon: Users },
   { to: "/studio", label: "Studio", icon: Wand2 },
@@ -35,10 +40,20 @@ const NAV = [
 ] as const;
 
 
+
 function AuthLayout() {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const gateFn = useServerFn(getCustomerZeroState);
+  const gate = useQuery({
+    queryKey: ["customer-zero"],
+    queryFn: () => gateFn({}),
+    enabled: Boolean(session),
+    staleTime: 5 * 60 * 1000,
+  });
+
+
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
@@ -58,6 +73,14 @@ function AuthLayout() {
     );
   }
   if (session === null) return null;
+
+  const restricted = ["/campaigns", "/settings/integrations", "/publishing"];
+  const locked =
+    gate.data?.enabled === true &&
+    gate.data.allowed === false &&
+    restricted.some((p) => pathname === p || pathname.startsWith(p + "/"));
+
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -88,6 +111,14 @@ function AuthLayout() {
               );
             })}
           </nav>
+          {gate.data?.badge ? (
+            <p
+              data-testid="customer-zero-badge"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-[11px] font-medium text-foreground"
+            >
+              <Sparkles className="h-3 w-3" /> {gate.data.badge}
+            </p>
+          ) : null}
           <div className="mt-auto space-y-2 border-t border-border pt-4 text-xs">
             <p className="truncate px-2 text-muted-foreground">{session.user.email}</p>
             <button
@@ -103,9 +134,23 @@ function AuthLayout() {
         </aside>
 
         <main className="min-w-0 flex-1 px-4 py-6 md:px-10 md:py-10">
-          <Outlet />
+          {locked ? <PrivateBeta /> : <Outlet />}
         </main>
+
       </div>
+    </div>
+  );
+}
+
+function PrivateBeta() {
+  return (
+    <div className="mx-auto max-w-lg rounded-2xl border border-border bg-card p-8 text-sm">
+      <h1 className="font-display text-2xl font-semibold">Private beta</h1>
+      <p className="mt-2 text-muted-foreground">
+        Campaigns, outbound integrations and publishing are limited to the Customer Zero test
+        account while the engines are validated end to end. Your account is not on the allowlist
+        yet, so these actions are disabled — the rest of the studio still works.
+      </p>
     </div>
   );
 }
