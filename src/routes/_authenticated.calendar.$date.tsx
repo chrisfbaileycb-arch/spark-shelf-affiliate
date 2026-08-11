@@ -454,14 +454,18 @@ function SlotCard({
             </label>
             <label className="space-y-1.5 text-sm">
               <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                Affiliate disclosure (required)
+                {affiliate
+                  ? "Affiliate disclosure (required)"
+                  : `Disclosure — not required for ${linkedMode.label.toLowerCase()}`}
               </span>
               <Input
                 value={draft.disclosure}
+                placeholder={affiliate ? "#ad — commissionable link" : "Leave blank"}
                 onChange={(e) => setDraft((d) => ({ ...d, disclosure: e.target.value }))}
                 data-testid="slot-disclosure"
               />
             </label>
+
           </div>
         </div>
       </div>
