@@ -190,3 +190,76 @@ export async function generateSequenceDraft(
     }))
     .filter((s) => s.body);
 }
+
+// --- Media plan: per-platform recommendation + budget split -------------------
+
+export interface ChannelRecommendation {
+  platform: string;
+  priority: "primary" | "support" | "test";
+  format: string;
+  engine: "avatar" | "broll" | "image" | "text";
+  cadence: string;
+  hook_style: string;
+  why: string;
+  budget_share: number; // percent of the paid budget
+  weekly_dollars: number;
+  organic: boolean;
+}
+
+export interface ChannelPlanOutput {
+  weekly_budget: number;
+  channels: ChannelRecommendation[];
+  notes: string[];
+  generated_at: string;
+}
+
+const PLATFORMS = ["TikTok", "Instagram Reels", "YouTube Shorts", "Facebook", "LinkedIn"] as const;
+
+export async function generateChannelPlanOutput(
+  brief: BriefInput,
+  strategy: StrategyOutput,
+  weeklyBudget: number,
+): Promise<ChannelPlanOutput> {
+  const raw = await aiJson(
+    "You are a paid-media planner for a one-person marketing operation. Return strict JSON only. Never invent benchmarks, CPMs, conversion rates, or results. Recommend where a small weekly budget should go and what should run organically. budget_share values must be integers summing to 100 across channels; give 0 to channels you recommend running organically.",
+    `Offer brief:\n${JSON.stringify(brief)}\n\nStrategy:\n${JSON.stringify(strategy)}\n\nWeekly paid budget: $${weeklyBudget}\n\nPlan across exactly these platforms: ${PLATFORMS.join(", ")}.\nReturn JSON:
+{"channels":[{"platform":string,"priority":"primary"|"support"|"test","format":string,"engine":"avatar"|"broll"|"image"|"text","cadence":string,"hook_style":string,"why":string,"budget_share":number,"organic":boolean}],
+"notes":[string]}`,
+  );
+  const rows = Array.isArray(raw["channels"]) ? (raw["channels"] as unknown[]) : [];
+  const str = (v: unknown, fb = "") => (typeof v === "string" ? v : fb);
+  const cleaned = rows
+    .map((r) => r as Record<string, unknown>)
+    .filter((r) => typeof r["platform"] === "string")
+    .map((r) => {
+      const share = typeof r["budget_share"] === "number" ? Math.max(0, Math.round(r["budget_share"])) : 0;
+      const priority = str(r["priority"], "support");
+      const engine = str(r["engine"], "avatar");
+      return {
+        platform: str(r["platform"]),
+        priority: (["primary", "support", "test"].includes(priority) ? priority : "support") as ChannelRecommendation["priority"],
+        format: str(r["format"]),
+        engine: (["avatar", "broll", "image", "text"].includes(engine) ? engine : "avatar") as ChannelRecommendation["engine"],
+        cadence: str(r["cadence"]),
+        hook_style: str(r["hook_style"]),
+        why: str(r["why"]),
+        budget_share: share,
+        weekly_dollars: 0,
+        organic: r["organic"] === true || share === 0,
+      };
+    });
+
+  // Normalise shares to 100 and derive real dollars from the user's own budget.
+  const total = cleaned.reduce((a, c) => a + c.budget_share, 0);
+  for (const c of cleaned) {
+    c.budget_share = total > 0 ? Math.round((c.budget_share / total) * 100) : 0;
+    c.weekly_dollars = Math.round((weeklyBudget * c.budget_share) / 100);
+  }
+
+  return {
+    weekly_budget: weeklyBudget,
+    channels: cleaned,
+    notes: Array.isArray(raw["notes"]) ? (raw["notes"] as unknown[]).filter((x): x is string => typeof x === "string") : [],
+    generated_at: new Date().toISOString(),
+  };
+}
