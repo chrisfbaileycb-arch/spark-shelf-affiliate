@@ -1,8 +1,14 @@
-# Influencer Echo — Autonomous Go-To-Market Engine ("Outbound")
+# Influencer Echo — Two Execution Engines (Outbound + Social Publishing)
 
-Goal: Influencer Echo keeps everything it has today (brand, public pages, auth, billing, affiliate discovery, product ingestion, campaign kits, images, personas, 15–30s video) and gains one new pillar: an autonomous outbound engine that turns a product brief into strategy, content packs, sourced leads, qualified contacts, per-lead sequences, and weekly reporting — running on a server-side schedule.
+Goal: Influencer Echo keeps everything it has today (brand, public pages, auth, billing, affiliate discovery, product ingestion, campaign kits, images, personas, 15–30s video) and gains **two coordinated execution engines** on top of the same creative core:
+
+1. **Outbound (Apollo)** — brief → strategy → content pack → sourced leads → qualification → sequences → pipeline → weekly reporting. Detailed in sections A–G below.
+2. **Social Publishing** — scripts → content calendar → approval → scheduled publishing → status/retry monitoring → cross-platform analytics. Detailed in section H.
+
+They are separate engines with separate job kinds, credentials, quotas, and failure surfaces. They share one shell: one tenancy/org model, one job queue infrastructure, one creative library (products, campaign kits, images, videos, personas, UTM links), and one reporting frame. A customer may buy either or both.
 
 One important architecture note up front: this project is TanStack Start, and its backend runtime is TanStack server routes and server functions, not Supabase Edge Functions. The plan uses server routes under `src/routes/api/public/jobs/*` driven by `pg_cron` + `pg_net`. That is the same "scheduled server-side execution with service-role access" contract you asked for; only the hosting primitive differs. Everything below assumes that.
+
 
 ---
 
@@ -202,3 +208,166 @@ Accept: source → qualify → sequence → enroll → sync → report completes
 5. **Org model confirmation**: is outbound per-user or genuinely per-organization with invited members? I've designed for org; it collapses cleanly to one-user orgs if you prefer.
 6. **Publishing** — `pg_cron` needs a stable published URL to call; scheduling can't be verified end-to-end until the app is published.
 7. **Edge Functions vs server routes** — flagged above; confirm you're fine with TanStack server routes as the execution surface, since Edge Functions aren't the runtime for this stack.
+
+---
+
+# H. Second execution engine — Social Publishing
+
+Everything in A–G stays as written. This section adds the second engine. Nothing here changes the Apollo design; the two share tenancy (`organizations`), the job queue infrastructure, and the reporting shell, and nothing else.
+
+## H1. Gap analysis (social)
+
+Reused as-is: generated videos (`videos`), ad images (`ad_images`), captions/hashtags, scripts and content packs, personas, campaign kits (`campaigns`), UTM builder (`src/lib/utm.ts`), plan/quota machinery, `_authenticated` shell.
+
+Missing: any concept of a connected social account; any publish action at all (today the product ends at "download your kit"); a calendar; an approval state machine; per-platform variants of one asset; scheduled dispatch; external post IDs; platform analytics ingestion; platform-specific validation (duration, aspect ratio, caption length, privacy rules).
+
+## H2. Provider strategy and adapter interface
+
+First implementation targets a unified social API provider (Ayrshare is the working assumption). The domain model must not encode that choice.
+
+- The platform owner holds **one business credential** server-side (`SOCIAL_PROVIDER_API_KEY` secret). It is never sent to the browser, never logged, never returned from a server function.
+- Each org gets a **provider profile identifier** (Ayrshare "profile key" or equivalent), stored encrypted with the same AES-256-GCM helper and `INTEGRATION_ENCRYPTION_KEY` described in section E. Profile keys are credentials; they follow the exact same non-exposure rules as the Apollo key.
+- Customers connect TikTok / YouTube / Instagram by being sent to the **provider's hosted linking page** via a short-lived, server-generated URL. They complete OAuth with the platform directly. They never paste a platform API key, and the app never sees platform tokens.
+
+Adapter seam (`src/lib/social/adapter.ts`, implemented by `src/lib/social/ayrshare.server.ts`, later `tiktok.server.ts` / `youtube.server.ts` / `meta.server.ts`):
+
+```ts
+interface SocialAdapter {
+  id: "ayrshare" | "tiktok" | "youtube" | "meta";
+  ensureProfile(orgId): Promise<{ profileRef: string }>;
+  linkUrl(profileRef, platforms): Promise<{ url: string; expiresAt: string }>;
+  listAccounts(profileRef): Promise<ConnectedAccount[]>;      // platform, handle, status, scopes, expiry
+  validate(variant: PostVariant): ValidationIssue[];           // pure, no network
+  publish(profileRef, variant, idempotencyKey): Promise<{ externalId: string; state: PublishState; raw: unknown }>;
+  getStatus(profileRef, externalId): Promise<{ state: PublishState; raw: unknown }>;
+  fetchAnalytics(profileRef, externalId): Promise<{ metrics: RawMetrics; raw: unknown }>;
+  unlink(profileRef, accountId): Promise<void>;
+}
+```
+
+Every adapter returns both a normalized shape and the untouched `raw` payload. Normalization never invents equivalence: TikTok "video views", YouTube "views", and Instagram "plays" are stored raw and surfaced side by side with their platform label; the unified view shows a clearly-labeled "reach (platform-defined)" row rather than a fake single number.
+
+## H3. Information architecture (social)
+
+Second top-level nav item: **Publishing** (icon `CalendarClock`), alongside Outbound.
+
+```text
+/publishing                       Calendar (month/week) + upcoming queue + failures
+/publishing/queue                 List view: drafts, awaiting approval, scheduled, published, failed
+/publishing/posts/$id             Post detail: master content, per-platform variants, timeline, raw responses
+/publishing/compose               Create post from an existing campaign kit / video / image set
+/publishing/analytics             Cross-platform report, per-platform raw metrics + normalized view
+/settings/social                  Social Connections: connect accounts, account health, test post, autopublish toggle
+```
+
+Onboarding gains a **Social Connections** step next to the Apollo step. `OnboardingChecklist.tsx` items: "Connect a social account" → "Send a test post" → "(optional) Enable autopublish".
+
+Compose reuses the Campaign Kit drawer: pick a kit, and the master post is prefilled with the kit's video, images, caption, hashtags, and UTM link. One master, three variants:
+
+| Variant | Source asset | Per-variant fields |
+|---|---|---|
+| TikTok video | 9:16 video | caption (+disclosure), privacy level, comment/duet/stitch flags, direct-post vs draft-upload |
+| Instagram Reel | 9:16 video | caption, cover/thumbnail frame, share-to-feed, collaborator |
+| YouTube Short | 9:16 video ≤60s | title, description, privacy (public/unlisted/private), category, thumbnail (if eligible) |
+
+FTC affiliate disclosure and AI-content labeling stay on by default in every variant caption, editable but not silently removable — same rule the caption engine already follows.
+
+## H4. State machine
+
+```text
+draft ──submit──▶ awaiting_approval ──approve──▶ scheduled ──due──▶ publishing
+  ▲                      │                           │                 │
+  └──── reject ──────────┘                    cancel │        ┌────────┴────────┐
+                                                     ▼        ▼                 ▼
+                                                 canceled  published         failed
+                                                                              │
+                                                                     retry (backoff, capped)
+                                                                              ▼
+                                                                          publishing
+```
+
+Rules:
+- Approval is required by default. `autopublish_enabled` may be turned on per org **only after** at least one connected account and one `published` test post exist; the UI keeps the toggle disabled until both are true.
+- State transitions are recorded in `post_events` with actor (user id or `system`), so an approval trail exists.
+- `publishing` is entered only by the worker holding the queue lock.
+
+## H5. Database additions (social)
+
+Same migration discipline: CREATE TABLE → GRANT → ENABLE RLS → POLICY, org-scoped via `is_org_member`.
+
+| Table | Key columns | RLS |
+|---|---|---|
+| `social_provider_profiles` | `org_id` unique, `adapter` , `profile_ref_ciphertext`, `status`, `created_at` | **service_role only** |
+| `social_accounts` | `org_id`, `platform` (`tiktok\|instagram\|youtube`), `external_account_id`, `handle`, `display_name`, `avatar_url`, `status` (`connected\|expired\|revoked\|error`), `scopes jsonb`, `last_checked_at`; unique `(org_id, platform, external_account_id)` | org member read; service writes |
+| `social_posts` | `org_id`, `campaign_id`, `video_id`, `title`, `master_caption`, `state`, `scheduled_at`, `timezone`, `approved_by`, `approved_at`, `created_by` | org member ALL |
+| `social_post_variants` | `post_id`, `platform`, `account_id`, `caption`, `platform_title`, `privacy`, `thumbnail_url`, `options jsonb`, `state`, `external_post_id`, `permalink`, `idempotency_key` unique, `last_error`, `attempts` | org member ALL |
+| `social_post_events` | `variant_id`, `type` (`state_change\|provider_callback\|error`), `actor`, `occurred_at`, `payload jsonb` | org member read; service writes |
+| `social_metrics` | `variant_id`, `collected_at`, `platform`, `raw jsonb`, `views int`, `likes int`, `comments int`, `shares int`, `saves int`, `metric_definitions jsonb`; unique `(variant_id, collected_at)` | org member read; service writes |
+| `social_reports` | `org_id`, `week_start`, `metrics jsonb`, `narrative`; unique `(org_id, week_start)` | org member read |
+| `social_settings` | `org_id`, `autopublish_enabled bool default false`, `test_post_passed_at`, `default_privacy`, `daily_post_cap` | org member read; admin update |
+
+Idempotency and duplicate-send safety:
+- `social_post_variants.idempotency_key` = `sha256(variant_id + scheduled_at)`, unique, and passed to the adapter as the provider idempotency key. A retried or double-fired job cannot create a second post.
+- `external_post_id` unique per `(platform, external_post_id)` — a duplicate provider callback is a no-op upsert.
+- `social_metrics` unique on `(variant_id, collected_at)` bucketed to the hour, so replayed analytics pulls do not double-count.
+
+## H6. Endpoints, jobs, and webhooks
+
+New job kinds in the **existing** `job_queue` (`kind` enum extended): `publish_variant`, `poll_publish_status`, `refresh_accounts`, `sync_social_metrics`, `social_weekly_report`.
+
+| Route | Trigger | Purpose |
+|---|---|---|
+| `/api/public/jobs/tick` | existing `*/5 * * * *` | Also claims social jobs; one worker, two engines |
+| `/api/public/jobs/publish-due` | `*/5 * * * *` | Enqueue `publish_variant` for variants whose `scheduled_at <= now()` and state `scheduled` |
+| `/api/public/jobs/social-sync` | `0 */3 * * *` | Enqueue `sync_social_metrics` + `refresh_accounts` |
+| `/api/public/webhooks/social` | provider push | Verify signature → upsert variant state, `external_post_id`, and a `post_events` row |
+
+Server functions (auth-required, org-scoped): create/update post + variants, submit for approval, approve/reject, schedule/cancel, request link URL, list account health, send test post, toggle autopublish.
+
+Worker behavior for `publish_variant`:
+1. Claim with `FOR UPDATE SKIP LOCKED`; set variant `publishing`.
+2. Re-run `adapter.validate()` — a variant that fails validation goes to `failed` with a readable reason, never to the provider.
+3. Check account status is `connected` and daily post cap not exceeded.
+4. Call `adapter.publish()` with the stored idempotency key.
+5. Store `external_post_id` + `raw`; state `published` or, if the provider reports async processing, enqueue `poll_publish_status` with backoff.
+6. Failures: exponential backoff, capped attempts, then `failed` + dead-letter row + in-app notification. Auth failures (`expired`/`revoked`) mark the account unhealthy, pause that org's scheduled posts, and stop retrying.
+
+Rate limits and platform constraints are respected per platform, not globally: per-account daily caps, provider 429 `Retry-After`, and known platform limits (e.g. YouTube's daily upload quota) tracked in `social_settings` and surfaced on the account-health screen.
+
+## H7. Billing separation
+
+Social publishing is its own line: `social_subscriptions` (org, Stripe subscription, tier, connected-account count). The provider's own plan cost (Ayrshare business/multi-user) is a platform cost, not a client passthrough — unlike Apollo, where the client owns the data/sending cost. Reporting keeps three clearly separated buckets: Influencer Echo platform fees, client-owned Apollo consumption, and social publishing subscription. No screen ever merges them.
+
+## H8. Phased plan with acceptance tests (social)
+
+Phases run **after** Outbound Phase 1 (tenancy + crypto), which they depend on, and can otherwise interleave.
+
+**S1 — Provider profile + connections.** `social_provider_profiles`, `social_accounts`, adapter interface + Ayrshare implementation of `ensureProfile`/`linkUrl`/`listAccounts`, `/settings/social`.
+Accept: a user connects a TikTok account through the provider's hosted page and never sees a key; profile ref is ciphertext in the DB and unreadable via any client query; account health shows handle + status; the browser bundle contains no provider credential.
+
+**S2 — Compose, variants, validation.** `social_posts`, `social_post_variants`, compose UI seeded from a campaign kit, pure per-platform validators.
+Accept: one master produces TikTok/Reel/Short variants with independent captions/titles/privacy; oversize or over-length content is blocked with a specific reason before any network call; disclosure text present by default.
+
+**S3 — Approval + calendar.** State machine, `social_post_events`, calendar and queue views.
+Accept: draft → awaiting_approval → scheduled works with an audit trail; rejection returns to draft with a comment; autopublish toggle stays disabled until a connected account and a passed test post exist.
+
+**S4 — Scheduled publishing + retry.** `publish_variant`, `publish-due`, `poll_publish_status`, dead-letter UI.
+Accept: a scheduled post publishes unattended; firing the job twice creates exactly one platform post (idempotency key proves it); a forced provider error retries with backoff and lands in dead-letter; a revoked account pauses rather than loops.
+
+**S5 — Webhooks + status truth.** `/api/public/webhooks/social` with signature verification.
+Accept: a replayed callback changes nothing; state in the app matches the platform for published, processing, and rejected posts.
+
+**S6 — Analytics.** `social_metrics`, `sync_social_metrics`, `/publishing/analytics`, `social_reports`.
+Accept: raw platform payloads stored verbatim; normalized view labels each metric's platform definition; repeated syncs do not double-count; the report separates platform fee, Apollo cost, and social subscription.
+
+**S7 — End-to-end verification.** A full unattended cycle: compose from a kit → approve → schedule → publish to all three platforms → webhook confirm → metrics sync → weekly report. Until this passes, the UI and marketing say "scheduled publishing" and show run status — never "fully automated".
+
+## H9. External blockers and review requirements (social)
+
+1. **Provider account and plan** — Ayrshare (or chosen aggregator) business/multi-user plan is required for per-customer profiles; single-profile plans cannot serve multiple customers. Needs purchase and the business API key added as a secret.
+2. **Platform review and eligibility, even through an aggregator**: TikTok Content Posting API apps are unaudited by default (posts may be restricted to private/draft until audited); Instagram content publishing requires the user's account to be a **professional** account linked to a Facebook Page and supports Reels/images with its own rate limits; YouTube uploads consume Data API quota and unverified projects have upload restrictions. Each user still completes their own OAuth. Confirm which of these the aggregator's plan covers versus what we must apply for.
+3. **Direct-adapter fallback scope** — if the aggregator's coverage or pricing fails, the adapter seam allows direct TikTok/Google/Meta adapters, but that means three separate app reviews and token-refresh maintenance. Decision needed before S1 if it changes the provider choice.
+4. **Webhook availability** — confirm the provider signs webhooks and which events it emits; if it does not, S5 collapses into polling only (design already supports both).
+5. **Autopublish policy** — confirm you want opt-in autopublish at all, and whether it should be per-org or per-campaign.
+6. **Publishing tier pricing** — the social subscription price/limits are not defined yet; the plan spec's the separation but not the numbers.
+7. **Publish required** — provider webhooks and cron both need the stable published URL, same as Outbound.
