@@ -145,7 +145,7 @@ export const getApolloStatus = createServerFn({ method: "GET" })
       maskedHint: cred?.masked_hint ?? null,
       lastValidatedAt: cred?.last_validated_at ?? null,
       lastError: cred?.last_error ?? null,
-      metadata: (cred?.metadata ?? {}) as Record<string, unknown>,
+      metadata: (cred?.metadata ?? {}) as Record<string, string | number | null>,
       steps,
     };
   });
