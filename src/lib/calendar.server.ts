@@ -134,13 +134,42 @@ export async function generateDayPrompt(input: DayPromptInput): Promise<DayPromp
 
   const hashtags = strArray(raw["hashtags"], 2).map((h) => (h.startsWith("#") ? h : `#${h}`));
 
+  const baseScript = str(raw["script"]);
+  const baseHook = str(raw["hook"]);
+  const baseCaption = str(raw["caption"]);
+
+  const rawPlans = Array.isArray(raw["platform_plans"]) ? (raw["platform_plans"] as unknown[]) : [];
+  const byPlatform = new Map<string, Record<string, unknown>>();
+  for (const p of rawPlans) {
+    if (p && typeof p === "object") {
+      const rec = p as Record<string, unknown>;
+      const id = str(rec["platform"]).toLowerCase();
+      if (id) byPlatform.set(id, rec);
+    }
+  }
+
+  const platform_plans: PlatformPlan[] = input.platforms.map((id, i) => {
+    const rec = byPlatform.get(id) ?? (rawPlans[i] as Record<string, unknown> | undefined) ?? {};
+    const tags = strArray(rec["hashtags"], 2).map((h) => (h.startsWith("#") ? h : `#${h}`));
+    return {
+      platform: id,
+      hook: str(rec["hook"], baseHook),
+      script: str(rec["script"], baseScript),
+      caption: str(rec["caption"], baseCaption),
+      hashtags: tags.length ? tags : hashtags,
+      format_note: str(rec["format_note"]),
+      posting_tip: str(rec["posting_tip"]),
+    };
+  });
+
   return {
-    hook: str(raw["hook"]),
-    script: str(raw["script"]),
+    hook: baseHook,
+    script: baseScript,
     video_prompt: str(raw["video_prompt"]),
     image_prompt: str(raw["image_prompt"]),
-    caption: str(raw["caption"]),
+    caption: baseCaption,
     hashtags,
     disclosure: affiliate ? str(raw["disclosure"], "#ad — commissionable link") : "",
+    platform_plans,
   };
 }
