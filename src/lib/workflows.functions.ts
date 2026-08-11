@@ -260,7 +260,7 @@ export const generateStrategy = createServerFn({ method: "POST" })
       {
         workflow_id: data.workflow_id,
         org_id: orgId,
-        icp: out.icp,
+        icp: out.icp as Record<string, string | string[]>,
         positioning: out.positioning,
         angles: out.angles,
         pillars: out.pillars,
@@ -338,7 +338,7 @@ export const generateContentPack = createServerFn({ method: "POST" })
         source_url: brief.source_url,
       },
       {
-        icp: strategy.icp as Record<string, unknown>,
+        icp: (strategy.icp ?? {}) as Record<string, string | string[]>,
         positioning: strategy.positioning,
         angles: (strategy.angles as string[]) ?? [],
         pillars: (strategy.pillars as string[]) ?? [],

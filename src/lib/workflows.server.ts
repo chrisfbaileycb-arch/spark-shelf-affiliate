@@ -43,13 +43,26 @@ export interface BriefInput {
   product_description?: string | null;
 }
 
+export type IcpRecord = Record<string, string | string[]>;
+
 export interface StrategyOutput {
-  icp: Record<string, unknown>;
+  icp: IcpRecord;
   positioning: string;
   angles: string[];
   pillars: string[];
   objections: string[];
   cta: string;
+}
+
+function sanitizeIcp(v: unknown): IcpRecord {
+  const out: IcpRecord = {};
+  if (v && typeof v === "object") {
+    for (const [k, val] of Object.entries(v as Record<string, unknown>)) {
+      if (typeof val === "string") out[k] = val;
+      else if (Array.isArray(val)) out[k] = val.filter((x): x is string => typeof x === "string");
+    }
+  }
+  return out;
 }
 
 export async function generateStrategyOutput(brief: BriefInput): Promise<StrategyOutput> {
@@ -66,7 +79,7 @@ export async function generateStrategyOutput(brief: BriefInput): Promise<Strateg
   const arr = (v: unknown): string[] =>
     Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
   return {
-    icp: (raw["icp"] ?? {}) as Record<string, unknown>,
+    icp: sanitizeIcp(raw["icp"]),
     positioning: typeof raw["positioning"] === "string" ? (raw["positioning"] as string) : "",
     angles: arr(raw["angles"]),
     pillars: arr(raw["pillars"]),
@@ -132,7 +145,7 @@ export interface QualificationResult {
 }
 
 export async function qualifyLeadsWithAi(
-  icp: Record<string, unknown>,
+  icp: IcpRecord,
   positioning: string,
   leads: LeadForQualification[],
 ): Promise<QualificationResult[]> {
@@ -163,12 +176,12 @@ export async function generateSequenceDraft(
   brief: BriefInput,
 ): Promise<SequenceDraftStep[]> {
   const raw = await aiJson(
-    "You write plain-text cold email sequences. Return strict JSON only. No fabricated case studies, metrics, or名 name-drops. Keep each email under 120 words. Include an unsubscribe-friendly closing line.",
+    "You write plain-text cold email sequences. Return strict JSON only. No fabricated case studies, metrics, orname-drops. Keep each email under 120 words. Include an unsubscribe-friendly closing line.",
     `Brief:\n${JSON.stringify(brief)}\nStrategy:\n${JSON.stringify(strategy)}\n\nReturn JSON: {"steps":[{"step_number":number,"subject":string,"body":string,"delay_days":number}]} with 3 steps.`,
   );
   const rows = Array.isArray(raw["steps"]) ? (raw["steps"] as unknown[]) : [];
   return rows
-    .map((s, i) => s as { step_number?: unknown; subject?: unknown; body?: unknown; delay_days?: unknown } & { _i?: number })
+    .map((s) => s as { step_number?: unknown; subject?: unknown; body?: unknown; delay_days?: unknown })
     .map((s, i) => ({
       step_number: typeof s.step_number === "number" ? s.step_number : i + 1,
       subject: typeof s.subject === "string" ? s.subject : "",
