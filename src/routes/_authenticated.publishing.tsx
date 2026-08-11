@@ -257,7 +257,7 @@ function PostCard({
       className="space-y-4 rounded-2xl border border-border bg-card p-4"
     >
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
+        <div className="min-w-0">
           <h3 className="font-display text-lg font-semibold">{post.title}</h3>
           <p className="mt-1 flex items-center gap-1.5 font-mono text-xs tabular-nums text-muted-foreground">
             <CalendarDays className="h-3.5 w-3.5" />
@@ -266,7 +266,41 @@ function PostCard({
               : "Not scheduled"}
           </p>
         </div>
+        <div className="flex flex-wrap gap-1.5" aria-label="Posted checklist">
+          {post.variants.map((v) => {
+            const done = Boolean(v.posted_at);
+            const skipped = Boolean(v.skipped_at);
+            return (
+              <span
+                key={`chk-${v.id}`}
+                data-testid={`checklist-${v.id}`}
+                title={
+                  done
+                    ? "You confirmed this one posted"
+                    : skipped
+                      ? "Skipped"
+                      : "Not confirmed posted yet"
+                }
+                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide transition-colors ${
+                  done
+                    ? "border-primary bg-primary/10 text-foreground"
+                    : skipped
+                      ? "text-muted-foreground line-through"
+                      : "text-muted-foreground"
+                }`}
+              >
+                {done ? (
+                  <Check className="h-3 w-3" />
+                ) : (
+                  <span className="h-3 w-3 rounded-[3px] border" aria-hidden />
+                )}
+                {PLATFORM_LABEL[v.platform] ?? v.platform}
+              </span>
+            );
+          })}
+        </div>
       </div>
+
 
       <ul className="space-y-3" aria-label="Platform checklist">
         {post.variants.map((v) => (
