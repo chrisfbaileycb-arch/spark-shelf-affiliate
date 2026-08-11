@@ -127,39 +127,67 @@ function AuthPage() {
             </p>
           )}
 
-          <form onSubmit={submit} className="mt-6 space-y-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
-              />
+          {mode === "reset" && resetSent ? (
+            <div className="mt-6 rounded-md bg-primary/10 p-4 text-sm text-primary">
+              Check your inbox — if an account exists for <strong>{email}</strong>, you'll receive a
+              password reset link shortly.
             </div>
-            <div>
-              <Label htmlFor="pw">Password</Label>
-              <Input
-                id="pw"
-                type="password"
-                required
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            <Button type="submit" disabled={busy} className="w-full">
-              {busy ? "..." : mode === "signin" ? "Sign in" : "Create account"}
-            </Button>
-          </form>
+          ) : (
+            <form onSubmit={submit} className="mt-6 space-y-4">
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              {mode !== "reset" && (
+                <div>
+                  <Label htmlFor="pw">Password</Label>
+                  <Input
+                    id="pw"
+                    type="password"
+                    required
+                    minLength={8}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+              )}
+              <Button type="submit" disabled={busy} className="w-full">
+                {busy
+                  ? "..."
+                  : mode === "signin"
+                    ? "Sign in"
+                    : mode === "signup"
+                      ? "Create account"
+                      : "Send reset link"}
+              </Button>
+            </form>
+          )}
+
+          {mode === "signin" && (
+            <button
+              onClick={() => setMode("reset")}
+              className="mt-3 w-full text-center text-sm text-muted-foreground hover:text-foreground"
+            >
+              Forgot password?
+            </button>
+          )}
+
           <button
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            onClick={() => {
+              setMode(mode === "signin" ? "signup" : "signin");
+              setResetSent(false);
+            }}
             className="mt-4 w-full text-center text-sm text-muted-foreground hover:text-foreground"
           >
-            {mode === "signin" ? "No account? Create one" : "Have an account? Sign in"}
+            {mode === "signup" ? "Have an account? Sign in" : "No account? Create one"}
           </button>
         </Card>
       </div>
