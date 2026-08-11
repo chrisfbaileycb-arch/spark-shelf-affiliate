@@ -141,3 +141,16 @@ function AuthLayout() {
     </div>
   );
 }
+
+function PrivateBeta() {
+  return (
+    <div className="mx-auto max-w-lg rounded-2xl border border-border bg-card p-8 text-sm">
+      <h1 className="font-display text-2xl font-semibold">Private beta</h1>
+      <p className="mt-2 text-muted-foreground">
+        Campaigns, outbound integrations and publishing are limited to the Customer Zero test
+        account while the engines are validated end to end. Your account is not on the allowlist
+        yet, so these actions are disabled — the rest of the studio still works.
+      </p>
+    </div>
+  );
+}
