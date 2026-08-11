@@ -40,7 +40,33 @@ import {
   Plus,
   Sparkles,
   Trash2,
+  Video,
 } from "lucide-react";
+
+const ENGINE_STEP: Record<
+  string,
+  { label: string; href: string; cta: string; note: string }
+> = {
+  avatar: {
+    label: "HeyGen — avatar video",
+    href: "https://app.heygen.com/create-v3",
+    cta: "Open HeyGen with this script",
+    note: "Copies the script, then opens HeyGen. Paste it into the script box, pick your avatar and voice, render vertical 9:16.",
+  },
+  broll: {
+    label: "MiniMax — silent B-roll",
+    href: "https://hailuoai.video/create",
+    cta: "Open MiniMax with this prompt",
+    note: "Copies the video prompt, then opens MiniMax. B-roll renders silent — add your voiceover or on-screen text after.",
+  },
+  image: {
+    label: "Ad Image Engine",
+    href: "/studio",
+    cta: "Open the image studio",
+    note: "Generates the still in every ratio from the image prompt on this slot.",
+  },
+};
+
 
 
 export const Route = createFileRoute("/_authenticated/calendar/$date")({
