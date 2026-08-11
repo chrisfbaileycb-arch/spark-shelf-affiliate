@@ -26,8 +26,8 @@ export const Route = createFileRoute("/_authenticated/strategy")({
 function StrategyPage() {
   return (
     <ModuleShell
-      title="Strategy"
-      description="Echo reads your brief and proposes who this is for, how to position it, and which angles to run. Edit anything — the words here drive every script later."
+      title="Your strategy"
+      description="This part is our job. You told us what you're selling — we write the positioning, the campaign angles and the messaging pillars, then push them into the scripts and captions for TikTok, YouTube, Instagram, Facebook, X and Reddit. Change anything you disagree with."
     >
       {({ id, data, refresh }) => <StrategyStep id={id} data={data} refresh={refresh} />}
     </ModuleShell>
