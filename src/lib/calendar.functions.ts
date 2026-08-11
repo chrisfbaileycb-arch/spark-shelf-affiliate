@@ -2,6 +2,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+export interface PlatformPlanRow {
+  platform: string;
+  hook: string;
+  script: string;
+  caption: string;
+  hashtags: string[];
+  format_note: string;
+  posting_tip: string;
+}
+
 export interface CalendarSlot {
   id: string;
   plan_date: string;
@@ -23,10 +33,11 @@ export interface CalendarSlot {
   post_id: string | null;
   generated_at: string | null;
   model: string | null;
+  platform_plans: PlatformPlanRow[];
 }
 
 const SELECT =
-  "id, plan_date, slot_time, title, engine, platforms, hook, script, video_prompt, image_prompt, caption, hashtags, disclosure, notes, status, product_id, campaign_id, post_id, generated_at, model";
+  "id, plan_date, slot_time, title, engine, platforms, hook, script, video_prompt, image_prompt, caption, hashtags, disclosure, notes, status, product_id, campaign_id, post_id, generated_at, model, platform_plans";
 
 const ISO_DATE = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const ENGINE = z.enum(["avatar", "broll", "image"]);
