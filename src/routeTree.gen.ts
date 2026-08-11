@@ -43,6 +43,7 @@ import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenti
 import { Route as AuthenticatedSettingsIntegrationsRouteImport } from './routes/_authenticated.settings.integrations'
 import { Route as AuthenticatedVideosIndexRouteImport } from './routes/_authenticated.videos.index'
 import { Route as AuthenticatedVideosIdRouteImport } from './routes/_authenticated.videos.$id'
+import { Route as ApiMediaVariantIdRouteImport } from './routes/api/media.$variantId'
 import { Route as ApiPublicWebhooksStripeRouteImport } from './routes/api/public/webhooks.stripe'
 
 const IndexRoute = IndexRouteImport.update({
@@ -222,6 +223,11 @@ const AuthenticatedVideosIdRoute = AuthenticatedVideosIdRouteImport.update({
   path: '/videos/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const ApiMediaVariantIdRoute = ApiMediaVariantIdRouteImport.update({
+  id: '/api/media/$variantId',
+  path: '/api/media/$variantId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicWebhooksStripeRoute = ApiPublicWebhooksStripeRouteImport.update({
   id: '/api/public/webhooks/stripe',
   path: '/api/public/webhooks/stripe',
@@ -260,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
+  '/api/media/$variantId': typeof ApiMediaVariantIdRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/videos/': typeof AuthenticatedVideosIndexRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
@@ -296,6 +303,7 @@ export interface FileRoutesByTo {
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
+  '/api/media/$variantId': typeof ApiMediaVariantIdRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/videos': typeof AuthenticatedVideosIndexRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
@@ -334,6 +342,7 @@ export interface FileRoutesById {
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
   '/_authenticated/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/_authenticated/videos/$id': typeof AuthenticatedVideosIdRoute
+  '/api/media/$variantId': typeof ApiMediaVariantIdRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/videos/': typeof AuthenticatedVideosIndexRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
@@ -372,6 +381,7 @@ export interface FileRouteTypes {
     | '/products/new'
     | '/settings/integrations'
     | '/videos/$id'
+    | '/api/media/$variantId'
     | '/products/'
     | '/videos/'
     | '/api/public/webhooks/stripe'
@@ -408,6 +418,7 @@ export interface FileRouteTypes {
     | '/products/new'
     | '/settings/integrations'
     | '/videos/$id'
+    | '/api/media/$variantId'
     | '/products'
     | '/videos'
     | '/api/public/webhooks/stripe'
@@ -445,6 +456,7 @@ export interface FileRouteTypes {
     | '/_authenticated/products/new'
     | '/_authenticated/settings/integrations'
     | '/_authenticated/videos/$id'
+    | '/api/media/$variantId'
     | '/_authenticated/products/'
     | '/_authenticated/videos/'
     | '/api/public/webhooks/stripe'
@@ -471,6 +483,7 @@ export interface RootRouteChildren {
   RCodeRoute: typeof RCodeRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiMediaVariantIdRoute: typeof ApiMediaVariantIdRoute
   ApiPublicWebhooksStripeRoute: typeof ApiPublicWebhooksStripeRoute
 }
 
@@ -714,6 +727,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVideosIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/media/$variantId': {
+      id: '/api/media/$variantId'
+      path: '/api/media/$variantId'
+      fullPath: '/api/media/$variantId'
+      preLoaderRoute: typeof ApiMediaVariantIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/webhooks/stripe': {
       id: '/api/public/webhooks/stripe'
       path: '/api/public/webhooks/stripe'
@@ -794,6 +814,7 @@ const rootRouteChildren: RootRouteChildren = {
   RCodeRoute: RCodeRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiMediaVariantIdRoute: ApiMediaVariantIdRoute,
   ApiPublicWebhooksStripeRoute: ApiPublicWebhooksStripeRoute,
 }
 export const routeTree = rootRouteImport
