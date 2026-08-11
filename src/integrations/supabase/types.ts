@@ -1357,6 +1357,7 @@ export type Database = {
       products: {
         Row: {
           asset_kind: Database["public"]["Enums"]["asset_kind"]
+          campaign_mode: string
           created_at: string
           currency: string | null
           description: string | null
@@ -1373,6 +1374,7 @@ export type Database = {
         }
         Insert: {
           asset_kind?: Database["public"]["Enums"]["asset_kind"]
+          campaign_mode?: string
           created_at?: string
           currency?: string | null
           description?: string | null
@@ -1381,7 +1383,7 @@ export type Database = {
           price?: string | null
           raw?: Json | null
           source_domain?: string | null
-          source_url: string
+          source_url?: string
           suggested_network?: string | null
           title: string
           updated_at?: string
@@ -1389,6 +1391,7 @@ export type Database = {
         }
         Update: {
           asset_kind?: Database["public"]["Enums"]["asset_kind"]
+          campaign_mode?: string
           created_at?: string
           currency?: string | null
           description?: string | null
