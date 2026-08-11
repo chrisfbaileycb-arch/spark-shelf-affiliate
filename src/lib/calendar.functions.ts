@@ -261,7 +261,7 @@ export const generateSlotPrompt = createServerFn({ method: "POST" })
         caption: out.caption,
         hashtags: out.hashtags,
         disclosure: out.disclosure,
-        platform_plans: out.platform_plans,
+        platform_plans: JSON.parse(JSON.stringify(out.platform_plans)),
         status: row.status === "planned" ? "prompted" : row.status,
         generated_at: new Date().toISOString(),
         model: CALENDAR_PROMPT_MODEL,
