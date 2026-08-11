@@ -5,6 +5,9 @@
  */
 export const BRAND = "Echo Your Influence";
 
+/** Public-facing tagline. */
+export const TAGLINE = "All we do is marketing for you.";
+
 /** The legal person or entity that operates the Service. */
 export const OPERATOR = "Christopher Bailey, sole proprietor d/b/a Echo Your Influence";
 

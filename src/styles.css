@@ -5,14 +5,15 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * REELRIPPER — AI Affiliate Video Generator
- * Vibe: bold creator-economy. Warm coral primary, deep plum surface, electric lime accent.
- * Editorial typography (Fraunces display) + crisp body (Inter).
+ * ECHO YOUR INFLUENCE — personal marketing agency in a box.
+ * Vibe: warm sand field, espresso ink, clay CTA.
+ * Display: Archivo Black. Body: Hind. Numbers: mono w/ tabular figures.
  */
 
 @theme inline {
-  --font-display: "Fraunces", "Georgia", serif;
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Hind", system-ui, -apple-system, "Segoe UI", sans-serif;
+
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
