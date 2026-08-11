@@ -13,6 +13,8 @@ import {
   Sparkles,
   Users,
   CreditCard,
+  Send,
+  Plug,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,9 +28,12 @@ const NAV = [
   { to: "/personas", label: "Personas", icon: Users },
   { to: "/studio", label: "Studio", icon: Wand2 },
   { to: "/videos", label: "Videos", icon: Video },
+  { to: "/publishing", label: "Publishing", icon: Send },
   { to: "/affiliate-programs", label: "Affiliate IDs", icon: BadgeDollarSign },
+  { to: "/settings/integrations", label: "Integrations", icon: Plug },
   { to: "/billing", label: "Billing", icon: CreditCard },
 ] as const;
+
 
 function AuthLayout() {
   const navigate = useNavigate();
