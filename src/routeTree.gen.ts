@@ -37,6 +37,7 @@ import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as AuthenticatedCalendarIndexRouteImport } from './routes/_authenticated.calendar.index'
 import { Route as AuthenticatedCampaignsIndexRouteImport } from './routes/_authenticated.campaigns.index'
 import { Route as AuthenticatedCampaignsIdRouteImport } from './routes/_authenticated.campaigns.$id'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated.products.index'
@@ -191,6 +192,12 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedCalendarIndexRoute =
+  AuthenticatedCalendarIndexRouteImport.update({
+    id: '/calendar/',
+    path: '/calendar/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedCampaignsIndexRoute =
   AuthenticatedCampaignsIndexRouteImport.update({
     id: '/campaigns/',
@@ -282,6 +289,7 @@ export interface FileRoutesByFullPath {
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/api/media/$variantId': typeof ApiMediaVariantIdRoute
+  '/calendar/': typeof AuthenticatedCalendarIndexRoute
   '/campaigns/': typeof AuthenticatedCampaignsIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/videos/': typeof AuthenticatedVideosIndexRoute
@@ -321,6 +329,7 @@ export interface FileRoutesByTo {
   '/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/videos/$id': typeof AuthenticatedVideosIdRoute
   '/api/media/$variantId': typeof ApiMediaVariantIdRoute
+  '/calendar': typeof AuthenticatedCalendarIndexRoute
   '/campaigns': typeof AuthenticatedCampaignsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/videos': typeof AuthenticatedVideosIndexRoute
@@ -362,6 +371,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/integrations': typeof AuthenticatedSettingsIntegrationsRoute
   '/_authenticated/videos/$id': typeof AuthenticatedVideosIdRoute
   '/api/media/$variantId': typeof ApiMediaVariantIdRoute
+  '/_authenticated/calendar/': typeof AuthenticatedCalendarIndexRoute
   '/_authenticated/campaigns/': typeof AuthenticatedCampaignsIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/videos/': typeof AuthenticatedVideosIndexRoute
@@ -403,6 +413,7 @@ export interface FileRouteTypes {
     | '/settings/integrations'
     | '/videos/$id'
     | '/api/media/$variantId'
+    | '/calendar/'
     | '/campaigns/'
     | '/products/'
     | '/videos/'
@@ -442,6 +453,7 @@ export interface FileRouteTypes {
     | '/settings/integrations'
     | '/videos/$id'
     | '/api/media/$variantId'
+    | '/calendar'
     | '/campaigns'
     | '/products'
     | '/videos'
@@ -482,6 +494,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/integrations'
     | '/_authenticated/videos/$id'
     | '/api/media/$variantId'
+    | '/_authenticated/calendar/'
     | '/_authenticated/campaigns/'
     | '/_authenticated/products/'
     | '/_authenticated/videos/'
@@ -711,6 +724,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/calendar/': {
+      id: '/_authenticated/calendar/'
+      path: '/calendar'
+      fullPath: '/calendar/'
+      preLoaderRoute: typeof AuthenticatedCalendarIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/campaigns/': {
       id: '/_authenticated/campaigns/'
       path: '/campaigns'
@@ -797,6 +817,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
   AuthenticatedSettingsIntegrationsRoute: typeof AuthenticatedSettingsIntegrationsRoute
   AuthenticatedVideosIdRoute: typeof AuthenticatedVideosIdRoute
+  AuthenticatedCalendarIndexRoute: typeof AuthenticatedCalendarIndexRoute
   AuthenticatedCampaignsIndexRoute: typeof AuthenticatedCampaignsIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedVideosIndexRoute: typeof AuthenticatedVideosIndexRoute
@@ -816,6 +837,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSettingsIntegrationsRoute:
     AuthenticatedSettingsIntegrationsRoute,
   AuthenticatedVideosIdRoute: AuthenticatedVideosIdRoute,
+  AuthenticatedCalendarIndexRoute: AuthenticatedCalendarIndexRoute,
   AuthenticatedCampaignsIndexRoute: AuthenticatedCampaignsIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedVideosIndexRoute: AuthenticatedVideosIndexRoute,
