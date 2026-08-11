@@ -135,6 +135,7 @@ export async function shareVideoToDeviceSheet(opts: {
   filename: string;
   title: string;
   text: string;
+  headers?: Record<string, string>;
 }): Promise<ShareOutcome> {
   if (typeof navigator === "undefined" || typeof navigator.share !== "function") {
     return { kind: "unsupported", reason: "This browser has no share sheet. Download instead." };
@@ -142,7 +143,10 @@ export async function shareVideoToDeviceSheet(opts: {
 
   let file: File;
   try {
-    const res = await fetch(opts.mediaUrl, { credentials: "same-origin" });
+    const res = await fetch(opts.mediaUrl, {
+      credentials: "same-origin",
+      headers: opts.headers ?? {},
+    });
     if (!res.ok) {
       return { kind: "error", reason: `Could not read the video (HTTP ${res.status}).` };
     }
