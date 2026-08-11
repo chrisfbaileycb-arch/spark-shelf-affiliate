@@ -457,19 +457,40 @@ function VariantCard({
         )}
       </div>
 
+      {PLATFORM_LAUNCH[variant.platform] ? (
+        <Button
+          size="sm"
+          variant="outline"
+          className="mt-2 w-full"
+          asChild
+          data-testid={`open-platform-${variant.id}`}
+        >
+          <a
+            href={PLATFORM_LAUNCH[variant.platform].url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => void copyCaption(variant.caption)}
+          >
+            <ExternalLink className="mr-1.5 h-3.5 w-3.5" />
+            {PLATFORM_LAUNCH[variant.platform].label}
+          </a>
+        </Button>
+      ) : null}
+
       {capability === "download-only" ? (
         <p className="mt-2 flex items-start gap-1.5 text-[11px] text-muted-foreground">
           <Info className="mt-0.5 h-3 w-3 shrink-0" />
-          This browser has no share sheet. Download the video and the caption, then upload from
-          your phone.
+          This browser has no share sheet. Download the video and the caption, then tap “
+          {PLATFORM_LAUNCH[variant.platform]?.label ?? "open the app"}” and upload it there.
         </p>
       ) : (
         <p className="mt-2 flex items-start gap-1.5 text-[11px] text-muted-foreground">
           <Info className="mt-0.5 h-3 w-3 shrink-0" />
-          Your device share menu opens — pick TikTok, Instagram, YouTube, LinkedIn, or any other
-          installed app. Come back and confirm.
+          Copy the caption, hand the video to your share sheet, or jump straight to the platform
+          with the button above. Come back and confirm once it’s live.
         </p>
       )}
+
 
       {variant.last_share_error ? (
         <p className="mt-2 text-[11px] text-destructive">{variant.last_share_error}</p>
