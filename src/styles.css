@@ -13,6 +13,7 @@
 @theme inline {
   --font-display: "Archivo Black", "Arial Black", system-ui, sans-serif;
   --font-sans: "Hind", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
 
   --radius-sm: calc(var(--radius) - 4px);
