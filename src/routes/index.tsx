@@ -4,37 +4,28 @@ import {
   Sparkles,
   Link2,
   Video,
-  BadgeDollarSign,
-  Home,
-  MonitorSmartphone,
-  ShoppingBag,
-  Wrench,
-  UtensilsCrossed,
-  Scale,
-  Play,
-  Zap,
-  LayoutGrid,
+  CalendarDays,
+  Share2,
   Image as ImageIcon,
+  LayoutGrid,
+  Megaphone,
 } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { PublicFooter } from "@/components/PublicFooter";
 import { BrandMark } from "@/components/BrandMark";
 import { INDUSTRIES } from "@/lib/industries";
 
+const TITLE = "Echo Your Influence — All we do is marketing for you";
+const DESCRIPTION =
+  "Plan, create, and schedule your own marketing in one place. AI strategy, video shorts, multi-ratio ad images, a content calendar, and a two-tap posting hand-off.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Echo Your Influence — AI ad kits & video shorts from any URL" },
-      {
-        name: "description",
-        content:
-          "Paste any product, app, or website URL. Get 15–30s vertical AI video shorts plus fluid 1:1, 9:16, and 16:9 ad image kits for TikTok, Instagram, and Facebook.",
-      },
-      { property: "og:title", content: "Echo Your Influence — AI ad kits & video shorts from any URL" },
-      {
-        property: "og:description",
-        content: "One URL in. Multi-ratio ad cards and AI video shorts out — for every industry.",
-      },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
     ],
@@ -48,20 +39,19 @@ export const Route = createFileRoute("/")({
             {
               "@type": "Organization",
               name: "Echo Your Influence",
-              description: "AI-generated 15-second influencer videos for affiliate marketing.",
+              description: "A personal marketing agency in a box.",
               url: "/",
             },
             {
               "@type": "WebSite",
               name: "Echo Your Influence",
               url: "/",
-              description:
-                "Turn any product URL into a scroll-stopping 15-second AI affiliate video.",
+              description: DESCRIPTION,
             },
             {
               "@type": "SoftwareApplication",
               name: "Echo Your Influence",
-              applicationCategory: "MultimediaApplication",
+              applicationCategory: "BusinessApplication",
               operatingSystem: "Web",
               offers: [
                 { "@type": "Offer", name: "Starter", price: "29.95", priceCurrency: "USD" },
@@ -77,80 +67,67 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-// Feature card definitions (kept local to the landing route).
-const FEATURES = [
+/** The five things the app actually does today. */
+const CAPABILITIES = [
+  {
+    icon: Sparkles,
+    accent: "hl-yellow",
+    title: "Strategy first",
+    body: "Paste a link or describe your business. You get positioning, audience, and the angles worth posting about.",
+    meta: "brief · icp · messaging",
+  },
   {
     icon: Video,
     accent: "hl-pink",
-    glow: "hl-pink",
-    title: "Video Shorts",
-    body: "15–30s vertical 9:16 with AI voiceover, influencer visuals, and animated captions — ready for TikTok & Reels.",
-    meta: "9:16 · AI VO · captions",
+    title: "Video shorts",
+    body: "15–30 second vertical shorts: avatar narration with captions, or silent cinematic b-roll when you want motion only.",
+    meta: "9:16 · two engines",
   },
   {
     icon: ImageIcon,
     accent: "hl-green",
-    glow: "hl-green",
-    title: "Ad Image Kits",
-    body: "Fluid 1:1, 9:16, and 16:9 ad cards generated from the same source — headline, product cutout, price callout, all on-brand.",
+    title: "Ad image kits",
+    body: "The same concept rendered 1:1, 9:16, and 16:9 in one pass, so no surface sits empty while your budget goes to one boost.",
     meta: "1:1 · 9:16 · 16:9",
   },
   {
-    icon: BadgeDollarSign,
+    icon: CalendarDays,
     accent: "hl-blue",
-    glow: "hl-blue",
-    title: "Affiliate Links",
-    body: "We auto-detect the affiliate program, build your tracked URL, and hand you the commission path — drop it in your bio and post.",
-    meta: "UTM · tracked · auto-paid",
+    title: "Content calendar",
+    body: "Every day gets its own workspace: hook, script, prompts, caption, hashtags, and the disclosure line when one is required.",
+    meta: "week · 4-week · month",
   },
   {
-    icon: Zap,
-    accent: "bg-gradient-brand text-primary-foreground",
-    glow: "hl-orange",
-    title: "Studio Workflow",
-    body: "Queue multiple URLs, batch-generate, and keep every brand consistent. Pro & Agency tiers unlock bulk rendering.",
-    meta: "bulk · queue · brands",
+    icon: Share2,
+    accent: "hl-orange",
+    title: "Two-tap hand-off",
+    body: "Copy the caption, then open TikTok, Reels, Shorts, or Facebook with the video attached. No account linking, no API keys.",
+    meta: "copy · share · mark posted",
+  },
+  {
+    icon: LayoutGrid,
+    accent: "hl-yellow",
+    title: "One campaign spine",
+    body: "Brief, strategy, content pack, calendar, and results live inside a single resumable campaign you can pick back up anytime.",
+    meta: "resumable · per campaign",
   },
 ] as const;
 
-// How-it-works steps (carried over from the original).
 const STEPS = [
-  { icon: Link2, accent: "hl-pink", title: "Paste the URL", body: "Amazon, AliExpress, Shopify, or any product URL — one-click, no config." },
-  { icon: Sparkles, accent: "hl-green", title: "AI ingests it", body: "Title, photos, price, hooks, hashtags — scraped & scripted automatically." },
-  { icon: Video, accent: "hl-blue", title: "Generate the video", body: "AI voiceover + influencer visuals + animated captions, in seconds." },
-  { icon: BadgeDollarSign, accent: "bg-gradient-brand text-primary-foreground", title: "Drop your link", body: "Tracked affiliate URL built. You collect commissions on every sale." },
+  { icon: Link2, title: "Bring the subject", body: "A product URL, your listing, your menu, your app — or type it in by hand." },
+  { icon: Sparkles, title: "Get the plan", body: "Positioning, hooks, and a posting rhythm shaped to what you actually sell." },
+  { icon: Video, title: "Generate the assets", body: "Shorts and multi-ratio ad images render from the same source in one pass." },
+  { icon: Megaphone, title: "Post on your terms", body: "Schedule it on the calendar, then hand it off to the app in two taps." },
 ] as const;
 
-// Platform surfaces this kit feeds (honest partner/ecosystem names, no invented logos).
-const PLATFORMS = [
-  "TikTok",
-  "Instagram",
-  "YouTube Shorts",
-  "Reels",
-  "Shopify",
-  "Amazon Associates",
-  "ShareASale",
-  "Impact",
-] as const;
+/** Surfaces the hand-off targets. Honest phrasing: works with, not endorsed by. */
+const SURFACES = ["TikTok", "Instagram Reels", "YouTube Shorts", "Facebook", "LinkedIn"] as const;
 
-// Output-format showcase tiles — honest placeholders, not real creators or fake metrics.
-const OUTPUT_STYLES = [
-  { label: "9:16 Vertical Short", note: "TikTok / Reels / Shorts", src: "https://images.unsplash.com/photo-1596558450255-7c0b7be9d56a?auto=format&fit=crop&w=400&q=70" },
-  { label: "1:1 Feed Card", note: "Instagram & Facebook feed", src: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=400&q=70" },
-  { label: "16:9 Landscape", note: "Facebook display & web", src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=70" },
-  { label: "Product Motion Clip", note: "Silent cinematic b-roll", src: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=400&q=70" },
-  { label: "Avatar Talking Head", note: "AI voiceover + captions", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=70" },
-  { label: "Campaign Kit Bundle", note: "One URL, every format", src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=70" },
-] as const;
-
-// Honest value-prop band — no invented user counts or revenue claims.
-const VALUE_PROPS = [
-  { value: "3", label: "aspect ratios", color: "text-primary" },
-  { value: "15–30s", label: "video shorts", color: "text-[oklch(0.88_0.10_0)]" },
-  { value: "6", label: "industry verticals", color: "text-[oklch(0.90_0.13_145)]" },
-  { value: "2", label: "video engines", color: "text-[oklch(0.90_0.08_240)]" },
-  { value: "1", label: "URL to full kit", color: "text-primary" },
-  { value: "0", label: "cameras needed", color: "text-[oklch(0.88_0.10_0)]" },
+const FACTS = [
+  { value: "3", label: "aspect ratios per concept" },
+  { value: "15–30s", label: "vertical short length" },
+  { value: "2", label: "video engines" },
+  { value: "0", label: "social passwords stored" },
 ] as const;
 
 function Landing() {
@@ -158,143 +135,162 @@ function Landing() {
     <div className="min-h-screen bg-aurora-light bg-grain text-foreground">
       <PublicNav />
 
-      {/* ===================== HERO ===================== */}
-      <section className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-16">
-        {/* Background video — replace src with real asset; muted + loop + playsInline for mobile/ad-policy */}
-        <video
-          className="absolute inset-0 h-full w-full object-cover opacity-25"
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="https://images.unsplash.com/photo-1620712943543-bcc4688e7480?auto=format&fit=crop&w=1920&q=70"
-        >
-          <source
-            src="https://cdn.coverr.co/videos/coverr-bright-gradient-animation-7266/1080p.mp4"
-            type="video/mp4"
-          />
-        </video>
-        {/* warm cream overlay so text reads cleanly */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/55 via-background/78 to-background" />
-        {/* soft orange bloom */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(60vw 60vw at 50% 35%, oklch(0.68 0.19 42 / 0.14), transparent 65%)",
-          }}
-        />
+      {/* ===================== HERO (split copy + preview card) ===================== */}
+      <section className="relative overflow-hidden pt-32 pb-16 sm:pt-36">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-foreground/75">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse-soft" />
+              Your marketing agency in a box
+            </div>
 
-        {/* Floating Fyxer-style highlight squares (static, not video) */}
-        <div className="absolute left-8 top-32 h-16 w-16 rounded-2xl hl-pink shadow-soft animate-floaty" aria-hidden="true" />
-        <div className="absolute right-12 top-44 h-12 w-12 rounded-xl hl-green shadow-soft animate-floaty-slow" aria-hidden="true" />
-        <div className="absolute left-16 bottom-32 h-14 w-14 rounded-xl hl-blue shadow-soft animate-floaty" aria-hidden="true" />
-        <div className="absolute right-20 bottom-40 h-10 w-10 rounded-lg hl-yellow shadow-soft animate-floaty-slow" aria-hidden="true" />
+            <h1 className="mt-6 text-balance font-display text-5xl uppercase leading-[0.95] text-foreground sm:text-6xl lg:text-7xl">
+              Echo your{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10">influence</span>
+                <span
+                  className="absolute bottom-1 left-0 h-4 w-full -skew-x-6 hl-yellow"
+                  aria-hidden="true"
+                />
+              </span>
+            </h1>
 
-        {/* Hero content */}
-        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground/80">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse-soft" />
-            AI campaign studio for solo creators
+            <p className="mt-4 font-display text-lg uppercase tracking-[0.12em] text-primary">
+              All we do is marketing for you.
+            </p>
+
+            <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-foreground/80">
+              Whether you sell products, houses, roofs, dinner reservations, or your own app —
+              this is the one place to plan it, create it, date it, and post it. You control the
+              flow, the speed, and the spend.
+            </p>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Link
+                to="/auth"
+                data-testid="hero-start-free-trial"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop transition-transform hover:-translate-y-0.5"
+              >
+                Start free trial <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/how-it-works"
+                data-testid="hero-how-it-works"
+                className="inline-flex items-center gap-2 rounded-full glass-strong px-7 py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-card"
+              >
+                See how it works
+              </Link>
+            </div>
+
+            <p className="mt-4 font-mono text-xs text-muted-foreground">
+              No camera. No editing suite. No social passwords stored.
+            </p>
           </div>
 
-          <h1 className="mt-7 text-balance font-display text-6xl font-semibold leading-[0.92] tracking-tight text-foreground sm:text-7xl md:text-8xl">
-            CURATE YOUR{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10">INFLUENCE</span>
-              <span
-                className="absolute bottom-1 left-0 -z-0 h-5 w-full hl-yellow -skew-x-6"
-                aria-hidden="true"
-              />
-            </span>
-          </h1>
+          {/* Preview card — an honest illustration of the daily workspace */}
+          <div className="relative">
+            <div className="absolute -right-6 -top-8 h-24 w-24 rounded-2xl hl-green shadow-soft animate-floaty" aria-hidden="true" />
+            <div className="absolute -bottom-6 -left-6 h-16 w-16 rounded-xl hl-blue shadow-soft animate-floaty-slow" aria-hidden="true" />
 
-          <p className="mx-auto mt-7 max-w-2xl text-balance text-lg text-foreground/80 sm:text-xl">
-            Paste any product, app, or website URL. Echo Your Influence writes the hook, renders
-            15–30&nbsp;second vertical video shorts, and builds complete multi-ratio ad image kits
-            for TikTok, Instagram, and Facebook.
-          </p>
+            <div className="lift relative rounded-3xl glass-strong p-6 shadow-pop">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <BrandMark className="h-8 w-8 shrink-0" />
+                  <p className="truncate font-display text-sm uppercase tracking-wide">
+                    Tuesday · post 1
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full bg-surface px-3 py-1 font-mono text-[0.65rem] uppercase text-muted-foreground">
+                  Draft
+                </span>
+              </div>
 
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/auth"
-              data-testid="hero-start-free-trial"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop glow-orange transition hover:brightness-105"
-            >
-              Start free trial <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/industries"
-              className="inline-flex items-center gap-2 rounded-full glass-strong px-7 py-3.5 text-sm font-semibold text-foreground transition hover:bg-white"
-            >
-              Browse industries
-            </Link>
+              <div className="mt-5 space-y-3 text-sm">
+                <div className="rounded-2xl bg-surface/80 p-4">
+                  <p className="font-mono text-[0.65rem] uppercase tracking-wider text-muted-foreground">
+                    Hook
+                  </p>
+                  <p className="mt-1 text-foreground/85">
+                    &ldquo;Three things buyers notice in the first ten seconds.&rdquo;
+                  </p>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { r: "9:16", n: "Short" },
+                    { r: "1:1", n: "Feed" },
+                    { r: "16:9", n: "Display" },
+                  ].map((f) => (
+                    <div key={f.r} className="rounded-2xl bg-surface/80 p-3 text-center">
+                      <p className="font-mono text-xs text-primary">{f.r}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{f.n}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="rounded-2xl bg-surface/80 p-4">
+                  <p className="font-mono text-[0.65rem] uppercase tracking-wider text-muted-foreground">
+                    Hand-off
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {["Copy caption", "Open TikTok", "Mark posted"].map((a) => (
+                      <span
+                        key={a}
+                        className="rounded-full border border-border bg-card px-3 py-1 text-xs font-medium"
+                      >
+                        {a}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="mt-4 text-xs text-muted-foreground">
-            7-day free trial • Set up in 30 seconds • No video editing required
-          </p>
-        </div>
-
-        {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground">
-          <svg
-            className="h-6 w-6 animate-scroll-hint"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M12 5v14M19 12l-7 7-7-7" />
-          </svg>
         </div>
       </section>
 
-      {/* ===================== PLATFORM MARQUEE ===================== */}
-      <section className="relative z-10 mx-auto max-w-6xl px-6 py-10">
-        <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          Loved by creators at
-        </p>
-        <div className="mt-6 overflow-hidden">
-          <div className="flex w-max animate-marquee items-center gap-12 text-foreground/60">
-            {[...PLATFORMS, ...PLATFORMS].map((p, i) => (
-              <span key={`${p}-${i}`} className="font-display text-xl font-semibold opacity-60">
-                {p}
+      {/* ===================== SURFACES (honest: works with) ===================== */}
+      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-6">
+        <div className="rounded-3xl border border-border bg-surface/60 px-6 py-5">
+          <p className="text-center font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">
+            Hands off to
+          </p>
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+            {SURFACES.map((s) => (
+              <span key={s} className="font-display text-lg uppercase text-foreground/55">
+                {s}
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===================== FEATURE GRID ===================== */}
+      {/* ===================== CAPABILITY CARD GRID ===================== */}
       <section className="relative z-10 mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-14 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Everything in one studio
+        <div className="mb-12 max-w-2xl">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">
+            What you get
           </p>
-          <h2 className="mt-3 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-            From raw link to ready-to-post, in one flow.
+          <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-foreground sm:text-5xl">
+            Everything an agency would do, minus the retainer.
           </h2>
           <p className="mt-4 text-foreground/80">
-            Four engines working together so you can ship a full paid-and-organic ad set before your
-            coffee cools.
+            One workspace that carries an idea from &ldquo;I should market this&rdquo; all the way
+            to a post going out on the day you chose.
           </p>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURES.map((f) => (
-            <article key={f.title} className="lift glass-strong relative overflow-hidden rounded-3xl p-6 shadow-pop">
-              <div className={`absolute -right-8 -top-8 h-28 w-28 rounded-full ${f.glow} opacity-40 blur-2xl`} />
-              <div className="relative">
-                <div className={`grid h-12 w-12 place-items-center rounded-2xl ${f.accent} shadow-soft`}>
-                  <f.icon className="h-6 w-6" />
-                </div>
-                <h3 className="mt-5 font-display text-2xl text-foreground">{f.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground/80">{f.body}</p>
-                <p className="mt-4 font-mono text-xs text-muted-foreground">{f.meta}</p>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {CAPABILITIES.map((c) => (
+            <article
+              key={c.title}
+              data-testid={`capability-${c.title.toLowerCase().replace(/\s+/g, "-")}`}
+              className="lift glass-strong relative overflow-hidden rounded-3xl p-6 shadow-soft"
+            >
+              <div className={`grid h-12 w-12 place-items-center rounded-2xl ${c.accent} shadow-soft`}>
+                <c.icon className="h-6 w-6" />
               </div>
+              <h3 className="mt-5 font-display text-xl uppercase text-foreground">{c.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/80">{c.body}</p>
+              <p className="mt-4 font-mono text-xs text-muted-foreground">{c.meta}</p>
             </article>
           ))}
         </div>
@@ -303,28 +299,23 @@ function Landing() {
       {/* ===================== HOW IT WORKS ===================== */}
       <section id="how" className="relative z-10 border-y border-border bg-surface/60">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="mb-14 max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              How it works
-            </p>
-            <h2 className="mt-3 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-              Up and running in seconds.
+          <div className="mb-12 max-w-2xl">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">How it works</p>
+            <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-foreground sm:text-5xl">
+              Four steps, start to posted.
             </h2>
           </div>
 
           <ol className="grid gap-5 md:grid-cols-4">
             {STEPS.map((s, i) => (
-              <li key={s.title} className="lift glass relative rounded-3xl p-6 shadow-soft">
-                <div className="absolute right-5 top-5 font-display text-5xl font-semibold text-primary/20">
+              <li key={s.title} className="lift relative rounded-3xl glass p-6 shadow-soft">
+                <div className="absolute right-5 top-4 font-display text-4xl text-primary/15">
                   {String(i + 1).padStart(2, "0")}
                 </div>
-                <div className={`grid h-11 w-11 place-items-center rounded-2xl ${s.accent} shadow-soft`}>
+                <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary/10 text-primary">
                   <s.icon className="h-5 w-5" />
                 </div>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Step {i + 1}
-                </p>
-                <p className="mt-1 font-display text-2xl text-foreground">{s.title}</p>
+                <p className="mt-4 font-display text-lg uppercase text-foreground">{s.title}</p>
                 <p className="mt-2 text-sm text-foreground/80">{s.body}</p>
               </li>
             ))}
@@ -332,26 +323,24 @@ function Landing() {
         </div>
       </section>
 
-      {/* ===================== INDUSTRIES ===================== */}
+      {/* ===================== WHO IT'S FOR ===================== */}
       <section className="relative z-10 mx-auto max-w-6xl px-6 py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              Vertical solution matrix
-            </p>
-            <h2 className="mt-3 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-              Built for your industry, not a template.
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 sm:flex sm:flex-wrap sm:justify-between">
+          <div className="min-w-0 max-w-2xl">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">Who it&apos;s for</p>
+            <h2 className="mt-3 font-display text-4xl uppercase leading-tight text-foreground sm:text-5xl">
+              If you sell something, this is for you.
             </h2>
             <p className="mt-4 text-foreground/80">
-              Every vertical gets its own hook angle, ad-card layouts, and short-form script
-              structure — from listing tours to menu promos.
+              Pick the mode that matches your work and the hooks, formats, and disclosure rules
+              adjust to it. Nothing here assumes you&apos;re an influencer.
             </p>
           </div>
           <Link
             to="/industries"
-            className="inline-flex items-center gap-2 rounded-full glass-strong px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-white"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full glass-strong px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-card"
           >
-            See all industries <ArrowRight className="h-4 w-4" />
+            Browse all <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -361,91 +350,57 @@ function Landing() {
               key={ind.slug}
               to="/industries"
               data-testid={`home-industry-${ind.slug}`}
-              className="lift glass-strong group rounded-3xl p-6 shadow-soft"
+              className="lift glass-strong rounded-3xl p-6 shadow-soft"
             >
               <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary/10 text-primary">
                 <ind.icon className="h-5 w-5" />
               </div>
-              <p className="mt-4 font-display text-xl text-foreground">{ind.name}</p>
+              <p className="mt-4 font-display text-lg uppercase text-foreground">{ind.name}</p>
               <p className="mt-2 text-sm leading-relaxed text-foreground/80">{ind.headline}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ===================== OUTPUT FORMAT SHOWCASE ===================== */}
+      {/* ===================== FACTS (verifiable product facts only) ===================== */}
       <section className="relative z-10 border-y border-border bg-surface/60">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="mb-12 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              One URL, every format you need
-            </p>
-            <h2 className="mt-3 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-              Built for creators who&apos;d rather ship than edit.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {OUTPUT_STYLES.map((item) => (
-              <figure
-                key={item.label}
-                className="lift glass-strong relative aspect-[4/5] overflow-hidden rounded-2xl shadow-soft"
-              >
-                <img
-                  src={item.src}
-                  alt={item.label}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/85 to-transparent p-3">
-                  <p className="text-sm font-semibold text-white">{item.label}</p>
-                  <p className="text-[0.65rem] text-white/80">{item.note}</p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-
-          <div className="mt-12 overflow-hidden rounded-2xl glass-strong">
-            <div className="flex w-max animate-marquee gap-12 px-6 py-5 text-sm font-semibold text-foreground/80">
-              {[...VALUE_PROPS, ...VALUE_PROPS].map((s, i) => (
-                <span key={`prop-${i}`} className="flex items-center gap-2">
-                  <span className={s.color}>{s.value}</span> {s.label}
-                </span>
-              ))}
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-14 lg:grid-cols-4">
+          {FACTS.map((f) => (
+            <div key={f.label}>
+              <p className="font-mono text-3xl text-primary">{f.value}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{f.label}</p>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* ===================== CLOSING CTA ===================== */}
       <section className="relative z-10 mx-auto max-w-4xl px-6 py-24 text-center">
-        <div className="absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full hl-yellow opacity-40 blur-3xl" />
-        <div className="glass-strong rounded-3xl p-10 shadow-pop glow-orange sm:p-14">
+        <div className="rounded-3xl glass-strong p-10 shadow-pop sm:p-14">
           <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-brand text-primary-foreground shadow-pop">
-            <Play className="h-7 w-7" fill="currentColor" />
+            <Megaphone className="h-7 w-7" />
           </div>
-          <h2 className="mt-5 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-            Put Echo Your Influence to work on your feed.
+          <h2 className="mt-5 font-display text-4xl uppercase leading-tight text-foreground sm:text-5xl">
+            Start marketing on your own terms.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-foreground/80">
-            Start the Test Pass at $29.95/mo for 5 video shorts and 30 fluid ad images, or scale to
-            Pro Creator ($49) and Agency ($99).
+            Build your first campaign, fill a week of the calendar, and hand the first post off
+            from your phone.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/auth"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop glow-orange transition hover:brightness-105"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-pop transition-transform hover:-translate-y-0.5"
             >
-              Create your first video <ArrowRight className="h-4 w-4" />
+              Start free trial <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/pricing"
-              className="inline-flex items-center gap-2 rounded-full glass-strong px-7 py-3.5 text-sm font-semibold text-foreground transition hover:bg-white"
+              className="inline-flex items-center gap-2 rounded-full glass-strong px-7 py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-card"
             >
-              See full pricing
+              See pricing
             </Link>
           </div>
-          <p className="mt-4 text-xs text-muted-foreground">7-day free trial • Set up in 30 seconds</p>
         </div>
       </section>
 
