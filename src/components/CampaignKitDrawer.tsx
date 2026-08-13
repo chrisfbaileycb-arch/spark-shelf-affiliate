@@ -289,7 +289,7 @@ const HANDOFF_PLATFORMS = [
   { id: "tiktok" as const, label: "TikTok" },
   { id: "instagram" as const, label: "Instagram Reel" },
   { id: "youtube" as const, label: "YouTube Short" },
-  { id: "linkedin" as const, label: "LinkedIn" },
+  { id: "facebook" as const, label: "Facebook Reel" },
 ];
 
 function SendToPublishing({ campaignId, hasVideo }: { campaignId: string; hasVideo: boolean }) {
@@ -302,7 +302,7 @@ function SendToPublishing({ campaignId, hasVideo }: { campaignId: string; hasVid
       queueFn({
         data: {
           campaign_id: campaignId,
-          platforms: platforms as ("tiktok" | "instagram" | "youtube" | "linkedin")[],
+          platforms: platforms as ("tiktok" | "instagram" | "youtube" | "facebook")[],
           scheduled_at: when ? new Date(when).toISOString() : null,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
         },

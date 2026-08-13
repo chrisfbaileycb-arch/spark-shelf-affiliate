@@ -41,7 +41,7 @@ const SELECT =
 
 const ISO_DATE = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const ENGINE = z.enum(["avatar", "broll", "image"]);
-const PLATFORM = z.enum(["tiktok", "instagram", "youtube", "facebook", "linkedin"]);
+const PLATFORM = z.enum(["tiktok", "instagram", "youtube", "facebook"]);
 const STATUS = z.enum(["planned", "prompted", "generated", "queued", "posted"]);
 
 async function ctx(userId: string) {
