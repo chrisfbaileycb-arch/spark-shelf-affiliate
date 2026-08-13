@@ -56,7 +56,7 @@ export const Route = createFileRoute("/_authenticated/publishing")({
       {
         name: "description",
         content:
-          "Prepare, schedule, and hand off your campaign videos to your phone's share sheet for TikTok, Reels, Shorts, and LinkedIn.",
+          "Prepare, schedule, and hand off your campaign videos to your phone's share sheet for TikTok, Instagram Reels, YouTube Shorts and Facebook Reels.",
       },
     ],
   }),
@@ -66,7 +66,7 @@ const PLATFORM_LABEL: Record<string, string> = {
   tiktok: "TikTok",
   instagram: "Instagram Reel",
   youtube: "YouTube Short",
-  linkedin: "LinkedIn",
+  facebook: "Facebook Reel",
 };
 
 async function authHeaders(): Promise<Record<string, string>> {

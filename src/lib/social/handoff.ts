@@ -111,7 +111,7 @@ export const PLATFORM_LAUNCH: Record<string, { label: string; url: string }> = {
   instagram: { label: "Open Instagram", url: "https://www.instagram.com/" },
   youtube: { label: "Open YouTube Studio", url: "https://studio.youtube.com/" },
   facebook: { label: "Open Facebook", url: "https://www.facebook.com/" },
-  linkedin: { label: "Open LinkedIn", url: "https://www.linkedin.com/feed/" },
+  
 };
 
 export type CopyResult = { ok: true } | { ok: false; reason: string };

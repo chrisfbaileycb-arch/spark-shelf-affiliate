@@ -213,7 +213,7 @@ export interface ChannelPlanOutput {
   generated_at: string;
 }
 
-const PLATFORMS = ["TikTok", "Instagram Reels", "YouTube Shorts", "Facebook", "LinkedIn"] as const;
+const PLATFORMS = ["TikTok", "Instagram Reels", "YouTube Shorts", "Facebook Reels"] as const;
 
 export async function generateChannelPlanOutput(
   brief: BriefInput,

@@ -460,7 +460,7 @@ function OutboundStep({ id, data, refresh }: StepProps) {
 
 // --- Step 5 -----------------------------------------------------------------
 
-const PLATFORMS = ["tiktok", "instagram", "youtube", "linkedin"] as const;
+const PLATFORMS = ["tiktok", "instagram", "youtube", "facebook"] as const;
 
 function PublishingStep({ data }: { data: WorkflowData }) {
   const queue = useServerFn(queueCampaignForPublishing);

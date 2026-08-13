@@ -83,7 +83,7 @@ export async function generateDayPrompt(input: DayPromptInput): Promise<DayPromp
     affiliate
       ? "disclosure (a short FTC affiliate disclosure line),"
       : "disclosure (empty string — this business is marketing its own offering, so no affiliate disclosure applies),",
-    `platform_plans: an array with exactly one object per platform in the supplied platforms list, in that order. Each object has platform (the exact platform id given), hook, script (that platform's own spoken script, rewritten for its audience and pacing — TikTok fastest and most casual, YouTube Short slightly more explanatory, Instagram visual-led, Facebook plainer and community-minded, LinkedIn professional and specific), caption (native to that platform's caption norms), hashtags (exactly 2 with #), format_note (aspect ratio, length and on-screen text guidance for that platform), posting_tip (one concrete, non-numeric tip about how to post it there — never invent engagement statistics or best-time data).`,
+    `platform_plans: an array with exactly one object per platform in the supplied platforms list, in that order. Each object has platform (the exact platform id given), hook, script (that platform's own spoken script, rewritten for its audience and pacing — TikTok fastest and most casual, YouTube Short slightly more explanatory, Instagram visual-led, Facebook Reel plainer and community-minded), caption (native to that platform's caption norms), hashtags (exactly 2 with #), format_note (aspect ratio, length and on-screen text guidance for that platform), posting_tip (one concrete, non-numeric tip about how to post it there — never invent engagement statistics or best-time data).`,
   ]
     .filter(Boolean)
     .join(" ");

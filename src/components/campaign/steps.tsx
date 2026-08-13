@@ -163,11 +163,9 @@ export function BriefStep({ id, data, refresh }: StepProps) {
 
 const ROLLOUT_PLATFORMS = [
   "TikTok",
-  "YouTube",
-  "Instagram",
-  "Facebook",
-  "X",
-  "Reddit",
+  "Instagram Reels",
+  "YouTube Shorts",
+  "Facebook Reels",
 ] as const;
 
 function ResultBlock({ title, items }: { title: string; items: string[] }) {
@@ -388,9 +386,10 @@ export function StrategyStep({ id, data, refresh }: StepProps) {
         <div>
           <p className="text-sm font-medium">Where this gets used</p>
           <p className="text-sm text-muted-foreground">
-            These angles and pillars feed the scripts, captions and ad copy we write for each platform
-            you post to.
+            Each of these four video platforms gets its own script, caption and hashtags — never one
+            script copied four times.
           </p>
+
         </div>
         <div className="flex flex-wrap gap-2">
           {ROLLOUT_PLATFORMS.map((p) => (

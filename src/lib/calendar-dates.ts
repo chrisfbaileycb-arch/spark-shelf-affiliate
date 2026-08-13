@@ -105,12 +105,12 @@ export const ENGINES = [
   { value: "image", label: "Ad image set", hint: "9:16 / 1:1 / 16:9 static creatives" },
 ] as const;
 
+/** Short-form video surfaces only. LinkedIn is deliberately not here. */
 export const PLATFORMS = [
   { value: "tiktok", label: "TikTok" },
   { value: "instagram", label: "Instagram Reel" },
   { value: "youtube", label: "YouTube Short" },
-  { value: "facebook", label: "Facebook" },
-  { value: "linkedin", label: "LinkedIn" },
+  { value: "facebook", label: "Facebook Reel" },
 ] as const;
 
 export const SLOT_STATUS = [

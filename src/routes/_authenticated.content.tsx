@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,7 +35,7 @@ function ContentPage() {
   return (
     <ModuleShell
       title="Content by platform"
-      description="The hooks, scripts and captions for this campaign, plus the next seven days broken out by platform. Open a day to work its lanes: read the script, make the video, then post it."
+      description="The hooks, scripts and captions for this campaign, then your calendar broken out day by day — and inside each day, one lane per video platform: TikTok, Instagram Reels, YouTube Shorts and Facebook Reels. Each lane is the same three steps: read its script, make the video, then post it to that account."
     >
       {({ id, data, refresh }) => (
         <div className="space-y-6">
@@ -46,10 +47,13 @@ function ContentPage() {
   );
 }
 
+const WEEK_OPTIONS = [1, 2, 3, 4] as const;
+
 function WeekBreakdown() {
   const list = useServerFn(listCalendarSlots);
+  const [weeks, setWeeks] = useState<number>(1);
   const today = new Date();
-  const days = Array.from({ length: 7 }, (_, i) => toISODate(addDays(today, i)));
+  const days = Array.from({ length: weeks * 7 }, (_, i) => toISODate(addDays(today, i)));
   const start = days[0]!;
   const end = days[days.length - 1]!;
 
@@ -62,18 +66,34 @@ function WeekBreakdown() {
     <section className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h2 className="font-display text-xl font-semibold">Next seven days</h2>
+          <h2 className="font-display text-xl font-semibold">
+            Your next {weeks === 1 ? "week" : `${weeks} weeks`}
+          </h2>
           <p className="text-sm text-muted-foreground">
-            Only days you have actually planned appear here. Nothing is filled in for you.
+            Plan up to four weeks ahead. Only days you have actually planned appear filled in —
+            nothing is invented for you.
           </p>
         </div>
-        <Button asChild size="sm" variant="outline">
-          <Link to="/calendar">Open full calendar</Link>
-        </Button>
+        <div className="flex items-center gap-1" role="group" aria-label="Weeks to plan">
+          {WEEK_OPTIONS.map((w) => (
+            <Button
+              key={w}
+              size="sm"
+              variant={w === weeks ? "default" : "outline"}
+              data-testid={`weeks-${w}`}
+              onClick={() => setWeeks(w)}
+            >
+              {w}w
+            </Button>
+          ))}
+          <Button asChild size="sm" variant="ghost">
+            <Link to="/calendar">Full calendar</Link>
+          </Button>
+        </div>
       </div>
 
       {slots.isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading your week…</p>
+        <p className="text-sm text-muted-foreground">Loading your plan…</p>
       ) : (
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {days.map((iso) => {
@@ -113,7 +133,16 @@ function WeekBreakdown() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-xs text-muted-foreground">Nothing planned yet.</p>
+                  <p className="text-xs text-muted-foreground">
+                    Nothing planned yet.{" "}
+                    <Link
+                      to="/calendar/$date"
+                      params={{ date: iso }}
+                      className="underline hover:text-primary"
+                    >
+                      Plan this day
+                    </Link>
+                  </p>
                 )}
               </Card>
             );
