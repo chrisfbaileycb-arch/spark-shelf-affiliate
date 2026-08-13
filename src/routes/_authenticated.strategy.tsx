@@ -27,7 +27,7 @@ function StrategyPage() {
   return (
     <ModuleShell
       title="Your strategy"
-      description="This part is our job. You told us what you're selling — we write the positioning, the campaign angles and the messaging pillars, then push them into the scripts and captions for TikTok, YouTube, Instagram, Facebook, X and Reddit. Change anything you disagree with."
+      description="This part is our job. You told us what you're selling — we write the positioning, the campaign angles and the messaging pillars, then push them into a separate script for each video platform: TikTok, Instagram Reels, YouTube Shorts and Facebook Reels. Change anything you disagree with."
     >
       {({ id, data, refresh }) => <StrategyStep id={id} data={data} refresh={refresh} />}
     </ModuleShell>
