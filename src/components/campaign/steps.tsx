@@ -163,11 +163,9 @@ export function BriefStep({ id, data, refresh }: StepProps) {
 
 const ROLLOUT_PLATFORMS = [
   "TikTok",
-  "YouTube",
-  "Instagram",
-  "Facebook",
-  "X",
-  "Reddit",
+  "Instagram Reels",
+  "YouTube Shorts",
+  "Facebook Reels",
 ] as const;
 
 function ResultBlock({ title, items }: { title: string; items: string[] }) {

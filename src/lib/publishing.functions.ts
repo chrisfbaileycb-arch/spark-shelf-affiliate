@@ -40,7 +40,7 @@ export type PublishingQueue = {
   notificationPreferences: { due_reminders_enabled: boolean; lead_minutes: number };
 };
 
-const PLATFORMS = ["tiktok", "instagram", "youtube", "linkedin"] as const;
+const PLATFORMS = ["tiktok", "instagram", "youtube", "facebook"] as const;
 
 /** Reads only real rows. There is no sample or seeded data behind this. */
 export const getPublishingQueue = createServerFn({ method: "GET" })

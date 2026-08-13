@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_authenticated/plan")({
       {
         name: "description",
         content:
-          "See the dollar split of your own weekly budget across TikTok, Reels, Shorts, Facebook and LinkedIn, plus what each channel should run.",
+          "See the dollar split of your own weekly budget across TikTok, Instagram Reels, YouTube Shorts and Facebook Reels, plus what each channel should run.",
       },
       { property: "og:title", content: "Budget & channels — Echo Your Influence" },
       {
